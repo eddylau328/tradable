@@ -1,2 +1,7 @@
 # csci3100-gp33
-For project
+
+```bash
+13-03-2019
+-----------------------------------------------
+Start building the database 
+```
