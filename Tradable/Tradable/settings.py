@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	
-	#own
-	'items',
+
+    # own
+    'items',
+    'pages',    # pages app handles all the pages
 ]
 
 MIDDLEWARE = [
