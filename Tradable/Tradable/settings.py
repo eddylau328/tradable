@@ -37,10 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD
 
     # own
     'items',
     'pages',    # pages app handles all the pages
+=======
+	
+	#own
+	'items', 'user'
+>>>>>>> 1c4c30ca8cceac97135d0036447ccfde5cceb3f1
 ]
 
 MIDDLEWARE = [
