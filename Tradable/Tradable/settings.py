@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # own
     'items',
     'pages',    # pages app handles all the pages
+    'user'
 ]
 
 MIDDLEWARE = [
