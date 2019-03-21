@@ -29,23 +29,25 @@
         </div>
 
         <ul class="nav justify-content-center">
-            <li class="nav-item"><a class="nav-link" href="/home">home</a></li>
-            <li class="nav-item"><a class="nav-link" href="/about">about</a></li>
-            <li class="nav-item"><a class="nav-link" href="/myprofile">myprofile</a></li>
-            <li class="nav-item"><a class="nav-link" href="/items">Viwe all items</a></li>
+            <li class="nav-item col row-2"><a class="nav-link" href="/home">home</a></li>
+            <li class="nav-item col row-2"><a class="nav-link" href="/about">about</a></li>
+            <li class="nav-item col row-2"><a class="nav-link" href="/items">Viwe items</a></li>
+            <li class="nav-item col row-2"><a class="nav-link" href="{% url "login" %}">Login</a></li>
+            <li class="nav-item col row-2"><a class="nav-link" href="{% url "user_register_view" %}">Register</a></li>
         </ul>
     </div>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class='alert alert-{{message.tags}}'>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class='alert alert-{{message.tags}}'>
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+        {% block content %}
 
-    {% block content %}
-
-    {% endblock %}
+        {% endblock %}
+    </div>
 </body>
 </html>
