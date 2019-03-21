@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>This is {{object.name}}</h2>
-<p>look up to item : id={{ object.id }}</p>
-<p>Item Name : {{ object.name }}</p>
-<p>Item Description : {{ object.description }}</p>
-<p>Item Price : ${{ object.id }}</p>
-<p>Item Condition : {{object.condition}}</p>
 
+<div class="container card bg-light border-dark mb-3">
+    <div class="card-body">
+        <h2>This is {{object.name}}</h2>
+        <p class="card-title">look up to item : id={{ object.id }}</p>
+        <p class="card-text">Item Name : {{ object.name }}</p>
+        <p class="card-text">Item Description : {{ object.description }}</p>
+        <p class="card-text">Item Price : ${{ object.id }}</p>
+        <p class="card-text">Item Condition : {{object.condition}}</p>
+    </div>
+</div>
 <button onclick="goBack()">Back</button>
 
 <script>

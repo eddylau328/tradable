@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    
-    <h1>Show all product here</h1><a href="/items/create">
-    <input type= 'button' value='Create an item'/></a>
-    <ul>
-    {% for item in list_all_item %}
-        <li><a href="/items/{{item.id}}",>{{ item.name }}</a></li>
-    {% endfor %}
-    </ul>
-
+    <div>
+        <h1>Show all product here</h1><a href="/items/create">
+        <div class="nav justify-content-end">
+            <input class="btn btn-light " type= 'button' value='Create an item'/></a>
+        </div>
+        <div class="card">
+            {% for item in list_all_item %}
+                <div class="card-group">
+                    <div class="card border-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-body"><a href="/items/{{item.id}}",>{{ item.name }}</a></div>
+                    </div>
+                </div >
+            {% endfor %}
+        </div>    
+    </div>
 
 {% endblock %}
