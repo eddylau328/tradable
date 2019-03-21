@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+    <h1>Show all product here</h1><a href="/items/create">
+    <input type= 'button' value='Create an item'/></a>
+    <ul>
+    {% for item in list_all_item %}
+        <li><a href="/items/{{item.id}}",>{{ item.name }}</a></li>
+    {% endfor %}
+    </ul>
+
+
+{% endblock %}

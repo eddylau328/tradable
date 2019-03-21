@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from pages.views import home_view, about_view, myprofile_view
-from items.views import item_detail_view, item_create_view
+from items.views import item_list_all_view, item_create_view, item_dynamic_lookup_view
 
 
 urlpatterns = [
@@ -25,6 +25,7 @@ urlpatterns = [
     path('home/', home_view, name='home'),
     path('about/', about_view, name='about'),
     path('myprofile/', myprofile_view, name='myprofile'),
-    path('items/', item_detail_view, name='item_detail_view'),
-    path('items/create', item_create_view, name='item_detail_view'),
+    path('items/', item_list_all_view, name='item_list_all_view'),
+    path('items/create/', item_create_view, name='item_detail_view'),
+    path('items/<int:item_id>/' , item_dynamic_lookup_view, name='dynamic item view')
 ]

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>This is {{object.name}}</h2>
+<p>look up to item : id={{ object.id }}</p>
+<p>Item Name : {{ object.name }}</p>
+<p>Item Description : {{ object.description }}</p>
+<p>Item Price : ${{ object.id }}</p>
+<p>Item Condition : {{object.condition}}</p>
+
+<button onclick="goBack()">Back</button>
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+{% endblock %}
