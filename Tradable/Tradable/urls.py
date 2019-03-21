@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from pages.views import home_view, about_view, myprofile_view
 from items.views import item_list_all_view, item_create_view, item_dynamic_lookup_view
-
+from users.views import user_register_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +27,6 @@ urlpatterns = [
     path('myprofile/', myprofile_view, name='myprofile'),
     path('items/', item_list_all_view, name='item_list_all_view'),
     path('items/create/', item_create_view, name='item_detail_view'),
-    path('items/<int:item_id>/' , item_dynamic_lookup_view, name='dynamic item view')
+    path('items/<int:item_id>/', item_dynamic_lookup_view, name='dynamic item view'),
+    path('users/register', user_register_view, name='user_register_view'),
 ]
