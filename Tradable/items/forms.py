@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import Item
 
 
@@ -10,5 +9,16 @@ class ItemCreateForm(forms. ModelForm):
             'name',
             'description',
             'price',
-            'condition'
+            'condition',
         ]
+
+    def is_valid(self, request):
+        # run the parent validation first
+        valid = super(ItemCreateForm, self).is_valid()
+        # we're done now if not valid
+        if not valid:
+            return valid
+
+        self.instance.seller = request.user
+        # all good
+        return True

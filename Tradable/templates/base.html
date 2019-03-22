@@ -29,9 +29,9 @@
         </div>
 
         <ul class="nav justify-content-center">
-            <li class="nav-item col row-2"><a class="nav-link" href="/home">home</a></li>
-            <li class="nav-item col row-2"><a class="nav-link" href="/about">about</a></li>
-            <li class="nav-item col row-2"><a class="nav-link" href="/items">Viwe items</a></li>
+            <li class="nav-item col row-2"><a class="nav-link" href="{% url "home" %}">home</a></li>
+            <li class="nav-item col row-2"><a class="nav-link" href="{% url "about" %}">about</a></li>
+            <li class="nav-item col row-2"><a class="nav-link" href="{% url "item_list_all_view" %}">Viwe items</a></li>
             {% if user.is_authenticated %}
                 <li class="nav-item col row-2"><a class="nav-link" href="{% url "profile" %}">Profile</a></li>
                 <li class="nav-item col row-2"><a class="nav-link" href="{% url "logout" %}">Logout</a></li>
