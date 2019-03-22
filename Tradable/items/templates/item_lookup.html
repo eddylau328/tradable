@@ -2,9 +2,9 @@
 
 {% block content %}
 
-<div class="container card bg-light border-dark mb-3">
+<div class="container card bg-light border-secondary mb-3">
     <div class="card-body">
-        <h2>This is {{object.name}}</h2>
+        <h3>{{object.name}}</h3>
         <p class="card-title">look up to item : id={{ object.id }}</p>
         <p class="card-text">Item Name : {{ object.name }}</p>
         <p class="card-text">Item Description : {{ object.description }}</p>
@@ -12,7 +12,7 @@
         <p class="card-text">Item Condition : {{object.condition}}</p>
     </div>
 </div>
-<button onclick="goBack()">Back</button>
+<button class=" btn btn-outline-primary" onclick="goBack()">Back</button>
 
 <script>
 function goBack() {

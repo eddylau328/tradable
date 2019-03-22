@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Create new item here</h1>
+<h3>Create new item here</h3>
 <form method='POST'> {% csrf_token %}
     {{ form.as_p }}
     <input type= 'submit' value='Save'/>   <a href="/items/"><input type= 'button' value='Cancel'/></a>

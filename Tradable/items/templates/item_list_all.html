@@ -2,19 +2,21 @@
 
 {% block content %}
     <div>
-        <h1>Show all product here</h1>
-        <div class="nav justify-content-end">
-            <a href="{% url "item_create_view" %}"><input class="btn btn-light " type= 'button' value='Create an item'/></a>
+        <div class="my-2 d-flex">
+            <h3 class="border-bottom border-light px-0 col " >Show all product here</h3>
+            <a class="col row justify-content-end" href="{% url "item_create_view" %}"><input class="btn btn-outline-primary" type= 'button' value='Create an item'/></a>
         </div>
-        <div class="card">
+        <div class="card-columns">
+
             {% for item in list_all_item %}
-                <div class="card-group">
-                    <div class="card border-primary mb-3" style="max-width: 18rem;">
-                        <div class="card-body"><a href="#">{{ item.seller }}</a></div>
-                        <div class="card-body"><a href="/items/{{item.id}}">{{ item.name }}</a></div>
+                <div class="card bg-light">
+                    <div class="card-body" style="max-width: 18rem;">
+                        <p class="card-text">Seller: {{ item.seller }}</a></p>
+                        <p class="card-text"><a href="/items/{{item.id}}">{{ item.name }}</a></p>
                     </div>
                 </div >
             {% endfor %}
+
         </div>
     </div>
 
