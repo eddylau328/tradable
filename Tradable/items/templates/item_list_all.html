@@ -2,9 +2,9 @@
 
 {% block content %}
     <div>
-        <h1>Show all product here</h1><a href="{% url "item_detail_view" %}">
+        <h1>Show all product here</h1>
         <div class="nav justify-content-end">
-            <input class="btn btn-light " type= 'button' value='Create an item'/></a>
+            <a href="{% url "item_create_view" %}"><input class="btn btn-light " type= 'button' value='Create an item'/></a>
         </div>
         <div class="card">
             {% for item in list_all_item %}
