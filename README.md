@@ -1,4 +1,4 @@
-# csci3100-gp33
+# csci3100-gp33(Master Branch)
 
 ```bash
 13-03-2019
@@ -6,17 +6,17 @@
 Start building the database 
 ```
 ```bash
-21-03-2019
+Early devlopment stage
 -----------------------------------------------
 A very basic framwork is implemented
 Implemented funtion:
-(most of them have no use since they are simply nothing but title)
 1# home page 
 2# about page
 3# my profile 
-3# navigator bar (which hyperlink is not Implemented)
+3# navigator bar
 4# user detail database and item detail database
-5# the items page (which can now display all item names)
+5# create item, list all item and view specific item's detail
+6# register and login
 -----------------------------------------------
 Detail Discription:
 The default of templates file is directed to root/templates
@@ -29,17 +29,18 @@ App: 'pages'
 App: 'items'
 ->the app for storing all items detail
 ->the app can now list all items' name inside the database
+->view to browse specific item
+->create an item
 
 App: 'Users'
 ->the app for storing all user detail
-->login function is not included at the moment
-->dataField for password is not implemented as well
-->views.py is empty
+->login function is not included at the moment (created)
+->dataField for password is not implemented as well (solved)
 -----------------------------------------------
 todo-task for current developing phase:
-->allow data entry from front-end to back-end
-->create 'register' app (without email at this phase)
-->create 'login' app
+->allow data entry from front-end to back-end (done)
+->create 'register' app (done)
+->create 'login' app (done)
 ->...
 #feel free to add more if any
 
