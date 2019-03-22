@@ -3,10 +3,10 @@
 ```bash
 13-03-2019
 -----------------------------------------------
-Start building the database 
+Projected started
 ```
 ```bash
-Early devlopment stage
+Early devlopment stage (updated on 22/3/2019)
 -----------------------------------------------
 A very basic framwork is implemented
 Implemented funtion:
