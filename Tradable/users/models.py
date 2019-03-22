@@ -17,7 +17,7 @@ class Profile(models.Model):
         return f'{self.user.username} Profile'
 
     # overwrite the save method
-    def save(self):
+    def save(self, **kwargs):
         super().save()
 
         img = Image.open(self.image.path)
