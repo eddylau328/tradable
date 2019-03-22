@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     # own
     'items',
     'pages',    # pages app handles all the pages
-    'users'
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -123,6 +123,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# MEDIA_ROOT is where our uploaded file will located in our file system
+# os.path makes sure the full path to that directory is created correctly
+# BASE_DIR is the project based directory
+# MEDIA_URL is how we are going to excess in the url
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'

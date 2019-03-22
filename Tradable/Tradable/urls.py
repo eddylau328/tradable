@@ -19,6 +19,9 @@ from pages.views import home_view, about_view, myprofile_view
 from items.views import item_list_all_view, item_create_view, item_dynamic_lookup_view
 from users.views import user_register_view, user_profile_view
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,3 +37,6 @@ urlpatterns = [
     path('users/logout/', auth_views.LogoutView.as_view(template_name='user_logout.html'), name='logout'),
     path('users/profile/', user_profile_view, name='profile'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
