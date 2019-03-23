@@ -41,7 +41,7 @@
 
             <li class="nav-item"><a class="px-3 nav-link text-dark" href="{% url "home" %}">Home</a></li>
             <li class="nav-item"><a class="px-3 nav-link text-dark" href="{% url "about" %}">About</a></li>
-            <li class="nav-item"><a class="px-3 nav-link text-dark " href="{% url "item_list_all_view" %}">Product</a></li>
+            <li class="nav-item"><a class="px-3 nav-link text-dark " href="{% url "listallitem" %}">Product</a></li>
             {% if user.is_authenticated %}
                 <li class="nav-item"><a class="px-3 nav-link text-dark" href="{% url "profile" %}">Profile</a></li>
                 <li class="nav-item"><a class="px-3 nav-link text-dark" href="{% url "logout" %}">Logout</a></li>

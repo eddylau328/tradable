@@ -11,7 +11,7 @@ def item_dynamic_lookup_view(request, item_id):
     context = {
         "object": obj
     }
-    return render(request, "item_lookup.html", context)
+    return render(request, "item/lookup.html", context)
 
 # item_list_all_view render a page listing all item
 
@@ -23,7 +23,7 @@ def item_list_all_view(request):
         'list_all_item': querysetOfItem
     }
 
-    return render(request, "item_list_all.html", context)
+    return render(request, "item/list_all.html", context)
 
 # item_create_view  remder a page to create item
 # you may also look at .forms.py
@@ -43,4 +43,4 @@ def item_create_view(request):
         'form': form
     }
 
-    return render(request, "item_create.html", context)
+    return render(request, "item/create.html", context)

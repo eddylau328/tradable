@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+<h3>Create new item here</h3>
+<form method='POST' action="{% url "listallitem" %}"> {% csrf_token %}
+    {{ form|crispy }}
+    <input type= 'submit' value='Save'/>
+    <button class=" btn btn-outline-primary" onclick="goBack()">Cancel</button>
+
+</form>
+
+{% endblock %}

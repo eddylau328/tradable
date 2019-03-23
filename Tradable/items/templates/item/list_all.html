@@ -5,7 +5,7 @@
         <div class="my-2 d-flex">
             <h3 class="border-bottom border-light px-0 col " >Show all product here</h3>
             {% if user.is_authenticated %}
-                <a class="col row justify-content-end" href="{% url "item_create_view" %}"><input class="btn btn-outline-primary" type= 'button' value='Create an item'/></a>
+                <a class="col row justify-content-end" href="{% url "createitem" %}"><input class="btn btn-outline-primary" type= 'button' value='Create an item'/></a>
             {% else %}
                 <a class="col row justify-content-end" href="{% url "login" %}"><input class="btn btn-outline-primary" type= 'button' value='login in to create an item'/></a>
             {% endif %}
