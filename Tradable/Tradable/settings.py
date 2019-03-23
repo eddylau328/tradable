@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'items',
     'pages',    # pages app handles all the pages
     'users.apps.UsersConfig',
+
+    #third party
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
