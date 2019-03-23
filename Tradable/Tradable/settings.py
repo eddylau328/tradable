@@ -25,7 +25,7 @@ SECRET_KEY = 'e2-w^a^=5(t5fwq&n28hhc8lm469_z0i4j^@z%=#e7-b*7*lqm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,13 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
+    'channels_redis',
 
     # own
     'items',
     'pages',    # pages app handles all the pages
     'users.apps.UsersConfig',
+    'chat',
 
-    #third party
+    # third party
     'crispy_forms',
 ]
 
@@ -58,6 +61,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Tradable.urls'
+ASGI_APPLICATION = "Tradable.routing.application"
 
 TEMPLATES = [
     {
@@ -126,6 +130,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
 
 # MEDIA_ROOT is where our uploaded file will located in our file system
 # os.path makes sure the full path to that directory is created correctly

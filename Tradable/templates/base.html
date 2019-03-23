@@ -9,7 +9,7 @@
 
     <style>
     *{
-        font-family: Calibri; 
+        font-family: Calibri;
         font-size: 18px;
     }
 
@@ -72,6 +72,10 @@
 
         {% endblock %}
     </div>
+
+    {% include 'js.html' %}
+    {% block script %}
+    {% endblock %}
 
 </body>
 </html>
