@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
 <h3>Create new item here</h3>
-<form method='POST'> {% csrf_token %}
-    {{ form.as_p }}
-    <input type= 'submit' value='Save'/>   <a href="/items/"><input type= 'button' value='Cancel'/></a>
+<form method='POST' action="{% url "item_list_all_view" %}"> {% csrf_token %}
+    {{ form|crispy }}
+    <input type= 'submit' value='Save'/>
+    <a href="{% url "item_list_all_view" %}"><input type= 'button' value='Cancel'/></a>
 </form>
 
 {% endblock %}
