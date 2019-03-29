@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from .models import Item
 from .forms import ItemCreateForm
+
 
 
 # Create your views here.
@@ -16,15 +18,21 @@ def item_dynamic_lookup_view(request, item_id):
 # item_list_all_view render a page listing all item
 
 
+# def item_list_all_view(request):
+
+    # querysetOfItem = Item.objects.all()
+    # context = {
+        # 'list_all_item': querysetOfItem
+    # }
+
+    # return render(request, "item/list_all.html", context)
 def item_list_all_view(request):
-
-    querysetOfItem = Item.objects.all()
-    context = {
-        'list_all_item': querysetOfItem
-    }
-
-    return render(request, "item/list_all.html", context)
-
+	item_list = Item.objects.get_queryset().order_by('id')
+	paginator = Paginator(item_list, 15) #show 15 items per page
+	
+	page = request.GET.get('page')
+	items = paginator.get_page(page)
+	return render(request, "item/list_all.html", {'items': items})
 # item_create_view  remder a page to create item
 # you may also look at .forms.py
 

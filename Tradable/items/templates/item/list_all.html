@@ -11,18 +11,31 @@
             {% endif %}
 
         </div>
-        <div class="card-columns bg-l border-light p-2">
+			<div class="card-columns bg-l border-light p-2">
+				{% for item in items %}
+					<div class="card border-black">
+						<div class="card-body" style="max-width: 18rem;">
+							<p class="card-text">Seller: {{ item.seller }}</a></p>
+							<p class="card-text"><a href="/items/{{item.id}}">{{ item.name }}</a></p>
+						</div>
+					</div >
+				{% endfor %}
+			</div>
+				<span class="step-links">
+					{% if items.has_previous %}
+						<a href="?page=1">&laquo; first</a>
+						<a href="?page={{ items.previous_page_number }}">previous</a>
+					{% endif %}
 
-            {% for item in list_all_item %}
-                <div class="card border-black">
-                    <div class="card-body" style="max-width: 18rem;">
-                        <p class="card-text">Seller: {{ item.seller }}</a></p>
-                        <p class="card-text"><a href="/items/{{item.id}}">{{ item.name }}</a></p>
-                    </div>
-                </div >
-            {% endfor %}
+					<span class="current">
+						Page {{ items.number }} of {{ items.paginator.num_pages }}.
+					</span>
 
-        </div>
+					{% if items.has_next %}
+						<a href="?page={{ items.next_page_number }}">next</a>
+						<a href="?page={{ items.paginator.num_pages }}">last &raquo;</a>
+					{% endif %}
+				</span>
     </div>
 
 {% endblock %}
