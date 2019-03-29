@@ -10,7 +10,7 @@ function goBack() {
 </script>
 
 <h3>Create new item here</h3>
-<form method='POST' action="{% url "listallitem" %}"> {% csrf_token %}
+<form method='POST'> {% csrf_token %}
     {{ form|crispy }}
     <input type= 'submit' value='Save'/>
     <button class=" btn btn-outline-primary" onclick="goBack()">Cancel</button>

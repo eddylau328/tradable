@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Item
 from .forms import ItemCreateForm
@@ -36,8 +37,10 @@ def item_create_view(request):
 
     if form.is_valid(request):
         form.save()
-        # render a new form after form.save
-        form = ItemCreateForm()
+#        # render a new form after form.save
+#        form = ItemCreateForm()
+        messages.success(request, f'You created a new item')
+        return redirect('listallitem')
 
     context = {
         'form': form
