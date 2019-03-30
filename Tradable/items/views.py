@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Item
-from .forms import ItemCreateForm
+from .forms import ItemCreateForm, ItemSearchFrom
 	
 def item_base_view(request, *args, **kwargs):
     return render(request, "item/base.html", {})
@@ -19,15 +19,6 @@ def item_dynamic_lookup_view(request, item_id):
 
 # item_list_all_view render a page listing all item
 
-
-# def item_list_all_view(request):
-
-    # querysetOfItem = Item.objects.all()
-    # context = {
-        # 'list_all_item': querysetOfItem
-    # }
-
-    # return render(request, "item/list_all.html", context)
 def item_list_all_view(request):
 	item_list = Item.objects.get_queryset().order_by('id')
 	paginator = Paginator(item_list, 15) #show 15 items per page
@@ -38,6 +29,17 @@ def item_list_all_view(request):
 # item_create_view  remder a page to create item
 # you may also look at .forms.py
 
+def item_list_search(request):
+        print("123")
+        form = ItemSearchFrom(request.POST or None)
+        if (form.is_valid(request)):
+                item_search = Item.objects.get(name__icontains=form.search)
+                item_list = item_search.objects.get_queryset().order_by('id')
+                paginator = Paginator(item_list, 15) #show 15 items per page
+        
+                page = request.GET.get('page')
+                items = paginator.get_page(page)
+        return render(request, "item/list_all", {'items': items})
 
 @login_required
 def item_create_view(request):
