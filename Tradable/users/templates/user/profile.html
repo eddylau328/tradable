@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+<div class="container">
     <div class="content-section">
         <div class="card " style="width: 18rem;"">
 			<img class="p-2 card-img-top account-img" src="{{ user.profile.image.url }}">
@@ -21,5 +22,6 @@
             <button class='btn btn-outline-primary' type='submit'>Update</button>
         </form>
     </div>
+</div>
 {% endblock %}
 

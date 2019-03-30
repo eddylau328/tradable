@@ -4,8 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Item
 from .forms import ItemCreateForm
-
-
+	
+def item_base_view(request, *args, **kwargs):
+    return render(request, "item/base.html", {})
 
 # Create your views here.
 # item_dynamic_lookup_view render item page for sepcific item

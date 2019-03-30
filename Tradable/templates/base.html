@@ -19,6 +19,7 @@
 
     body{
         background: whitesmoke;
+		padding-top: 90px;
     }
 
     </style>
@@ -31,59 +32,62 @@
 <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
 <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
 
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="mb-2 navbar navbar-expand-lg navbar-light bg-light fixed-top ">
 		<a class="navbar-brand" href="{% url "listallitem" %}">Tradable</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#passContent" aria-controls="passContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
+	
 		<div class="collapse navbar-collapse" id="passContent">
-			<ul class="navbar-nav mr-auto ">
-				<li class="nav-item"><a class="nav-link " href="{% url "about" %}">About</a></li>
-				<li class="nav-item"><a class="nav-link " href="{% url "listallitem" %}">Product</a></li>
-			</ul>
-			<form class="form-inline mr-auto my-2 my-lg-0 d-none d-lg-block d-xl-block ">
-				<div class="form-row">
-					<div class="col">
-						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-					</div>
-					<div class="col">
-						<button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
-					</div>
-				  </div>
-			</form>
-			<ul class="navbar-nav offset-md">
-				{% if user.is_authenticated %}
-					<li class="nav-item"><a class="nav-link " href="{% url "messages:inbox" %}">Inbox</a></li>
-					<li class="nav-item"><a class="nav-link " href="{% url "profile" %}">Profile</a></li>
-					<li class="nav-item"><a class="nav-link " href="{% url "logout" %}">Logout</a></li>
-				{% else %}
-					<li class="nav-item">
-						<button class="btn btn-raised btn-secondary my-0 p-0" type="button">
-							<a class="nav-link text-light" href="{% url "login" %}">Login</a>
-						</button>
-					</li>
-
-				{% endif %}
-			</ul>
+				<ul class="navbar-nav mr-auto ">
+					<li class="nav-item"><a class="nav-link " href="{% url "about" %}">About</a></li>
+					<li class="nav-item"><a class="nav-link " href="{% url "listallitem" %}">Product</a></li>
+				</ul>
+				<form class="form-inline my-2 my-lg-0 d-none d-lg-block d-xl-block ">
+					<div class="form-row">
+						<div class="col">
+							<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+						</div>
+						<div class="col">
+							<button class="btn btn-primary m-2 my-sm-0" type="submit">Search</button>
+						</div>
+					  </div>
+				</form>
+				<ul class="navbar-nav offset-md">
+					{% if user.is_authenticated %}
+						<li class="nav-item"><a class="nav-link " href="{% url "messages:inbox" %}">Inbox</a></li>
+						<li class="nav-item"><a class="nav-link " href="{% url "profile" %}">Profile</a></li>
+						<li class="nav-item"><a class="nav-link " href="{% url "logout" %}">Logout</a></li>
+					{% else %}
+						<li class="nav-item">
+							<button class="btn btn-raised btn-secondary my-0 p-0" type="button">
+								<a class="nav-link text-light" href="{% url "login" %}">Login</a>
+							</button>
+						</li>
+					{% endif %}
+				</ul>
 		</div>
 	</nav>
-	<br>
-    <div class="container" style="margin-top:100px ">
-        {% if messages %}
-            {% for message in messages %}
-                <div class='alert alert-{{message.tags}}'>
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
 
-        {% block content %}
 
-        {% endblock %}
-    </div>
+	{% if messages %}
+		{% for message in messages %}
+			<div class='alert alert-{{message.tags}}'>
+				{{ message }}
+			</div>
+		{% endfor %}
+	{% endif %}
+	{% block itemNav %}
 
-    {% block script %}
-    {% endblock %}
+	{% endblock %}
+
+	{% block content %}
+
+	{% endblock %}
+
+
+{% block script %}
+{% endblock %}
 
 
 </body>

@@ -9,12 +9,14 @@ function goBack() {
 }
 </script>
 
-<h3>Create new item here</h3>
-<form method='POST'> {% csrf_token %}
-    {{ form|crispy }}
-    <input type= 'submit' value='Save'/>
-    <button class=" btn btn-outline-primary" onclick="goBack()">Cancel</button>
+<div class="container">
+	<h3>Create new item here</h3>
+	<form method='POST'> {% csrf_token %}
+		{{ form|crispy }}
+		<input type= 'submit' value='Save'/>
+		<button class=" btn btn-outline-primary" onclick="goBack()">Cancel</button>
 
-</form>
+	</form>
+</div>
 
 {% endblock %}
