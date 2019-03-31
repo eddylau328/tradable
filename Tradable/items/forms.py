@@ -1,8 +1,6 @@
 from django import forms
 from .models import Item
 
-class ItemSearchFrom(forms.Form):
-    search = forms.CharField(    )
 
 
 class ItemCreateForm(forms.ModelForm):

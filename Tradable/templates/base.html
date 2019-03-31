@@ -33,7 +33,7 @@
 <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
 
 	<nav class="mb-2 navbar navbar-expand-lg navbar-light bg-light fixed-top ">
-		<a class="navbar-brand" href="{% url "listallitem" %}">Tradable</a>
+		<a class="navbar-brand" href="{% url "listitem" %}">Tradable</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#passContent" aria-controls="passContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -41,19 +41,12 @@
 		<div class="collapse navbar-collapse" id="passContent">
 				<ul class="navbar-nav mr-auto ">
 					<li class="nav-item"><a class="nav-link " href="{% url "about" %}">About</a></li>
-					<li class="nav-item"><a class="nav-link " href="{% url "listallitem" %}">Product</a></li>
+					<li class="nav-item"><a class="nav-link " href="{% url "listitem" %}">Product</a></li>
 				</ul>
 				<form class="form-inline my-2 my-lg-0 d-none d-lg-block d-xl-block ">
-					<div class="form-row">
-						<div class="col">
-							<!--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-							<form method='POST'> {% csrf_token %}
-							{{form.as_p}}
-							</form>
-						</div>
-						<div class="col">
-							<button class="btn btn-primary m-2 my-sm-0" type="submit">Search</button>
-						</div>
+					<div class="form-row">	
+						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name='search'>
+						<button class="btn btn-primary m-2 my-sm-0" type="submit"><a href="{% url "listitem" %}"?search=123"">Search</a></button>
 					</div>
 				</form>
 				<ul class="navbar-nav offset-md">

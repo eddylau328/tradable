@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Item
-from .forms import ItemCreateForm, ItemSearchFrom
+from .forms import ItemCreateForm
 	
 def item_base_view(request, *args, **kwargs):
     return render(request, "item/base.html", {})
@@ -19,27 +19,41 @@ def item_dynamic_lookup_view(request, item_id):
 
 # item_list_all_view render a page listing all item
 
-def item_list_all_view(request):
-	item_list = Item.objects.get_queryset().order_by('id')
-	paginator = Paginator(item_list, 15) #show 15 items per page
-	
-	page = request.GET.get('page')
-	items = paginator.get_page(page)
-	return render(request, "item/list_all.html", {'items': items})
-# item_create_view  remder a page to create item
-# you may also look at .forms.py
+def item_list_view(request):
 
-def item_list_search(request):
-        print("123")
-        form = ItemSearchFrom(request.POST or None)
-        if (form.is_valid(request)):
-                item_search = Item.objects.get(name__icontains=form.search)
-                item_list = item_search.objects.get_queryset().order_by('id')
-                paginator = Paginator(item_list, 15) #show 15 items per page
-        
-                page = request.GET.get('page')
-                items = paginator.get_page(page)
-        return render(request, "item/list_all", {'items': items})
+        items = Item.objects.all()
+        search_term=''
+
+        if 'recent' in request.GET:
+                items = items.order_by('createdDateTime')
+
+        if 'low' in request.GET:
+                items = items.order_by('price')
+
+        if 'high' in request.GET:
+                items = items.order_by('price')
+                items = items.reverse()
+
+        if 'search' in request.GET:
+                search_term = request.GET['search']
+                items = items.filter(name__icontains=search_term)
+
+        paginator = Paginator(items, 15) #show 15 items per page
+	
+        page = request.GET.get('page')
+        items = paginator.get_page(page)
+
+        get_dict_copy = request.GET.copy()
+        params = get_dict_copy.pop('page', True) and get_dict_copy.urlencode()
+        search_string =''
+
+        context = {'items': items, 'params': params, 'search_term': search_term}
+
+
+        return render(request, "item/list_item.html",context)
+
+#  item_create_view  remder a page to create item
+#  you may also look at .forms.py
 
 @login_required
 def item_create_view(request):
@@ -51,7 +65,7 @@ def item_create_view(request):
 #        # render a new form after form.save
 #        form = ItemCreateForm()
         messages.success(request, f'You created a new item')
-        return redirect('listallitem')
+        return redirect('listitem')
 
     context = {
         'form': form
