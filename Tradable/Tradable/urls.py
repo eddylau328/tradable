@@ -15,18 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from pages.views import home_view, about_view, myprofile_view
+from pages.views import home_view, about_view, myprofile_view, contact_view, help_view
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_view, name='home'),
     path('about/', about_view, name='about'),
+	path('help/', help_view, name='help'),
+	path('contact/',contact_view, name='contact'),
     path('myprofile/', myprofile_view, name='myprofile'),
     path('items/', include('items.urls')),
     path('users/', include('users.urls')),
     path('messages/', include('chat.urls', namespace="messages")),
+	path('', home_view, name='home'),
 ]
 
 if settings.DEBUG:
