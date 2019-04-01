@@ -37,18 +37,15 @@
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#passContent" aria-controls="passContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<form class="form-inline my-2 my-lg-0 d-none d-lg-block d-xl-block">
-			<div class="input-group">	
-				<input type="text" class="form-control" type="search" placeholder="Search" aria-label="Search" name='search'>
-				<button class="btn btn-outline-primary m-2 my-sm-0" type="submit">search</button>
-			</div>
-		</form>
+		{% block search %}
+
+		{% endblock %}
 		<div class="collapse navbar-collapse" id="passContent">
 			<ul class="navbar-nav ml-auto mr-2">
 				{% if user.is_authenticated %}
-					<li class="nav-item"><a class="nav-link " href="{% url "messages:inbox" %}">Inbox</a></li>
-					<li class="nav-item"><a class="nav-link " href="{% url "profile" %}">Profile</a></li>
-					<li class="nav-item"><a class="nav-link " href="{% url "logout" %}">Logout</a></li>
+					<li class="nav-item btn btn-secondary btn-small p-0 m-0"><a class="nav-link " href="{% url "messages:inbox" %}">Inbox</a></li>
+					<li class="nav-item btn btn-secondary btn-small p-0 m-0"><a class="nav-link " href="{% url "profile" %}">Profile</a></li>
+					<li class="nav-item btn btn-secondary btn-small p-0 m-0"><a class="nav-link " href="{% url "logout" %}">Logout</a></li>
 				{% else %}
 					<li class="nav-item">
 						<button class="btn btn-raised btn-secondary my-0 p-0" type="button">
@@ -76,8 +73,8 @@
 
 	{% endblock %}
 
-	<div class="container-fluid row justify-content-center bg-white text-secondary text-center">
-		<div class="row col-6 my-5">
+	<div class="container-fluid row justify-content-center bg-white text-secondary text-center ">
+		<div class="row col-6 my-5" >
 			<div class="col border-right text-left">
 				<h6>TRADABLE</h6>
 				<div class="font-weight-light">

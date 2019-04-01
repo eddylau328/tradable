@@ -1,15 +1,24 @@
 {% extends 'base.html' %}
 
+{% block search %}
+<form class="form-inline my-2 my-lg-0 d-none d-lg-block d-xl-block">
+	<div class="input-group">	
+		<input type="text" class="form-control" type="search" placeholder="Search" aria-label="Search" name='search'>
+		<button class="btn btn-outline-primary m-2 my-sm-0" type="submit">search</button>
+	</div>
+</form>
+{% endblock %}
+
 {% block content %}
 <div class = "container-fluid">
 <div class="row ">
 	<div class="container col-2 ">
 		<div class="container">
 			<ul class="list-group">
-				<a herf="#" class="list-group-item bg-secondary" btn btn-secondary>cat1</a>
-				<a herf="#" class="list-group-item bg-secondary" btn btn-secondary>cat2</a>
-				<a herf="#" class="list-group-item bg-secondary" btn btn-secondary>cat3</a>
-				<a herf="#" class="list-group-item bg-secondary" btn btn-secondary>cat4</a>
+				<a herf="#" class="list-group-item btn btn-secondary m-0" >cat1</a>
+				<a herf="#" class="list-group-item btn btn-secondary m-0" >cat2</a>
+				<a herf="#" class="list-group-item btn btn-secondary m-0" >cat3</a>
+				<a herf="#" class="list-group-item btn btn-secondary m-0" >cat4</a>
 			</ul>
 		</div>
 	</div>
