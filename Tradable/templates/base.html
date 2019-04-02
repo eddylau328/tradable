@@ -1,3 +1,5 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -32,29 +34,30 @@
 <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
 <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
 
-	<nav class="row mb-2 navbar navbar-expand-lg navbar-light bg-light fixed-top ">
-		<a class="navbar-brand mx-2" href="{% url "listitem" %}">Tradable</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#passContent" aria-controls="passContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		{% block search %}
-
-		{% endblock %}
-		<div class="collapse navbar-collapse" id="passContent">
-			<ul class="navbar-nav ml-auto mr-2">
-				{% if user.is_authenticated %}
-					<li class="nav-item btn btn-secondary btn-small p-0 m-0"><a class="nav-link " href="{% url "messages:inbox" %}">Inbox</a></li>
-					<li class="nav-item btn btn-secondary btn-small p-0 m-0"><a class="nav-link " href="{% url "profile" %}">Profile</a></li>
-					<li class="nav-item btn btn-secondary btn-small p-0 m-0"><a class="nav-link " href="{% url "logout" %}">Logout</a></li>
-				{% else %}
-					<li class="nav-item">
-						<button class="btn btn-raised btn-secondary my-0 p-0" type="button">
-							<a class="nav-link text-light" href="{% url "login" %}">Login</a>
-						</button>
-					</li>
-				{% endif %}
-			</ul>
-		</div>
+	<nav class="row mb-2 navbar navbar-expand-lg navbar-dark bg-dark fixed-top py-0">
+			<div class="d-none d-lg-block d-xl-block col-2"></div>
+			<a class="navbar-brand mx-2 px-2" style="font-family: Verdana" href="{% url "listitem" %}">Tradable</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#passContent" aria-controls="passContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		
+			<div class="collapse navbar-collapse" id="passContent">
+				<ul class="navbar-nav ml-auto mr-2">
+					{% if user.is_authenticated %}
+						<li class="nav-item btn btn-secondary btn-small p-0 m-0"><a class="nav-link " href="{% url "messages:inbox" %}">Inbox</a></li>
+						<li class="nav-item btn btn-secondary btn-small p-0 m-0"><a class="nav-link " href="{% url "profile" %}">Profile</a></li>
+						<li class="nav-item btn btn-secondary btn-small p-0 m-0"><a class="nav-link " href="{% url "logout" %}">Logout</a></li>
+					{% else %}
+						<li class="nav-item">
+							<button class="btn btn-secondary my-0 p-0" type="button">
+								<a class="nav-link" href="{% url "login" %}">Login</a>
+							</button>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+			<div class="col-2 d-none d-lg-block d-xl-block"></div>
+		
 	</nav>
 
 

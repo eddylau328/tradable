@@ -1,28 +1,14 @@
 {% extends 'item/base.html' %}
 
 {% block item %}
-<div class="container sort">
-	<div class="dropdown">
-		<button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,0">
-		sort
-		</button>
-		 <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-			<a class="dropdown-item" href="?hot=True&search={{search_term}}">HOT!</a>
-			<a class="dropdown-item" href="?recent=True&search={{search_term}}">Most recent</a>
-			<a class="dropdown-item" href="?low=True&search={{search_term}}">Price-low to high</a>
-			<a class="dropdown-item" href="?high=True&search={{search_term}}">Price-high to low</a>
-		</div>
 
-	</div>
-	<a href></a>
-</div>
 <div class="container">
 	{% for item in items %}
 		{% cycle '<div class="card-deck bg-l border-light p-2">' '' '' %}
 			<div class="card border-black">
 				<div class="card-body" >
 					<p class="card-text">Seller: {{ item.seller }}</a></p>
-					<p class="card-text"><a href="/items/{{item.id}}">{{ item.name }}</a></p>
+					<p class="card-text"><a class="text-secondary"href="/items/{{item.id}}">{{ item.name }}</a></p>
 					<p class="card-text">{{ item.price }}</p>
 				</div>
 				

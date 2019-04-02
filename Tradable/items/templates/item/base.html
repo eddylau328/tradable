@@ -1,38 +1,44 @@
 {% extends 'base.html' %}
 
-{% block search %}
-<form class="form-inline my-2 my-lg-0 d-none d-lg-block d-xl-block">
-	<div class="input-group">	
-		<input type="text" class="form-control" type="search" placeholder="Search" aria-label="Search" name='search'>
-		<button class="btn btn-outline-primary m-2 my-sm-0" type="submit">search</button>
-	</div>
-</form>
-{% endblock %}
-
 {% block content %}
 <div class = "container-fluid">
+
 <div class="row ">
 	<div class="container col-2 ">
 		<div class="container">
-			<ul class="list-group">
-				<a herf="#" class="list-group-item btn btn-secondary m-0" >cat1</a>
-				<a herf="#" class="list-group-item btn btn-secondary m-0" >cat2</a>
-				<a herf="#" class="list-group-item btn btn-secondary m-0" >cat3</a>
-				<a herf="#" class="list-group-item btn btn-secondary m-0" >cat4</a>
-			</ul>
 		</div>
 	</div>
 	<div = class = "container col-8">
+		<div class="row container-fluid">
+			<div class="dropdown">
+				<button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,0">
+				sort
+				</button>
+				 <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+					<a class="dropdown-item" href="?hot=True&search={{search_term}}">HOT!</a>
+					<a class="dropdown-item" href="?recent=True&search={{search_term}}">Most recent</a>
+					<a class="dropdown-item" href="?low=True&search={{search_term}}">Price-low to high</a>
+					<a class="dropdown-item" href="?high=True&search={{search_term}}">Price-high to low</a>
+				</div>
+			</div>
+			
+			<form class="ml-auto form-inline my-2 my-lg-0 d-none d-lg-block d-xl-block">
+				<div class="input-group">	
+					<input type="text" class="form-control" type="search" placeholder="Search" aria-label="Search" name='search'>
+					<button class="btn btn-raised btn-secondary m-2 my-sm-0" type="submit">search</button>
+				</div>
+			</form>
+		</div>
 		{% block item %}
 		<!---->
 		{% endblock %}
 	</div>
 	<div class="container col-2">
-		<div class="my-2 d-flex">
+		<div class=" d-flex">
 			{% if user.is_authenticated %}
-				<a class="col row justify-content-end" href="{% url "createitem" %}"><input class="btn btn-outline-primary" type= 'button' value='Create an item'/></a>
+				<a class="col row justify-content-end" href="{% url "createitem" %}"><input class="btn btn-raised btn-secondary" type= 'button' value='Create an item'/></a>
 			{% else %}
-				<a class="col row justify-content-end" href="{% url "login" %}"><input class="btn btn-outline-primary" type= 'button' value='login in to create an item'/></a>
+				<a class="col row justify-content-end" href="{% url "login" %}"><input class="btn btn-raised btn-secondary" type= 'button' value='login in to create an item'/></a>
 			{% endif %}
 		</div>
 	</div>

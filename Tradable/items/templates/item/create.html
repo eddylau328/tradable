@@ -13,8 +13,8 @@ function goBack() {
 	<h3>Create new item here</h3>
 	<form method='POST'> {% csrf_token %}
 		{{ form|crispy }}
-		<input type= 'submit' value='Save'/>
-		<button class=" btn btn-outline-primary" onclick="goBack()">Cancel</button>
+		<input class="btn btn-raised btn-secondary" type= 'submit' value='Save'/>
+		<button class="btn btn-raised btn-secondary" onclick="goBack()">Cancel</button>
 
 	</form>
 </div>
