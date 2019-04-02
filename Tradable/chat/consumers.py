@@ -7,13 +7,27 @@ from channels.db import database_sync_to_async
 from .models import Thread, ChatMessage
 
 
-class ChatConsumer(AsyncConsumer):
+class InboxConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
         print("connected", event)
+        await self.send({
+            "type": "websocket.accept"
+        })
+
+    async def websocket_receive(self, event):
+        print("receive", event)
+
+    async def websocket_disconnect(self, event):
+        print("disconnected", event)
+
+
+class ChatConsumer(AsyncConsumer):
+    async def websocket_connect(self, event):
+        print("Chat connected", event)
 
         other_user = self.scope['url_route']['kwargs']['username']
         me = self.scope['user']
-        #print(other_user, me)
+        # print(other_user, me)
         thread_obj = await self.get_thread(me, other_user)
         print(me, thread_obj.id)
         self.thread_obj = thread_obj
