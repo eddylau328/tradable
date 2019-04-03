@@ -10,8 +10,9 @@
 					<p class="card-text">Seller: {{ item.seller }}</a></p>
 					<p class="card-text"><a class="text-secondary"href="/items/{{item.id}}">{{ item.name }}</a></p>
 					<p class="card-text">{{ item.price }}</p>
+					<img src="{{ item.displayPhoto.url }}" alt="Image Not Found">
 				</div>
-				
+
 			</div >
 		{% cycle '' '' '</div>' %}
 		{% if forloop.last and forloop.counter|divisibleby:"3" == False  %}
