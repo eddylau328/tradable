@@ -9,6 +9,9 @@ from django.views.generic import DetailView, ListView
 from .forms import ComposeForm
 from .models import Thread, ChatMessage
 
+def MessagesView(request):
+
+        return render(request, "chat/message.html")
 
 class InboxView(LoginRequiredMixin, ListView):
     template_name = 'chat/inbox.html'

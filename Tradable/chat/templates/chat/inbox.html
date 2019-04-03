@@ -1,57 +1,104 @@
-{% extends "chat/message.html" %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% block chatbox %}
-<ul class="list-group m-0 p-0 " id='chatroom-items'>
-{% for chatroom in object_list %}
+    <!-- Material Design for Bootstrap fonts and icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
 
-<li class="d-flex list-group-item p-3 m-0 btn btn-secondary">
-	<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle ">
-	{% if user != chatroom.first %}
-	<a href="/../messages/{{ chatroom.first }}/">
-	<div style="max-width:0em">
-		<div class="font-weight-bold text-left pb-1" id="chatboxbarname">{{ chatroom }}</div>
-		<div class="font-weight-light " id="chatboxbartext">{{ chatroom.first }}</div>
-	</div>
-	</a>
-	{% else %}
-	<a href="/../messages/{{ chatroom.second }}/">
-	<div style="max-width:0em">
-		<div class="font-weight-bold text-left pb-1" id="chatboxbarname">{{ chatroom }}</div>
-		<div class="font-weight-light " id="chatboxbartext">{{ chatroom.second }}</div>
-	</div>
-	</a>
-	{% endif %}
-</li>
-{% endfor %}
-</href>
+    <!-- Material Design for Bootstrap CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
 
-{% endblock %}
+    <title>messages</title>
+	
+	<style>
+    *{
+        font-family: Calibri;
+        font-size: 18px;
+    }
 
-{% block script %}
-<script>
-// websocket scripts
-//console.log(window.location)
-var loc = window.location
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
 
-var wsStart = 'ws://'
-if (loc.protocol == 'https:'){
-    wsStart = 'wss://'
-}
-var endpoint = wsStart + loc.host + loc.pathname
-var socket = new WebSocket(endpoint)
+    body{
+        background: whitesmoke;
+    }
+		
+		#chatboxbartext	{
+		font-size:1em;	
+		}	
 
-socket.onmessage = function(e){
-    console.log("message", e)
-}
-socket.onopen= function(e){
-    console.log("open", e)
-}
-socket.onerror= function(e){
-    console.log("error", e)
-}
-socket.onclose= function(e){
-    console.log("close", e)
-}
+		#chatboxbarname {
+			font-size:1.2em
+		}
 
-</script>
-{% endblock %}
+    </style>
+  </head>
+  <body>
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+	<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+ 
+	<div class="container-fluid p-0">
+	<ul class="list-group m-0 p-0 " id='chatroom-items'>
+	{% for chatroom in object_list %}
+
+	<li class="d-flex list-group-item p-3 m-0 btn btn-secondary">
+		<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
+		{% if user != chatroom.first %}
+		<a href="/../messages/{{ chatroom.first }}/" target="right">
+		<div style="max-width:0em">
+			<div class="font-weight-bold text-left pb-1" id="chatboxbarname">{{ chatroom }}</div>
+			<div class="font-weight-light " id="chatboxbartext">{{ chatroom.first }}</div>
+		</div>
+		</a>
+		{% else %}
+		<a href="/../messages/{{ chatroom.second }}/" target="right">
+		<div style="max-width:0em">
+			<div class="font-weight-bold text-left pb-1" id="chatboxbarname">{{ chatroom }}</div>
+			{% block chatroom %}
+			{% endblock %}
+			<div class="font-weight-light " id="chatboxbartext">{{ chatroom.second }}</div>
+		</div>
+		</a>
+		{% endif %}
+	</li>
+	{% endfor %}
+
+
+
+	<script>
+	// websocket scripts
+	//console.log(window.location)
+	var loc = window.location
+
+	var wsStart = 'ws://'
+	if (loc.protocol == 'https:'){
+		wsStart = 'wss://'
+	}
+	var endpoint = wsStart + loc.host + loc.pathname
+	var socket = new WebSocket(endpoint)
+
+	socket.onmessage = function(e){
+		console.log("message", e)
+	}
+	socket.onopen= function(e){
+		console.log("open", e)
+	}
+	socket.onerror= function(e){
+		console.log("error", e)
+	}
+	socket.onclose= function(e){
+		console.log("close", e)
+	}
+
+	</script>
+	</body>
+</html>
+

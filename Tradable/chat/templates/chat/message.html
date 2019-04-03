@@ -2,46 +2,20 @@
 
 {% block style %}
 	<style>
-	.icon {
-		width:3rem;
-		height:3rem;
-	}
-	
-	#left {
-		float: left;
-		overflow-y: scroll;
-		height: 100vh;
-	}
 
-	#right {
-		float: right;
-		overflow-y: scroll;
-		height: 100vh;
-	}
-	#chatboxbartext	{
-		font-size:1em;	
-	}
-	#chatboxbarname {
-		font-size:1.2em
-	}
 	</style>
 {% endblock %}
 
 {% block content %}
-	<div class="container-fluid row d-flex p-0 m-0"  style="height: 100vh ">
-		<div class="container-fluid col-2 m-0 p-0" id="left">
-			<ul class="list-group m-0 p-0 ">
-
-				{% block chatbox%}
-				{% endblock %}
-			</ul>
-		</div>
-		<div class="container-fluid col d-flex-grow-1" id=right>
-				{% block chatroom%}
-				{% endblock %}
-		</div>
+<div class="container-fluid row p-0 m-0">
+	<div class="col-4 p-0">
+		<iframe id="left" style="height:80vh; width:100%" class="border-right" frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
 	</div>
-	{% block script %}
-	{% endblock %}
-	
+	<div class="col p-0">
+		<iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}"></iframe>
+	</div>
+</div>
+{% block script %}
+{% endblock %}
+
 {% endblock %}

@@ -18,3 +18,6 @@ def help_view(request, *args, **kwargs):
 
 def contact_view(request, *args, **kwargs):
 	return render(request, "contact.html")
+
+def blank_view(request, *args, **kwargs):
+	return render(request, "blank.html")

@@ -1,73 +1,110 @@
-{% extends "chat/message.html" %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% block chatroom %}
-<div class="container">
-	<h3>Thread for {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
-	<ul id='chat-items'>
-	{% for chat in object.chatmessage_set.all %}
+    <!-- Material Design for Bootstrap fonts and icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
 
-	<li>{{ chat.message }} via {{ chat.user }}</li>
+    <!-- Material Design for Bootstrap CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
 
-	{% endfor %}
-	</ul>
+    <title>messages</title>
+	
+	<style>
+    *{
+        font-family: Calibri;
+        font-size: 18px;
+    }
 
-	<form id='form' method='POST'> {% csrf_token %}
-		<input type='hidden' id='myUsername' value='{{ user.username }}' />
-		{{form.as_p }}
-	<input type='submit' class='btn btn-primary'/>
-	</form>
-</div>
-{% endblock %}
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
 
-{% block script %}
-<script src='https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js'>
-</script>
-<script>
-// websocket scripts
-//console.log(window.location)
-var loc = window.location
-//<form id='form'>
-var formData = $("#form")
-//django name that message with an id=id_message
-var msgInput = $('#id_message')
-var chatHolder = $("#chat-items")
-var me = $("#myUsername").val()
+    body{
+        background: whitesmoke;
+    }
 
-var wsStart = 'ws://'
-if (loc.protocol == 'https:'){
-    wsStart = 'wss://'
-}
-var endpoint = wsStart + loc.host + loc.pathname
-var socket = new ReconnectingWebSocket(endpoint)
+    </style>
+  </head>
+  <body>
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+	<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+ 
 
-socket.onmessage = function(e){
-    console.log("message", e)
-    var chatDataMsg = JSON.parse(e.data)
-    chatHolder.append("<li>" + chatDataMsg.message + " via " + chatDataMsg.username + "</li>")
-}
-socket.onopen= function(e){
-    console.log("open", e)
-    formData.submit(function(event){
-        //prevent your fomr to submit by default
-        event.preventDefault()
-        var msgText = msgInput.val()
-        //chatHolder.append("<li>" + msgText + " via " + me + "</li>")
-        //var formDataSerialized = formData.serialize()
-        var finalData = {
-            'message':msgText
-        }
-        socket.send(JSON.stringify(finalData))
-        //socket.send(formDataSerialized)
-        //msgInput.val('')
-        formData[0].reset()
-    })
-}
-socket.onerror= function(e){
-    console.log("error", e)
-}
-socket.onclose= function(e){
-    console.log("close", e)
-}
+	<div class="container">
+		<h3>Thread for {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
+		<ul id='chat-items' style="margin-bottom: 150px;">
+		{% for chat in object.chatmessage_set.all %}
 
-</script>
-{% endblock %}
+		<li>{{ chat.message }} via {{ chat.user }}</li>
+
+		{% endfor %}
+		</ul>
+
+		<form class="fixed-bottom bg-light m-0" id='form' method='POST'> {% csrf_token %}
+			<input type='hidden' id='myUsername' value='{{ user.username }}' />
+			{{form.as_p }}
+			<input type='submit' class='btn btn-primary'/>
+		</form>
+	</div>
+
+
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js'>
+	</script>
+	<script>
+	// websocket scripts
+	//console.log(window.location)
+	var loc = window.location
+	//<form id='form'>
+	var formData = $("#form")
+	//django name that message with an id=id_message
+	var msgInput = $('#id_message')
+	var chatHolder = $("#chat-items")
+	var me = $("#myUsername").val()
+
+	var wsStart = 'ws://'
+	if (loc.protocol == 'https:'){
+		wsStart = 'wss://'
+	}
+	var endpoint = wsStart + loc.host + loc.pathname
+	var socket = new ReconnectingWebSocket(endpoint)
+
+	socket.onmessage = function(e){
+		console.log("message", e)
+		var chatDataMsg = JSON.parse(e.data)
+		chatHolder.append("<li>" + chatDataMsg.message + " via " + chatDataMsg.username + "</li>")
+	}
+	socket.onopen= function(e){
+		console.log("open", e)
+		formData.submit(function(event){
+			//prevent your fomr to submit by default
+			event.preventDefault()
+			var msgText = msgInput.val()
+			//chatHolder.append("<li>" + msgText + " via " + me + "</li>")
+			//var formDataSerialized = formData.serialize()
+			var finalData = {
+				'message':msgText
+			}
+			socket.send(JSON.stringify(finalData))
+			//socket.send(formDataSerialized)
+			//msgInput.val('')
+			formData[0].reset()
+		})
+	}
+	socket.onerror= function(e){
+		console.log("error", e)
+	}
+	socket.onclose= function(e){
+		console.log("close", e)
+	}
+
+	</script>
+	</body>
+</html>
