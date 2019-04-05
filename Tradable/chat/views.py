@@ -11,8 +11,12 @@ from .models import Thread, ChatMessage
 
 
 def MessagesView(request, **kwargs):
-    seller = request.session['seller']
-    request.session['seller'] = None
+    seller = ""
+    if ('seller' in request.session):
+        seller = request.session['seller']
+        del request.session['seller']
+    else:
+        seller = None
     sellerContext = {
         'seller': seller
     }
