@@ -2,20 +2,29 @@
 
 {% block item %}
 
-<div class="container">
+<div class="container ">
 	{% for item in items %}
-		{% cycle '<div class="card-deck bg-l border-light p-2">' '' '' %}
-			<div class="card border-black">
-				<div class="card-body" >
-					<p class="card-text">Seller: {{ item.seller }}</a></p>
-					<p class="card-text"><a class="text-secondary"href="/items/{{item.id}}">{{ item.name }}</a></p>
-					<p class="card-text">{{ item.price }}</p>
-					<img src="{{ item.displayPhoto.url }}" alt="Image Not Found">
-				</div>
-
+		{% cycle '<div class="card-deck bg-l border-light p-2">' '' '' '' %}
+			<div class="card border-black col-3 p-0 m-1" >
+				<a class="text-dark " href="/items/{{item.id}}">
+					<div class="rounded card-body p-1" >
+						<div class="rounded crop_image "style="width:100%; overflow:hidden;" >
+							<img class="card-img-top d_image"src="{{ item.displayPhoto.url }}" alt="Image Not Found" >
+						</div>
+						<div class="m-3 justify-text-left">
+							<div class="seller d-flex">
+								<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:2rem; height:2rem;">
+								<p class="card-text mx-2 pt-1 font-weight-bold ">{{ item.seller }}</p>
+							</div>
+							<p class="card-text m-0">{{ item.name }}</p>
+							<p class="card-text">HK${{ item.price }}</p>
+						</div>
+					</div>
+				</a>
 			</div >
-		{% cycle '' '' '</div>' %}
-		{% if forloop.last and forloop.counter|divisibleby:"3" == False  %}
+		
+		{% cycle '' '' '' '</div>' %}
+		{% if forloop.last and forloop.counter|divisibleby:"4" == False  %}
 		</div >
 		{% endif %}
 
@@ -23,3 +32,37 @@
 </div>
 {% endblock %}
 
+{% block script %}
+<script>
+$(document).ready(function(){
+	$(function(){
+		crop();
+	})
+	
+	var crop = function(){
+	
+		ch = $('.crop_image').height();
+		cw = $('.crop_image').width();
+		iw = $('.d_image').width();
+		ih = $('.d_image').height();
+		
+		$('.d_image').css({
+		'width':"auto",
+		'height': cw,
+		})
+		
+	
+		$('.crop_image').css({
+		'height': cw 
+		
+		})
+	}
+	
+	$(window).resize(function() {
+		crop();
+		console.log(iw);
+		console.log(ih);
+	});
+});
+</script>
+{% endblock %}
