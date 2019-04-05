@@ -26,6 +26,14 @@
     body{
         background: whitesmoke;
     }
+		#receive{
+				border: 2px;
+				border-radius: 10px;
+		}
+		#send{
+				border: 2px;
+				border-radius: 10px;
+		}
 
     </style>
   </head>
@@ -40,12 +48,16 @@
 
 	<div class="container">
 		<h3>Thread for {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
-		<ul id='chat-items' style="margin-bottom: 150px;">
-		{% for chat in object.chatmessage_set.all %}
-
-		<li>{{ chat.message }} via {{ chat.user }}</li>
-
-		{% endfor %}
+		<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
+			
+			{% for chat in object.chatmessage_set.all %}
+			{% if chat.user == user %}
+			<li id='send'class="m-1 list-group-item border col-5">{{ chat.message }} via {{ chat.user }}</li>
+			{% else %}
+			<li id='receive' class="m-1 list-group-item border col-5 ml-auto">{{ chat.message }} via {{ chat.user }}</li>
+			{% endif %}
+			
+			{% endfor %}
 		</ul>
 
 		<form class="fixed-bottom bg-light m-0" id='form' method='POST'> {% csrf_token %}
