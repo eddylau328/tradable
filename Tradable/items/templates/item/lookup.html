@@ -17,18 +17,11 @@
         {% endfor %}
     </div>
 	<div class="row">
-    <button class="col btn btn-outline-primary m-2" onclick="goBack()">Back</button>
-    <form action="" method="post" id="buyForm">{% csrf_token %}
-	   <button type="submit" button class="col btn btn-outline-primary  m-2" name="seller" value="{{ object.seller }}" form="buyForm">BUY!</button>
+    <form action="" method="post">{% csrf_token %}
+        <button type="submit" button class="col btn btn-outline-primary m-2" name="back" value="back">Return to list</button>
+	   <button type="submit" button class="col btn btn-outline-primary  m-2" name="seller" value="{{ object.seller }}">BUY!</button>
     </form>
 	</div>
 </div>
-
-
-<script>
-function goBack() {
-    window.history.back();
-}
-</script>
 
 {% endblock %}
