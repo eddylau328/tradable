@@ -23,8 +23,18 @@ def item_dynamic_lookup_view(request, item_id, *args, **kwargs):
     }
     if (request.method == 'POST'):
         if (request.POST.get("seller")):
-            request.session['seller'] = f'{obj.seller}'
-            return redirect("/messages/")
+            if (request.user.is_authenticated):
+                if (request.user != obj.seller):
+                    request.session['seller'] = f'{obj.seller}'
+                    return redirect("/messages/")
+                else:
+                    messages.warning(request, "This item belongs to you!")
+                    return render(request, "item/lookup.html", context)
+            else:
+                return redirect(f'/users/login/?next=/items/{obj.id}/')
+        elif (request.POST.get("back")):
+            print("back")
+            return redirect('/items/list/')
 
     return render(request, "item/lookup.html", context)
 
