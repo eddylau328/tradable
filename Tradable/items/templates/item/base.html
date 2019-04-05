@@ -4,14 +4,11 @@
 <div class = "container-fluid">
 
 <div class="row ">
-	<div class="container col-2 d-none d-lg-block d-xl-block">
-		<div class="container">
-		</div>
-	</div>
-	<div = class = "container col">
+	
+	<div = class = "container-fluid col-xl-10 col-lg-11 col-md-12">
 		<div class="row container-fluid">
-			<div class="dropdown">
-				<button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,0">
+			<div class="dropdown pt-1">
+				<button type="button" class="btn btn-secondary dropdown-toggle mb-0" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,0">
 				sort
 				</button>
 				 <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
@@ -22,27 +19,27 @@
 				</div>
 			</div>
 			
-			<form class="ml-auto form-inline my-2 my-lg-0 d-none d-lg-block d-xl-block">
-				<div class="input-group">	
-					<input type="text" class="form-control" type="search" placeholder="Search" aria-label="Search" name='search'>
+			<form class="mr-auto form-inline m-0  d-none d-lg-block d-xl-block">
+				<div class="input-group ">	
+					<input type="text" class="form-control p-0" type="search" placeholder="Search" aria-label="Search" name='search'>
 					<button class="btn btn-raised btn-secondary m-2 my-sm-0" type="submit">search</button>
 				</div>
 			</form>
+
+			<div class=" d-flex ml-auto">
+				{% if user.is_authenticated %}
+					<a class="col row justify-content-end" href="{% url "createitem" %}"><button class="btn btn-raised btn-secondary" type= 'button'>Create an item</button></a>
+				{% else %}
+					<a class="col row justify-content-end" href="{% url "login" %}"><button class="btn btn-raised btn-secondary" type= 'button' >login in to create an item</button></a>
+				{% endif %}
+			</div>
 			
 		</div>
 		{% block item %}
 		<!---->
 		{% endblock %}
 	</div>
-	<div class="container col-2 d-none d-lg-block d-xl-block">
-		<div class=" d-flex">
-			{% if user.is_authenticated %}
-				<a class="col row justify-content-end" href="{% url "createitem" %}"><button class="btn btn-raised btn-secondary" type= 'button'>Create an item</button></a>
-			{% else %}
-				<a class="col row justify-content-end" href="{% url "login" %}"><button class="btn btn-raised btn-secondary" type= 'button' >login in to create an item</button></a>
-			{% endif %}
-		</div>
-	</div>
+
 </div>
 <div class= "container " >
 	<nav aria-label="Page navigation">

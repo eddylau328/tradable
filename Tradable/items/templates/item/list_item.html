@@ -3,49 +3,48 @@
 {% block style%}
 <style>
 #textholder{
-	width:15rem;
-	height: 4rem;
+	width:100%%;
 	overflow: hidden;
+}
+#sellername{
+	overflow: hidden;
+	height: 2rem;
 }
 #info{
-	display: inline-block;
-	width:15rem;
-	height: 1.5rem;
+	height: 1.2rem;
 	overflow: hidden;
 }
+
 
 </style>
 {% endblock %}
 
 {% block item %}
 
-<div class="container col">
-	{% for item in items %}
-		{% cycle '<div class="row card-deck bg-l border-light p-2 d-flex justify-content-center">' '' '' '' '' %}
-			<div class=" col-2 card border-black p-0 m-1 mx-1" >
-				<a class="text-dark" href="/items/{{item.id}}">
-					<div class="rounded card-body p-0" >
-						<div class="seller d-flex m-2">
-							<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:2rem; height:2rem;">
-							<p class="card-text mx-2 pt-1">{{ item.seller }}</p>
+<div class="container-fluid">
+		<div class="row d-flex justify-content-center ">
+			{% for item in items %}
+				
+				<div id="card" class=" col-md-2 col-5 card border-black p-0  m-1" >
+					<a class="text-dark " href="/items/{{item.id}}">
+						<div class="rounded card-body p-0" >
+							<div class="seller m-2 row" style="height:2rem;">
+								<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:2rem; height:2rem;">
+								<p id="sellername" class="card-text ml-1 pl-1 pt-1 col-xl-8 col-7">{{ item.seller }}</p>
+							</div>
+							<div class="rounded crop_image "style="width:100%; overflow:hidden;" >
+								<img class="card-img-top d_image"src="{{ item.displayPhoto.url }}" alt="Image Not Found" >
+							</div>
+							<div id="textholder row" class="m-1 p-1 justify-text-left col" >
+								<p id="info" class="card-text m-0 col-10 p-0" >{{ item.name }}</p>
+								<p id="info" class="card-text col-10 p-0">HK${{ item.price }}</p>
+							</div>
 						</div>
-						<div class="rounded crop_image "style="width:100%; overflow:hidden;" >
-							<img class="card-img-top d_image"src="{{ item.displayPhoto.url }}" alt="Image Not Found" >
-						</div>
-						<div id="textholder" class="m-0 p-1 justify-text-left col" >
-							<p id="info" class="card-text m-0" >{{ item.name }}</p>
-							<p id="info" class="card-text ">HK${{ item.price }}</p>
-						</div>
-					</div>
-				</a>
-			</div >
-		
-		{% cycle '' '' '' ''  '</div>' %}
-		{% if forloop.last and forloop.counter|divisibleby:"5" == False  %}
-		</div >
-		{% endif %}
-
-	{% endfor %}
+					</a>
+				</div >
+			{% endfor %}
+		</div>
+	
 </div>
 {% endblock %}
 
