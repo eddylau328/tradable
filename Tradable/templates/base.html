@@ -23,7 +23,9 @@
         background: whitesmoke;
 		padding-top: 44.25px;
     }
-
+	textarea {
+		resize: none;
+	}
     </style>
 	{% block style %}
 	{% endblock %}
@@ -96,11 +98,19 @@
 			<div class="col"><p>test bottom</p></div>
 		</div>	
 	</div>
-
+	
 
 	{% block script %}
 	{% endblock %}
+	<script>
+	$(document).ready(function(){
+		//modify crispy form class attribute
 
+		$("label").removeClass("bmd-label-static").addClass('bmd-label-floating');
+
+		$( ":text, input[type*='number'], input[type*='email'] , textarea" ).addClass('pt-3');
+	});	
+	</script>
 
 </body>
 </html>
