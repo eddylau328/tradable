@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
 
     <title>messages</title>
-	
+
 	<style>
     *{
         font-family: Calibri;
@@ -44,19 +44,19 @@
 	<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
 	<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
- 
+
 
 	<div class="container">
 		<h3>Thread for {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
 		<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
-			
+
 			{% for chat in object.chatmessage_set.all %}
 			{% if chat.user == user %}
 			<li id='send'class="m-1 list-group-item border col-5">{{ chat.message }} via {{ chat.user }}</li>
 			{% else %}
 			<li id='receive' class="m-1 list-group-item border col-5 ml-auto">{{ chat.message }} via {{ chat.user }}</li>
 			{% endif %}
-			
+
 			{% endfor %}
 		</ul>
 
@@ -91,7 +91,12 @@
 	socket.onmessage = function(e){
 		console.log("message", e)
 		var chatDataMsg = JSON.parse(e.data)
-		chatHolder.append("<li>" + chatDataMsg.message + " via " + chatDataMsg.username + "</li>")
+        if (chatDataMsg.username === me){
+		  chatHolder.append("<li id='send'class='m-1 list-group-item border col-5'>" + chatDataMsg.message + " via " + chatDataMsg.username + "</li>")
+        }
+        else{
+            chatHolder.append("<li id='receive' class='m-1 list-group-item border col-5 ml-auto'>" + chatDataMsg.message + " via " + chatDataMsg.username + "</li>")
+        }
 	}
 	socket.onopen= function(e){
 		console.log("open", e)

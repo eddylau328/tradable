@@ -22,7 +22,7 @@
                     {% endif %}
                         <img src="{{ pic.photo.url }}" class="d-block w-100" alt="Image Not Found">
                     </div>
-                {% endfor %}    
+                {% endfor %}
             </div>
             <a class="carousel-control-prev" href="#photoslideshow" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -34,14 +34,13 @@
             </a>
         </div>
     </div>
-
-	<div class="row d-flex">
-        <form action="" method="post">{% csrf_token %}
-            <button type="submit" button class="col btn btn-outline-primary m-2" name="back" value="back">Return to list</button>
-        <button type="submit" button class="col btn btn-outline-primary  m-2" name="seller" value="{{ object.seller }}">BUY!</button>
-        </form>
+	<div class="row">
+    <form action="" method="post">{% csrf_token %}
+        <button type="submit" button class="col btn btn-outline-primary m-2" name="back" value="back">Return to list</button>
+	   <button type="submit" button class="col btn btn-outline-primary  m-2" name="seller" value="{{ object.seller }}">BUY!</button>
+    </form>
     </div>
-	
+
 </div>
 
 {% endblock %}
