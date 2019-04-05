@@ -12,10 +12,20 @@
 		<iframe id="left" style="height:80vh; width:100%" class="border-right" frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
 	</div>
 	<div class="col p-0">
-		<iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}"></iframe>
-	</div>
+        {% if seller == None %}
+        <iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}">
+        </iframe>
+        {% else %}
+        <iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="/../messages/{{ seller }}/"></iframe>
+        {% endif %}
+    </div>
 </div>
-{% block script %}
-{% endblock %}
 
 {% endblock %}
+
+{% block script %}
+<script>
+console.log('{{seller}}')
+</script>
+{% endblock %}
+

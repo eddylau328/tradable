@@ -9,7 +9,7 @@ from .models import Thread, ChatMessage
 
 class InboxConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
-        print("connected", event)
+        print("Inbox connected", event)
         await self.send({
             "type": "websocket.accept"
         })

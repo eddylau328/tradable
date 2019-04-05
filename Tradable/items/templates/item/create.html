@@ -3,12 +3,6 @@
 {% block content %}
 
 
-<script>
-function goBack() {
-    window.history.back();
-}
-</script>
-
 <div class="container">
 	<h3>Create new item here</h3>
 	<form method='POST' enctype='multipart/form-data'> {% csrf_token %}
@@ -18,5 +12,11 @@ function goBack() {
 		<button class="btn btn-raised btn-secondary" onclick="goBack()">Cancel</button>
 	</form>
 </div>
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
 
 {% endblock %}

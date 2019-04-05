@@ -17,8 +17,10 @@
         {% endfor %}
     </div>
 	<div class="row">
-	<button class="col btn btn-outline-primary m-2" onclick="goBack()">Back</button>
-	<button class="col btn btn-outline-primary  m-2" ><a herf="#">BUY!</a></button>
+    <button class="col btn btn-outline-primary m-2" onclick="goBack()">Back</button>
+    <form action="" method="post" id="buyForm">{% csrf_token %}
+	   <button type="submit" button class="col btn btn-outline-primary  m-2" name="seller" value="{{ object.seller }}" form="buyForm">BUY!</button>
+    </form>
 	</div>
 </div>
 

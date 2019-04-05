@@ -14,13 +14,18 @@ def item_base_view(request, *args, **kwargs):
 # item_dynamic_lookup_view render item page for sepcific item
 
 
-def item_dynamic_lookup_view(request, item_id):
+def item_dynamic_lookup_view(request, item_id, *args, **kwargs):
     obj = get_object_or_404(Item, id=item_id)
     photo = DescriptionPhoto.objects.select_related().filter(item=item_id)
     context = {
         "object": obj,
         "photo": photo
     }
+    if (request.method == 'POST'):
+        if (request.POST.get("seller")):
+            request.session['seller'] = f'{obj.seller}'
+            return redirect("/messages/")
+
     return render(request, "item/lookup.html", context)
 
 # item_list_all_view render a page listing all item
