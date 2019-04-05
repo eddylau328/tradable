@@ -1,23 +1,31 @@
 {% extends 'item/base.html' %}
 
+{% block style%}
+<style>
+.card-text{
+	font-size: 0.8em;
+}
+</style>
+{% endblock %}
+
 {% block item %}
 
-<div class="container ">
+<div class="container col">
 	{% for item in items %}
 		{% cycle '<div class="card-deck bg-l border-light p-2">' '' '' '' %}
 			<div class="card border-black col-3 p-0 m-1" >
 				<a class="text-dark " href="/items/{{item.id}}">
-					<div class="rounded card-body p-1" >
+					<div class="rounded card-body p-0" >
+						<div class="seller d-flex m-2">
+							<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:2rem; height:2rem;">
+							<p class="card-text mx-2 pt-1">{{ item.seller }}</p>
+						</div>
 						<div class="rounded crop_image "style="width:100%; overflow:hidden;" >
 							<img class="card-img-top d_image"src="{{ item.displayPhoto.url }}" alt="Image Not Found" >
 						</div>
-						<div class="m-3 justify-text-left">
-							<div class="seller d-flex">
-								<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:2rem; height:2rem;">
-								<p class="card-text mx-2 pt-1 font-weight-bold ">{{ item.seller }}</p>
-							</div>
-							<p class="card-text m-0">{{ item.name }}</p>
-							<p class="card-text">HK${{ item.price }}</p>
+						<div class="m-3 justify-text-left" style="over-flow:hidden;">
+							<p class="card-text m-0 d-inline" >{{ item.name }}</p>
+							<p class="card-text d-inline">HK${{ item.price }}</p>
 						</div>
 					</div>
 				</a>

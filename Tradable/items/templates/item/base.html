@@ -4,11 +4,11 @@
 <div class = "container-fluid">
 
 <div class="row ">
-	<div class="container col-2 ">
+	<div class="container col-2 d-none d-lg-block d-xl-block">
 		<div class="container">
 		</div>
 	</div>
-	<div = class = "container col-8">
+	<div = class = "container col">
 		<div class="row container-fluid">
 			<div class="dropdown">
 				<button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,0">
@@ -34,7 +34,7 @@
 		<!---->
 		{% endblock %}
 	</div>
-	<div class="container col-2">
+	<div class="container col-2 d-none d-lg-block d-xl-block">
 		<div class=" d-flex">
 			{% if user.is_authenticated %}
 				<a class="col row justify-content-end" href="{% url "createitem" %}"><button class="btn btn-raised btn-secondary" type= 'button'>Create an item</button></a>
@@ -44,7 +44,7 @@
 		</div>
 	</div>
 </div>
-<div class= "container" >
+<div class= "container " >
 	<nav aria-label="Page navigation">
 		<ul class="pagination justify-content-center">
 			{% if items.has_previous %}
