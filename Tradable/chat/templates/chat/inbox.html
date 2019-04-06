@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
 
     <title>messages</title>
-	
+
 	<style>
     *{
         font-family: Calibri;
@@ -26,10 +26,10 @@
     body{
         background: whitesmoke;
     }
-		
+
 		#chatboxbartext	{
-		font-size:1em;	
-		}	
+		font-size:1em;
+		}
 
 		#chatboxbarname {
 			font-size:1.2em
@@ -44,7 +44,7 @@
 	<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
 	<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
- 
+
 	<div class="container-fluid p-0">
 	<ul class="list-group m-0 p-0 " id='chatroom-items'>
 	{% for chatroom in object_list %}
