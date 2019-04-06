@@ -21,16 +21,17 @@
 			
 			<form class="mr-auto form-inline m-0  d-none d-lg-block d-xl-block">
 				<div class="input-group ">	
-					<input type="text" class="form-control p-0" type="search" placeholder="Search" aria-label="Search" name='search'>
+					<input type="text" class="form-control p-0 ml-1" type="search" placeholder="Search" aria-label="Search" name='search'>
 					<button class="btn btn-raised btn-secondary m-2 my-sm-0" type="submit">search</button>
 				</div>
 			</form>
 
-			<div class=" d-flex ml-auto">
+			<div class="ml-auto">
 				{% if user.is_authenticated %}
-					<a class="col row justify-content-end" href="{% url "createitem" %}"><button class="btn btn-raised btn-secondary" type= 'button'>Create an item</button></a>
+					<a class="justify-content-end" href="#"><button class="btn btn-raised btn-secondary px-2" type= 'button'>My item</button></a>
+					<a class="justify-content-end" href="{% url "createitem" %}"><button class="btn btn-raised btn-secondary px-2" type= 'button'>Create an item</button></a>
 				{% else %}
-					<a class="col row justify-content-end" href="{% url "login" %}"><button class="btn btn-raised btn-secondary" type= 'button' >login in to create an item</button></a>
+					<a class="justify-content-end" href="{% url "login" %}"><button class="btn btn-raised btn-secondary" type= 'button' >login in to create an item</button></a>
 				{% endif %}
 			</div>
 			

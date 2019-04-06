@@ -87,6 +87,7 @@ def item_create_view(request):
         if form.is_valid() and formset.is_valid():
             createItem = form.save()
             createItem.seller = request.user
+            #createItem.seller.image.url = request.user.image.url
             createItem.save()
 
             for f in formset:

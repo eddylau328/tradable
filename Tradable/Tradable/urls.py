@@ -18,6 +18,7 @@ from django.urls import path, include
 from pages.views import home_view, about_view, myprofile_view, contact_view, help_view, blank_view
 from django.conf import settings
 from django.conf.urls.static import static
+from items.views import item_list_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +30,7 @@ urlpatterns = [
     path('about:blank/', blank_view, name='blank'),
     path('users/', include('users.urls')),
     path('messages/', include('chat.urls', namespace="messages")),
-	path('', home_view, name='home'),
+	path('', item_list_view , name='home'),
 ]
 
 if settings.DEBUG:

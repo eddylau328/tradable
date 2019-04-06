@@ -1,22 +1,21 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
+
 {% block style %}
 
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <div class="content-section">
-        <div class="card" style="width: 18rem;">
-			<img class="p-2 card-img-top account-img" src="{{ user.profile.image.url }}">
-			<div class="card-body">
-                <p class="card-text">{{ user.username }}</p>
-                <p class="card-text">{{ user.email }}</p>
-            </div>
+    <div class="card" >
+        <div class="card-body">
+        <div class="seller m-2 row" style="height:3rem;">
+            <a id="icon" href="{{ user.profile.image.url }}"><img src="{{ user.profile.image.url }}" class="icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;"></a>
+            <p class="card-text ml-1 pl-1 pt-1" style="font-size:1.5rem;">{{ user.username }}</p>
         </div>
-        <!--enctype='multipart/form-data' important-->
-		<br>
+            <p class="card-text">{{ user.email }}</p>
+        </div>
         <form method='POST' enctype='multipart/form-data'>    {% csrf_token %}
             <fieldset class='form-group col-6'>
                 <legend class='border-bottom mb-4'>Profile Info</legend>
@@ -27,6 +26,9 @@
             <button class='btn btn-raised btn-secondary' type='submit'>Update</button>
         </form>
     </div>
+    <!--enctype='multipart/form-data' important-->
+    <br>
+    
 </div>
 {% endblock %}
 
