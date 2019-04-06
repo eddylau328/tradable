@@ -32,7 +32,7 @@
 								<img src="{{ item.seller.profile.image.url }}" class="icon img-thumbnail rounded-circle " style="width:2rem; height:2rem;">
 								<p id="sellername" class="card-text ml-1 pl-1 pt-1 col-xl-8 col-7">{{ item.seller }}</p>
 							</div>
-							<div class="rounded crop_image "style="width:100%; overflow:hidden;" >
+							<div class="rounded crop_image "style="padding:7px; width:100%; overflow:hidden;" >
 								<img class="card-img-top d_image"src="{{ item.displayPhoto.url }}" alt="Image Not Found" >
 							</div>
 							<div id="textholder row" class="m-1 p-1 justify-text-left col" >
@@ -50,35 +50,44 @@
 
 {% block script %}
 <script>
-$(document).ready(function(){
-	$(function(){
-		crop();
-	})
 
-	var crop = function(){
+var crop = function(){
+	ch = $('.crop_image').height();
+	cw = $('.crop_image').width();
+	
+	$('.crop_image').css({
+	'height': cw
+	});
 
-		ch = $('.crop_image').height();
-		cw = $('.crop_image').width();
-		iw = $('.d_image').width();
-		ih = $('.d_image').height();
+	$('.d_image').each(function(){
+		current =$(this)
+		var ih = current.height();
+		var iw = current.width();
+		console.log(ih, iw);
+		console.log(ch, cw);
+		if (iw > ih){
+			r = (iw - cw)/ 2;
+			current.css({'height':ch,'width':'auto', 'position':'relative','right':r});
 
-		$('.d_image').css({
-		'width':"auto",
-		'height': cw,
-		})
+			//current.css('margin-top', m);
+		}
+		if ( ih > iw ){
+			t = (ch-ih)/2;
+			current.css({'height':'auto','width':cw, 'position':'relative','top':t});
 
+		}	
+	});
+}
 
-		$('.crop_image').css({
-		'height': cw
-
-		})
-	}
+$(function(){
+	crop();
+	crop();
+	crop();
 
 	$(window).resize(function() {
 		crop();
-		console.log(iw);
-		console.log(ih);
 	});
 });
+
 </script>
 {% endblock %}
