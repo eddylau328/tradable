@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from .models import Item, DescriptionPhoto
 from .forms import ItemCreateForm
 from django.forms import modelformset_factory
+from users.models import Profile
 
 
 def item_base_view(request, *args, **kwargs):

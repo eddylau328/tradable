@@ -13,10 +13,10 @@
 	</div>
 	<div class="col p-0">
         {% if seller == None %}
-        <iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}">
+        <iframe id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}">
         </iframe>
         {% else %}
-        <iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="/../messages/{{ seller }}/"></iframe>
+        <iframe id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="/../messages/{{ seller }}/"></iframe>
         {% endif %}
     </div>
 </div>
