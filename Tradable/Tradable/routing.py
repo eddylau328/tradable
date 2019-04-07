@@ -11,7 +11,7 @@ application = ProtocolTypeRouter({
             URLRouter(
                 [
                     url("inbox/", InboxConsumer),
-                    url(r"^messages/(?P<username>[\w.@+-]+)/$", ChatConsumer),
+                    url(r"^messages/(?P<username>[\w.@+-]+)/(?P<itemID>\d+)/$", ChatConsumer),
                 ]
             )
         )

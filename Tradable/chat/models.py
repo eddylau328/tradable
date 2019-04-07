@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
+from items.models import Item
 
 
 class ThreadManager(models.Manager):
@@ -12,13 +13,16 @@ class ThreadManager(models.Manager):
         qs = self.get_queryset().filter(qlookup).exclude(qlookup2).distinct()
         return qs
 
-    def get_or_new(self, user, other_username):  # get_or_create
+    def get_or_new(self, user, other_username, itemID):  # get_or_create
         username = user.username
         if username == other_username:
             return None
-        qlookup1 = Q(first__username=username) & Q(second__username=other_username)
-        qlookup2 = Q(first__username=other_username) & Q(second__username=username)
+        qlookup1 = Q(first__username=username) & Q(second__username=other_username) & Q(item__id=itemID)
+        qlookup2 = Q(first__username=other_username) & Q(second__username=username) & Q(item__id=itemID)
         qs = self.get_queryset().filter(qlookup1 | qlookup2).distinct()
+        print("test")
+        print(itemID)
+        print(qs)
         if qs.count() == 1:
             return qs.first(), False
         elif qs.count() > 1:
@@ -26,10 +30,12 @@ class ThreadManager(models.Manager):
         else:
             Klass = user.__class__
             user2 = Klass.objects.get(username=other_username)
+            selectedItem = Item.objects.get(id=itemID)
             if user != user2:
                 obj = self.model(
                     first=user,
-                    second=user2
+                    second=user2,
+                    item=selectedItem
                 )
                 obj.save()
                 return obj, True
@@ -41,7 +47,7 @@ class Thread(models.Model):
     second = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='chat_thread_second')
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-
+    item = models.ForeignKey(Item, blank=True, null=True, on_delete=models.PROTECT)
     objects = ThreadManager()
 
     @property

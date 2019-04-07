@@ -16,7 +16,7 @@
         <iframe id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}">
         </iframe>
         {% else %}
-        <iframe id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="/../messages/{{ seller }}/"></iframe>
+        <iframe id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="/../messages/{{ seller }}/{{item_id}}/"></iframe>
         {% endif %}
     </div>
 </div>

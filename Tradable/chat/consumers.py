@@ -26,9 +26,10 @@ class ChatConsumer(AsyncConsumer):
         print("Chat connected", event)
 
         other_user = self.scope['url_route']['kwargs']['username']
+        itemID = self.scope['url_route']['kwargs']['itemID']
         me = self.scope['user']
         # print(other_user, me)
-        thread_obj = await self.get_thread(me, other_user)
+        thread_obj = await self.get_thread(me, other_user, itemID)
         print(me, thread_obj.id)
         self.thread_obj = thread_obj
         chat_room = f"thread_{thread_obj.id}"
@@ -82,8 +83,8 @@ class ChatConsumer(AsyncConsumer):
         print("disconnected", event)
 
     @database_sync_to_async
-    def get_thread(self, user, other_username):
-        return Thread.objects.get_or_new(user, other_username)[0]
+    def get_thread(self, user, other_username, itemID):
+        return Thread.objects.get_or_new(user, other_username, itemID)[0]
 
     @database_sync_to_async
     def create_chat_message(self, me, msg):
