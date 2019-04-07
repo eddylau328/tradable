@@ -7,5 +7,5 @@ app_name = 'chat'
 urlpatterns = [
     path("", MessagesView, name='message'),
     path("inbox/", InboxView.as_view(), name='inbox'),
-    re_path(r"^(?P<username>[\w.@+-]+)", ThreadView.as_view()),
+    re_path(r"^(?P<username>[\w.@+-]+)/(?P<itemID>\d+)", ThreadView.as_view()),
 ]

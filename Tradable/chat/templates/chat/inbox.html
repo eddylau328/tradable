@@ -52,16 +52,16 @@
 	<li class="d-flex list-group-item p-3 m-0 btn btn-secondary">
 		<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
 		{% if user != chatroom.first %}
-		<a href="/../messages/{{ chatroom.first }}/" target="right">
+		<a href="/../messages/{{ chatroom.first }}/{{chatroom.item.id}}/" target="right">
 		<div style="max-width:0em">
-			<div class="font-weight-bold text-left pb-1" id="chatboxbarname">{{ chatroom }}</div>
+			<div class="font-weight-bold text-left pb-1" id="chatboxbarname">{{ chatroom.item.name }}</div>
 			<div class="font-weight-light " id="chatboxbartext">{{ chatroom.first }}</div>
 		</div>
 		</a>
 		{% else %}
-		<a href="/../messages/{{ chatroom.second }}/" target="right">
+		<a href="/../messages/{{ chatroom.second }}/{{chatroom.item.id}}/" target="right">
 		<div style="max-width:0em">
-			<div class="font-weight-bold text-left pb-1" id="chatboxbarname">{{ chatroom }}</div>
+			<div class="font-weight-bold text-left pb-1" id="chatboxbarname">{{ chatroom.item.name }}</div>
 			{% block chatroom %}
 			{% endblock %}
 			<div class="font-weight-light " id="chatboxbartext">{{ chatroom.second }}</div>

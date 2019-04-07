@@ -27,6 +27,7 @@ def item_dynamic_lookup_view(request, item_id, *args, **kwargs):
             if (request.user.is_authenticated):
                 if (request.user != obj.seller):
                     request.session['seller'] = f'{obj.seller}'
+                    request.session['item_id'] = f'{obj.id}'
                     return redirect("/messages/")
                 else:
                     messages.warning(request, "This item belongs to you!")

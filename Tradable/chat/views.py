@@ -12,13 +12,20 @@ from .models import Thread, ChatMessage
 
 def MessagesView(request, **kwargs):
     seller = ""
+    item_id = ""
     if ('seller' in request.session):
         seller = request.session['seller']
         del request.session['seller']
     else:
         seller = None
+    if ('item_id' in request.session):
+        item_id = request.session['item_id']
+        del request.session['item_id']
+    else:
+        item_id = None
     sellerContext = {
-        'seller': seller
+        'seller': seller,
+        'item_id': item_id
     }
     return render(request, "chat/message.html", sellerContext)
 
@@ -41,7 +48,9 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
 
     def get_object(self):
         other_username = self.kwargs.get("username")
-        obj, created = Thread.objects.get_or_new(self.request.user, other_username)
+        itemID = self.kwargs.get("itemID")
+        obj, created = Thread.objects.get_or_new(self.request.user, other_username, itemID)
+        print(obj)
         if obj == None:
             raise Http404
         return obj
