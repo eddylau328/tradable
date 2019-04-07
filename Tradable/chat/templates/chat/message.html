@@ -21,11 +21,41 @@
     </div>
 </div>
 
+
 {% endblock %}
 
 {% block script %}
 <script>
 console.log('{{seller}}')
+
+$('iframe#right').on('load', function() {
+    var iframeWin = this.contentWindow;
+    var iframeBody = this.contentDocument.body;
+    console.log(iframeWin.loc)
+    // access global JS vars defined in the iframe:
+    //var someIframeVariable = iframeWin.globalIframeVariable;
+
+    // or, directly access elements in the iframe:
+    var formData = $(iframeBody).find('#form');
+    var msgInput = $(iframeBody).find('#id_message');
+    formData.submit(function(event){
+        //prevent your fomr to submit by default
+        event.preventDefault()
+        var msgText = msgInput.val()
+        //chatHolder.append("<li>" + msgText + " via " + me + "</li>")
+        //var formDataSerialized = formData.serialize()
+        var finalData = {
+            'message':msgText
+        }
+        var itemID = iframeWin.location.pathname.replace(/[^0-9]/g,'')
+        var firstRemove = iframeWin.location.pathname.replace('/messages/', '')
+        var secondRemove = firstRemove.replace(itemID.toString(), '')
+        var seller = secondRemove.replace("//", '')
+
+
+    })
+});
+
 </script>
 {% endblock %}
 

@@ -10,6 +10,9 @@ from .models import Thread, ChatMessage
 class InboxConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
         print("Inbox connected", event)
+        me = self.scope['user']
+        chatroomList = await self.get_chatroom(me)
+        print(chatroomList)
         await self.send({
             "type": "websocket.accept"
         })
@@ -19,6 +22,10 @@ class InboxConsumer(AsyncConsumer):
 
     async def websocket_disconnect(self, event):
         print("disconnected", event)
+
+    @database_sync_to_async
+    def get_chatroom(self, user):
+        return Thread.objects.by_user(user)
 
 
 class ChatConsumer(AsyncConsumer):

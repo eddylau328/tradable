@@ -47,7 +47,7 @@
 
 
 	<div class="container">
-		<h3>Thread for {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
+		<h3>{{object.item.name}} {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
 		<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
 
 			{% for chat in object.chatmessage_set.all %}

@@ -20,9 +20,6 @@ class ThreadManager(models.Manager):
         qlookup1 = Q(first__username=username) & Q(second__username=other_username) & Q(item__id=itemID)
         qlookup2 = Q(first__username=other_username) & Q(second__username=username) & Q(item__id=itemID)
         qs = self.get_queryset().filter(qlookup1 | qlookup2).distinct()
-        print("test")
-        print(itemID)
-        print(qs)
         if qs.count() == 1:
             return qs.first(), False
         elif qs.count() > 1:
