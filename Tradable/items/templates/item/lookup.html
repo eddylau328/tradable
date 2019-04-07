@@ -12,16 +12,13 @@
         <p class="card-text">Item Description : {{ object.description }}</p>
         <p class="card-text">Item Price : ${{ object.price }}</p>
         <p class="card-text">Item Condition : {{object.condition}}</p>
-        <p class="card-text">Photo :</p>
-        <img src="{{ object.displayPhoto.url }}" alt="Image Not Found">
-       <div id="photoslideshow" class="carousel slide" data-ride="carousel">
+        <div id="photoslideshow" class="carousel slide col-6" data-ride="carousel">
             <div class="carousel-inner">
-                {% for pic in photo.all %}
-                    {% if forloop.first%}
-                        <div class="carousel-item active">
-                    {% else %}
-                        <div class="carousel-item">
-                    {% endif %}
+                <div class="carousel-item active">
+                    <img src="{{ object.displayPhoto.url }}" class="d-block w-100" alt="Image Not Found">
+                </div>
+                {% for pic in photo.all %} 
+                    <div class="carousel-item">
                         <img src="{{ pic.photo.url }}" class="d-block w-100" alt="Image Not Found">
                     </div>
                 {% endfor %}
