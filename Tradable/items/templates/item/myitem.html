@@ -1,0 +1,93 @@
+{% extends 'item/base.html' %}
+
+{% block style%}
+<style>
+#textholder{
+    width:100%%;
+    overflow: hidden;
+}
+#sellername{
+    overflow: hidden;
+    height: 2rem;
+}
+#info{
+    height: 1.2rem;
+    overflow: hidden;
+}
+
+</style>
+{% endblock %}
+
+{% block item %}
+
+<div class="container-fluid">
+        <div class="row d-flex justify-content-center ">
+
+            {% for item in items %}
+
+                <div id="card" class=" col-md-2 col-5 card border-black p-0  m-1" >
+                    <a class="text-dark " href="/items/edit/{{item.id}}/">
+                        <div class="rounded card-body p-0" >
+                            <div class="seller m-2 row" style="height:2rem;">
+                                <img src="{{ item.seller.profile.image.url }}" class="icon img-thumbnail rounded-circle " style="width:2rem; height:2rem;">
+                                <p id="sellername" class="card-text ml-1 pl-1 pt-1 col-xl-8 col-7">{{ item.seller }}</p>
+                            </div>
+                            <div class="rounded crop_image "style="padding:7px; width:100%; overflow:hidden;" >
+                                <img class="card-img-top d_image"src="{{ item.displayPhoto.url }}" alt="Image Not Found" >
+                            </div>
+                            <div id="textholder row" class="m-1 p-1 justify-text-left col" >
+                                <p id="info" class="card-text m-0 col-10 p-0" >{{ item.name }}</p>
+                                <p id="info" class="card-text col-10 p-0">HK${{ item.price }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div >
+            {% endfor %}
+        </div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+
+var crop = function(){
+    ch = $('.crop_image').height();
+    cw = $('.crop_image').width();
+
+    $('.crop_image').css({
+    'height': cw
+    });
+
+    $('.d_image').each(function(){
+        current =$(this)
+        var ih = current.height();
+        var iw = current.width();
+        console.log(ih, iw);
+        console.log(ch, cw);
+        if (iw > ih){
+            r = (iw - cw)/ 2;
+            current.css({'height':ch,'width':'auto', 'position':'relative','right':r});
+
+            //current.css('margin-top', m);
+        }
+        if ( ih > iw ){
+            t = (ch-ih)/2;
+            current.css({'height':'auto','width':cw, 'position':'relative','top':t});
+
+        }
+    });
+}
+
+$(function(){
+    crop();
+    crop();
+    crop();
+
+    $(window).resize(function() {
+        crop();
+    });
+});
+
+</script>
+{% endblock %}

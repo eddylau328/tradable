@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Item, DescriptionPhoto
-from .forms import ItemCreateForm
+from .forms import ItemCreateForm, ItemEditForm
 from django.forms import modelformset_factory
 from users.models import Profile
 
@@ -114,3 +114,64 @@ def item_create_view(request):
     }
 
     return render(request, "item/create.html", context)
+
+
+@login_required
+def my_item_view(request):
+    items = Item.objects.filter(seller=request.user)
+    search_term = ''
+
+    if 'recent' in request.GET:
+        items = items.order_by('createdDateTime')
+        items = items.reverse()
+
+    if 'low' in request.GET:
+        items = items.order_by('price')
+
+    if 'high' in request.GET:
+        items = items.order_by('price')
+        items = items.reverse()
+
+    if 'search' in request.GET:
+        search_term = request.GET['search']
+        items = items.filter(name__icontains=search_term)
+
+    paginator = Paginator(items, 15)  # show 15 items per page
+
+    page = request.GET.get('page')
+    items = paginator.get_page(page)
+
+    get_dict_copy = request.GET.copy()
+    params = get_dict_copy.pop('page', True) and get_dict_copy.urlencode()
+    search_string = ''
+
+    context = {'items': items, 'params': params, 'search_term': search_term}
+
+    return render(request, "item/myitem.html", context)
+
+
+@login_required
+def edit_item_view(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    if (item != None):
+        if (request.method == 'POST'):
+            if (request.POST.get('save')):
+                itemForm = ItemEditForm(request.POST, request.FILES, instance=item)
+                if (itemForm.is_valid()):
+                    itemForm.save()
+                    messages.success(request, f'You have edited your item!')
+                    return redirect('myitem')
+            else:
+                return redirect('myitem')
+        else:
+            itemForm = ItemEditForm(instance=item)
+
+        if (item.seller == request.user):
+            context = {
+                'item': item,
+                'itemForm': itemForm
+            }
+            return render(request, "item/edit_item.html", context)
+        else:
+            messages.warning(request, f"There are something wrong!")
+            return redirect('home')

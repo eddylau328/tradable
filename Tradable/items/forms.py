@@ -12,3 +12,15 @@ class ItemCreateForm(forms.ModelForm):
             'condition',
             'displayPhoto'
         ]
+
+
+class ItemEditForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = [
+            'name',
+            'description',
+            'price',
+            'condition',
+            'displayPhoto'
+        ]

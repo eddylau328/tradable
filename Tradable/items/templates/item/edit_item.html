@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<div class="container">
+    <h3>Edit your item</h3>
+    <form method='POST' enctype='multipart/form-data'> {% csrf_token %}
+        {{ itemForm|crispy }}
+        <input class="btn btn-raised btn-secondary" type= 'submit' name='save' value='save'></input>
+        <button class="btn btn-raised btn-secondary" name='back' value='back' onclick="goBack()">Cancel</button>
+    </form>
+</div>
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+{% endblock %}
