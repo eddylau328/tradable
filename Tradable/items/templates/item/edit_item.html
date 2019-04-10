@@ -7,11 +7,18 @@
     <h3>Edit your item</h3>
     <form method='POST' enctype='multipart/form-data'> {% csrf_token %}
         {{ itemForm|crispy }}
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{ form|crispy }}
+        {% endfor %}
+        {{ newformset.management_form }}
+        {% for form in newformset %}
+            {{ form|crispy }}
+        {% endfor %}
         <input class="btn btn-raised btn-secondary" type= 'submit' name='save' value='save'></input>
         <button class="btn btn-raised btn-secondary" name='back' value='back' onclick="goBack()">Cancel</button>
     </form>
 </div>
-
 <script>
 function goBack() {
     window.history.back();

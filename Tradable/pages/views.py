@@ -21,3 +21,6 @@ def contact_view(request, *args, **kwargs):
 
 def blank_view(request, *args, **kwargs):
 	return render(request, "blank.html")
+
+def privacy_view(request, *args, **kwargs):
+	return render(request, "privacy.html")

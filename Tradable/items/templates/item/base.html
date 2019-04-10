@@ -18,13 +18,18 @@
 					<a class="dropdown-item" href="?high=True&search={{search_term}}">Price-high to low</a>
 				</div>
 			</div>
-
+			
 			<form class="mr-auto form-inline m-0  d-none d-lg-block d-xl-block">
 				<div class="input-group ">
 					<input type="text" class="form-control p-0 ml-1" type="search" placeholder="Search" aria-label="Search" name='search'>
 					<button class="btn btn-raised btn-secondary m-2 my-sm-0" type="submit">search</button>
 				</div>
 			</form>
+			
+			{% block myitem%}
+			{% endblock%}
+			
+			
 
 			<div class="ml-auto">
 				{% if user.is_authenticated %}

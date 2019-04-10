@@ -1,3 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="container">
+    <div class="container d-flex justify-content-center" style="font-size:3rem">Contact US</div>
+    <div class="container d-flex justify-content-center">
+        <div>
+            <p><i class="fas fa-envelope mr-3"></i>1155093954@cuhk.edu.hk</p>
+            <p><i class="fas fa-phone mr-3"></i> +852 39438951</p>
+            <p><i class="fas fa-print mr-3"></i> +852 26035184</p>
+            <p><i class="fas fa-map-marker-alt mr-3"></i> CUHK, Shatin, NT</p>
+            
+        </div>
+        
+    </div>
+    <div class="container d-flex justify-content-center mb-3" id="googleMap" style="width:25vh;height:25vh;"></div>
+</div>
+{% endblock %}
+
+{% block script%}
+<script>
+function myMap() {
+var mapProp= {
+  center:new google.maps.LatLng(22.4162681,114.2087431),
+  zoom:15,
+};
+var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATiKnkXiLYjO9l09qLfdqSt60tx2Q4WHc&callback=myMap"></script>
 {% endblock %}

@@ -55,12 +55,13 @@
 {% block script %}
 <script>
 var resize = function(){
+
+	$('.crop_image').css({
+	'height': $('.crop_image').width()
+	});
 	ch = $('.crop_image').height();
 	cw = $('.crop_image').width();
-	
-	$('.crop_image').css({
-	'height': cw
-	});
+	console.log(ch, cw);
 }
 
 var zoom = function(){
@@ -76,7 +77,6 @@ var zoom = function(){
 		}
 		if ( ih > iw ){
 			current.css({'height':'auto','width':cw});
-
 		}	
 	});
 }
@@ -90,13 +90,11 @@ var positioning = function(){
 		if (iw > ih){
 			r = (iw - cw)/ 2;
 			current.css({ 'position':'relative','right':r});
-
 			//current.css('margin-top', m);
 		}
 		if ( ih > iw ){
 			t = (ch-ih)/2;
 			current.css({'position':'relative','top':t});
-
 		}	
 	});
 }
@@ -106,8 +104,6 @@ $(function(){
 	resize();
 	zoom();
 	positioning();
-	ch = $('.crop_image').height();
-	cw = $('.crop_image').width();
 	
 	console.log(ch, cw);
 
