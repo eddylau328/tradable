@@ -175,18 +175,32 @@ def edit_item_view(request, item_id):
                 newformset = newDescriptionPhotoFormset(request.POST or None, request.FILES or None, prefix='new')
                 if (itemForm.is_valid() and formset.is_valid() and newformset.is_valid()):
                     itemForm.save()
-                    print(formset[0])
+                    deleteList = []
+                    i = 0
                     for f in formset:
                         try:
-                            f.save()
+                            cd = f.cleaned_data
+                            if(cd.get('photo') is False):
+                                deleteList.append(i)
+                            else:
+                                f.save()
+                            i = i + 1
                         except Exception as e:
                             break
+
                     for f in newformset:
                         try:
                             newItemPhoto = DescriptionPhoto(item=item, photo=f.cleaned_data['photo'])
                             newItemPhoto.save()
                         except Exception as e:
-                            break
+                            continue
+
+                    print(deleteList)
+                    for i in images:
+                        print(i.photo.url)
+                    for i in deleteList:
+                        print(images[i].photo.url)
+                        images[i].delete()
                     messages.success(request, f'You have edited your item!')
                     return redirect('myitem')
             else:
