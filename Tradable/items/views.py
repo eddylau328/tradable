@@ -89,7 +89,7 @@ def item_create_view(request):
         if form.is_valid() and formset.is_valid():
             createItem = form.save()
             createItem.seller = request.user
-            #createItem.seller.image.url = request.user.image.url
+            # createItem.seller.image.url = request.user.image.url
             createItem.save()
 
             for f in formset:
@@ -160,23 +160,44 @@ def my_item_view(request):
 @login_required
 def edit_item_view(request, item_id):
     item = get_object_or_404(Item, id=item_id)
+
     if (item != None):
+        itemForm = ItemEditForm(instance=item)
+        images = DescriptionPhoto.objects.filter(item__id=item.id)
+        descriptionPhotoFormset = modelformset_factory(DescriptionPhoto, fields=('photo',), extra=0)
+        newDescriptionPhotoFormset = modelformset_factory(DescriptionPhoto, fields=('photo',), extra=4 - images.count())
+        formset = descriptionPhotoFormset(queryset=images, prefix='old')
+        newformset = newDescriptionPhotoFormset(queryset=DescriptionPhoto.objects.none(), prefix='new')
         if (request.method == 'POST'):
             if (request.POST.get('save')):
                 itemForm = ItemEditForm(request.POST, request.FILES, instance=item)
-                if (itemForm.is_valid()):
+                formset = descriptionPhotoFormset(request.POST or None, request.FILES or None, queryset=images, prefix='old')
+                newformset = newDescriptionPhotoFormset(request.POST or None, request.FILES or None, prefix='new')
+                if (itemForm.is_valid() and formset.is_valid() and newformset.is_valid()):
                     itemForm.save()
+                    print(formset[0])
+                    for f in formset:
+                        try:
+                            f.save()
+                        except Exception as e:
+                            break
+                    for f in newformset:
+                        try:
+                            newItemPhoto = DescriptionPhoto(item=item, photo=f.cleaned_data['photo'])
+                            newItemPhoto.save()
+                        except Exception as e:
+                            break
                     messages.success(request, f'You have edited your item!')
                     return redirect('myitem')
             else:
                 return redirect('myitem')
-        else:
-            itemForm = ItemEditForm(instance=item)
 
         if (item.seller == request.user):
             context = {
                 'item': item,
-                'itemForm': itemForm
+                'itemForm': itemForm,
+                'formset': formset,
+                'newformset': newformset
             }
             return render(request, "item/edit_item.html", context)
         else:
