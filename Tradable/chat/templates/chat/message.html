@@ -2,16 +2,15 @@
 
 {% block style %}
 	<style>
-
 	</style>
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid row p-0 m-0">
+<div class="container-fluid row p-0 m-0 bg-white">
 	<div class="col-4 p-0">
 		<iframe id="left" style="height:80vh; width:100%" class="border-right" frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
 	</div>
-	<div class="col p-0">
+	<div class="col p-0 ">
         {% if seller == None %}
         <iframe id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}">
         </iframe>
@@ -29,6 +28,7 @@
 console.log('{{seller}}')
 
 $('iframe#right').on('load', function() {
+
     var iframeWin = this.contentWindow;
     var iframeBody = this.contentDocument.body;
     console.log(iframeWin.loc)

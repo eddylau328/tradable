@@ -59,14 +59,15 @@
 
 			{% endfor %}
 		</ul>
-
-		<form class="fixed-bottom bg-light m-0" id='form' method='POST'> {% csrf_token %}
-			<input type='hidden' id='myUsername' value='{{ user.username }}' />
-			{{form.as_p }}
-			<input type='submit' class='btn btn-primary'/>
-		</form>
+		
 	</div>
-
+	<div class="fixed-bottom border px-3 bg-white">
+			<form class="m-0" id='form' method='POST'> {% csrf_token %}
+				<input type='hidden' id='myUsername' value='{{ user.username }}' />
+				{{form.as_p }}
+				<input type='submit' class='btn btn-primary'/>
+			</form>
+		</div>
 
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js'>
 	</script>
