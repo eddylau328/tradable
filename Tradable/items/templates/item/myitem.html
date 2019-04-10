@@ -24,7 +24,9 @@
         <div class="row d-flex justify-content-center ">
 
             {% for item in items %}
-
+                <form action="" method="post">{% csrf_token %}
+                    <button type="submit" button class="col btn btn-outline-primary mt-auto" name="delete" value="{{item.id}}">Delete</button>
+                </form>
                 <div id="card" class=" col-md-2 col-5 card border-black p-0  m-1" >
                     <a class="text-dark " href="/items/edit/{{item.id}}/">
                         <div class="rounded card-body p-0" >

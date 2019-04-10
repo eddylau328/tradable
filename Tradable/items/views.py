@@ -102,7 +102,7 @@ def item_create_view(request):
     #        form = ItemCreateForm()
 
             messages.success(request, f'You created a new item')
-            return redirect('listitem')
+            return redirect('home')
 
     else:
         form = ItemCreateForm()
@@ -146,6 +146,13 @@ def my_item_view(request):
     search_string = ''
 
     context = {'items': items, 'params': params, 'search_term': search_term}
+
+    if (request.method == 'POST'):
+        if (request.POST.get('delete')):
+            item_id = request.POST.get('delete')
+            Item.objects.filter(id=item_id).delete()
+            messages.success(request, f'You deleted your item')
+            return render(request, "item/myitem.html", context)
 
     return render(request, "item/myitem.html", context)
 

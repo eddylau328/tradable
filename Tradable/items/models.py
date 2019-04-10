@@ -34,7 +34,7 @@ class Item(models.Model):
 
 
 class DescriptionPhoto(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.PROTECT)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='item_pics', blank=True, null=True)
 
     def __str__(self):
