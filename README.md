@@ -31,9 +31,9 @@ pywin32
 ````
 >pip install pywin32 
 ````
-pypwin32
+pypiwin32
 ````
->pip install pypwin32
+>pip install pypiwin32
 ````
 channels 2.17
 ````
