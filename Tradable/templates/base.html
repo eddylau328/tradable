@@ -7,13 +7,14 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+	<!--text-font-->
+	<link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Righteous|Roboto+Mono|Gafata|" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Tradable-a place CUer trade</title>
+    <title>Tradable a place CUer trade</title>
 
     <style>
     *{
-        font-family: 'Roboto Mono', monospace;
+		font-family: 'Gafata', sans-serif;
 		font-size: 18px;
     }
 
@@ -54,6 +55,18 @@
 		background-color:  #000000; /*animation: change the background color on hover*/
 	}
 
+	.btn-secondary{
+		font-family: 'Roboto Mono', monospace;
+	}
+
+	.nav{
+		font-family: 'Roboto Mono', monospace;
+	}
+
+	.brand-logo{
+		font-family: 'Kaushan Script', cursive;
+		font-size: 5rem;
+	}
 
     </style>
 	{% block style %}
@@ -114,48 +127,54 @@
 	{% endblock %}
 
 	<div class="container-fluid row justify-content-center bg-white text-secondary text-center m-0">
-		<div class="row col-6 my-5" >
-			<div class="col border-right text-left">
-				<h6>TRADABLE</h6>
-				<div class="font-weight-light">
-				<a href="{% url "about"%}">ABOUT</a><br>
-				<a href="{% url "help"%}">HELP CENTER</a><br>
-				<a href="{% url "contact"%}">CONTACT</a><br>
-				<a href="#">PRIVACY POLICY</a><br>
+		<div class="row col-12 my-5" >
+			<div class="col d-none d-md-block"></div>
+			<div class="col-md d-flex justify-content-center">
+				<p class="brand-logo m-0">Tradable<p>
+			</div>
+			<div class="col-0 border-right d-none d-md-block"></div>
+			<div class="col-md col-12 text-left">
+				<div class="d-flex justify-content-center">
+					<div>
+						<div class="font-weight-light">
+							<h6>TRADABLE</h6>
+							<div class="col-0 border-bottom d-md-none"></div>
+							<a href="{% url "about"%}">ABOUT</a><br>
+							<a href="{% url "help"%}">HELP CENTER</a><br>
+							<a href="{% url "contact"%}">CONTACT</a><br>
+							<a href="#">PRIVACY POLICY</a><br>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="col border-right">
-
-			</div>
-			<div class="col">
-			</div>
-	
+			<div class="col d-none d-md-block"></div>
 		</div>
 		<div class="col-12" >
-			<p class="footericon">
+			<p class="footericon mt-2">
 				<!-- Facebook -->
-				<a class="fb-ic">
+				<a class="fb-ic" href="https://www.facebook.com/404.html">
 				<i class="fab fa-facebook-f fa-lg white-text mr-3 "> </i>
 				</a>
 
 				<!-- Twitter -->
-				<a class="tw-ic">
+				<a class="tw-ic" href="https://twitter.com/404.html">
 				<i class="fab fa-twitter fa-lg white-text mr-3"> </i>
 				</a>
 				<!-- Google +-->
-				<a class="gplus-ic">
+				<a class="gplus-ic" href="https://google.com/tradable">
 				<i class="fab fa-google-plus-g fa-lg white-text mr-3 "> </i>
 				</a>
 				<!--Linkedin -->
-				<a class="li-ic">
-				<i class="fab fa-linkedin-in fa-lg white-text mr-3"> </i>
+				<a class="li-ic" href="https://www.linkedin.com/">
+				<i class="fab fa-linkedin-in fa-lg white-text mr-3" > </i>
 				</a>
 				<!--Instagram-->
-				<a class="ins-ic">
-				<i class="fab fa-instagram fa-lg white-text mr-3"> </i>
+				<a class="ins-ic" href="https://www.instagram.com/404.html/">
+				<i class="fab fa-instagram fa-lg white-text mr-3" > </i>
 				</a>
 
 			</p>
+			<p  style="font-size: 0.5rem;">Copyright © 2019 CUHK CSCI3100 GROUP PROJECT TEAM #33 All rights reserved</p>
 		</div>	
 	</div>
 	

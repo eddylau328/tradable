@@ -35,8 +35,7 @@ def item_dynamic_lookup_view(request, item_id, *args, **kwargs):
             else:
                 return redirect(f'/users/login/?next=/items/{obj.id}/')
         elif (request.POST.get("back")):
-            print("back")
-            return redirect('/items/list/')
+            return redirect('home')
 
     return render(request, "item/lookup.html", context)
 
@@ -102,7 +101,7 @@ def item_create_view(request):
     #        form = ItemCreateForm()
 
             messages.success(request, f'You created a new item')
-            return redirect('listitem')
+            return redirect('home')
 
     else:
         form = ItemCreateForm()

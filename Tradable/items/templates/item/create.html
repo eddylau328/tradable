@@ -1,13 +1,96 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block content %}
 
+{% block style%}
+<style>
+
+.upload{
+    border:0;
+    color: gray;
+    background-color:transparent;
+    font-size: 1.2rem;
+}
+
+.upload-wrapper {
+  position: relative;
+  display: inline-block;
+  height: auto;
+}
+
+.upload-wrapper input[type=file] {
+  font-size: 1rem;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
 
 <div class="container">
 	<h3>Create new item here</h3>
 	<form method='POST' enctype='multipart/form-data'> {% csrf_token %}
-		{{ form|crispy }}
-        {{ formset|crispy }}
+		{{ form.name|as_crispy_field }}
+		{{ form.description|as_crispy_field  }}
+		{{ form.price|as_crispy_field  }}
+		{{ form.condition|as_crispy_field  }}
+        <div>
+		<div id="div_id_displayPhoto" class="form-group">
+				<div class="upload-wrapper">
+					<button class="upload">*Select a display picture</button> 
+					<input type="file" name="displayPhoto" accept="image/*" class="clearablefileinput" required="" id="id_displayPhoto">
+					<p style="font-size:0.5em;">no file selected</p>
+				</div>
+			</div>
+			<input type="hidden" name="form-TOTAL_FORMS" value="4" id="id_form-TOTAL_FORMS">
+			<input type="hidden" name="form-INITIAL_FORMS" value="0" id="id_form-INITIAL_FORMS">
+			<input type="hidden" name="form-MIN_NUM_FORMS" value="0" id="id_form-MIN_NUM_FORMS">
+			<input type="hidden" name="form-MAX_NUM_FORMS" value="1000" id="id_form-MAX_NUM_FORMS">
+			<div class="multiField">
+				<div id="div_id_form-0-photo" class="form-group">
+						<div class="upload-wrapper">
+							<button class="upload">Select a picture</button> 
+							<input type="file" name="form-0-photo" accept="image/*" class="clearablefileinput" id="id_form-0-photo">
+							<p style="font-size:0.5em;">no file selected</p>
+						</div>
+					</div>
+					<input type="hidden" name="form-0-id" id="id_form-0-id">
+				</div>
+				<div class="multiField">
+					<div id="div_id_form-1-photo" class="form-group">
+						<div class="upload-wrapper">
+							<button class="upload">Select a picture</button> 
+							<input type="file" name="form-1-photo" accept="image/*" class="clearablefileinput" id="id_form-1-photo">
+							<p style="font-size:0.5em;">no file selected</p>
+						</div>
+					</div>
+					<input type="hidden" name="form-1-id" id="id_form-1-id">
+				</div>
+				<div class="multiField">
+					<div id="div_id_form-2-photo" class="form-group">
+						<div class="upload-wrapper">
+							<button class="upload">Select a picture</button> 
+							<input type="file" name="form-2-photo" accept="image/*" class="clearablefileinput" id="id_form-2-photo">
+							<p style="font-size:0.5em;">no file selected</p>
+						</div>
+					</div>
+					<input type="hidden" name="form-2-id" id="id_form-2-id">
+				</div>
+				<div class="multiField">
+					<div id="div_id_form-3-photo" class="form-group">
+						<div class="upload-wrapper">
+							<button class="upload" onclick="show_selected()">Select a picture</button> 
+							<input type="file" name="form-3-photo" accept="image/*" class="clearablefileinput" id="id_form-3-photo">
+							<p style="font-size:0.5em;">no file selected</p>
+						</div>
+					</div>
+					<input type="hidden" name="form-3-id" id="id_form-3-id">
+				</div>
+			</div>
+
 		<input class="btn btn-raised btn-secondary" type= 'submit' value='Save'/>
 		<button class="btn btn-raised btn-secondary" onclick="goBack()">Cancel</button>
 	</form>
@@ -17,6 +100,17 @@
 function goBack() {
     window.history.back();
 }
+
+
+$( document ).ready(function() {
+
+	$('input[type="file"]').change(function(e){
+		var fileName = e.target.files[0].name;
+	
+		$(e.target).next().replaceWith('<p style="font-size:0.5em;">' + fileName +  ' has been selected</p>');
+		('The file "' + fileName +  '" has been selected.');
+	});
+});
 </script>
 
 {% endblock %}

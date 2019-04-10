@@ -3,14 +3,18 @@
 {% block style%}
 <style>
 #textholder{
-	width:100%%;
+	width:100%;
 	overflow: hidden;
 }
 #sellername{
 	overflow: hidden;
 	height: 2rem;
 }
-#info{
+#info-h{
+	height: 1.7rem;
+	overflow: hidden;
+}
+#info-t{
 	height: 1.2rem;
 	overflow: hidden;
 }
@@ -29,15 +33,15 @@
 					<a class="text-dark " href="/items/{{item.id}}">
 						<div class="rounded card-body m-0 p-0" >
 							<div class="seller m-2 row" style="height:2rem;">
-								<img src="{{ item.seller.profile.image.url }}" class="icon img-thumbnail rounded-circle " style="width:2rem; height:2rem;">
+								<img src="{{ item.seller.profile.image.url }}" class="icon img-thumbnail rounded-circle p-0" style="width:2rem; height:2rem;">
 								<p id="sellername" class="card-text ml-1 pl-1 pt-1 col-xl-8 col-7">{{ item.seller }}</p>
 							</div>
 							<div class="rounded crop_image p-0"style="width:100%; overflow:hidden;" >
-								<img class="card-img-top d_image"src="{{ item.displayPhoto.url }}" alt="Image Not Found" >
+								<img class="card-img-top d_image "src="{{ item.displayPhoto.url }}" alt="Image Not Found" >
 							</div>
 							<div id="textholder row" class="m-1 p-1 justify-text-left col" >
-								<p id="info" class="card-text m-0 col-10 p-0" >{{ item.name }}</p>
-								<p id="info" class="card-text col-10 p-0">HK${{ item.price }}</p>
+								<h5 id="info-h" class="card-text m-0 col-10 p-0" >{{ item.name }}</h5>
+								<p id="info-t" class="card-text col-10 p-0">HK${{ item.price }}</p>
 							</div>
 						</div>
 					</a>
@@ -50,42 +54,69 @@
 
 {% block script %}
 <script>
-
-var crop = function(){
+var resize = function(){
 	ch = $('.crop_image').height();
 	cw = $('.crop_image').width();
 	
 	$('.crop_image').css({
 	'height': cw
 	});
+}
 
+var zoom = function(){
 	$('.d_image').each(function(){
 		current =$(this)
 		var ih = current.height();
 		var iw = current.width();
-		console.log(ih, iw);
-		console.log(ch, cw);
+
 		if (iw > ih){
-			r = (iw - cw)/ 2;
-			current.css({'height':ch,'width':'auto', 'position':'relative','right':r});
+			current.css({'height':ch,'width':'auto'});
 
 			//current.css('margin-top', m);
 		}
 		if ( ih > iw ){
-			t = (ch-ih)/2;
-			current.css({'height':'auto','width':cw, 'position':'relative','top':t});
+			current.css({'height':'auto','width':cw});
 
 		}	
 	});
 }
 
+var positioning = function(){
+	$('.d_image').each(function(){
+		current =$(this)
+		var ih = current.height();
+		var iw = current.width();
+
+		if (iw > ih){
+			r = (iw - cw)/ 2;
+			current.css({ 'position':'relative','right':r});
+
+			//current.css('margin-top', m);
+		}
+		if ( ih > iw ){
+			t = (ch-ih)/2;
+			current.css({'position':'relative','top':t});
+
+		}	
+	});
+}
+
+
 $(function(){
-	crop();
-	crop();
-	crop();
+	resize();
+	zoom();
+	positioning();
+	ch = $('.crop_image').height();
+	cw = $('.crop_image').width();
+	
+	console.log(ch, cw);
+
 
 	$(window).resize(function() {
-		crop();
+		resize();
+		zoom();
+		positioning();
+		
 	});
 });
 

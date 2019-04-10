@@ -2,25 +2,80 @@
 
 {% block style %}
 <style>
+.carousel-inner > .carousel-item > img{
+    margin:auto;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  outline: black;
+  background-size: 100%, 100%;
+  background-image: none;
+}
+
+.carousel-control-next-icon:after
+{
+    font-family: 'Righteous', cursive;
+    content: '>';
+    font-size: 55px;
+    color: DimGray  ;
+}
+
+.carousel-control-prev-icon:after {
+    font-family: 'Righteous', cursive;
+    content: '<';
+    font-size: 55px;
+    color: DimGray ;
+}
+
+.carousel-indicators li {
+    background-color: DimGray ;
+}
+
+.carousel-indicators .active {
+    background-color: IndianRed    ;
+}
+
+ul {
+list-style-type: none;
+}
+
+.item-icon {
+    margin-top:0.3rem;
+}
+.card{
+    max-height: 50vh;
+}
+ul{
+    max-height: 30vh;
+}
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="row container mx-auto justify-content-center">
-    <div class="card bg-light border-secondary col-4 p-0 m-3">
+    <div class="card bg-light border-secondary col-lg-4 col-md-5 col-10 p-0 m-3 mx-3">
         <div class="card-body p-0 m-0 ">
-            <div class="container-fluid d-flex d-inline-flex my-3">
+            <div class="container-fluid d-flex d-inline-flex mt-2 mb-3">
                 <img src="{{ object.seller.profile.image.url }}" class="icon img-thumbnail rounded-circle p-0 " style="width:3rem; height:3rem;">
                 <p id="sellername" class="card-text ml-1 pl-1 my-auto col-xl-8 col-7" style="font-size: 1.2rem;" >{{ object.seller }}</p>
             </div>
-            <div id="photoslideshow" class="carousel slide w-100 p-0 d-flex align-items-center bg-light " style="overflow:hidden;" data-ride="carousel">
+            <div id="photoslideshow" class="carousel slide w-100 p-0 d-flex align-items-center bg-light my-auto " style="overflow:hidden;" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#photoslideshow" data-slide-to="0" class="active"></li>
+                    {% for pic in photo.all%}
+                    <li data-target="#photoslideshow" data-slide-to="{{forloop.counter}}"></li>
+                    {% endfor %}
+
+                </ol>
                 <div class="carousel-inner "style="overflow:hidden;" >
                     <div class="carousel-item active ">
-                        <img src="{{ object.displayPhoto.url }}" class="d-block w-100 d_image" alt="Image Not Found">
+                        <img src="{{ object.displayPhoto.url }}" class="carousel-image d-block w-100 " alt="Image Not Found">
                     </div>
                     {% for pic in photo.all %} 
-                        <div class="carousel-item ">
-                            <img src="{{ pic.photo.url }}" class="  d-block w-100 d_image" alt="Image Not Found">
+                        <div class="carousel-item">
+                            <img src="{{ pic.photo.url }}" class="carousel-image  d-block w-100 " alt="Image Not Found">
                         </div>
                     {% endfor %}
                 </div>
@@ -36,21 +91,21 @@
             
         </div>
     </div>
-    <div class="card bg-light border-secondary  col-4 p-0 m-3">
+    <div class="card bg-light border-secondary col-lg-4 col-md-5 col-10 p-0 mt-md-3 mt-2 mb-3 mx-3">
         <div clas="card-body">
-            <h3 class="border text-left p-1">{{object.name}}</h3>
-            <div class="container-fluid">
-                
-                <div class="d-flex d-inline-flex"><i class="far fa-clock my-3"></i><p class="card-text my-auto ml-1">xxx ago Created by {{object.seller}}</p></div><br>
-                <div class="d-flex d-inline-flex"><i class="fas fa-dollar-sign my-3 px-1"></i><p class="card-text my-auto ml-1">{{ object.price }}</p></div><br>
-                <div class="d-flex d-inline-flex"><i class="far fa-question-circle my-3 "></i><p class="card-text my-auto ml-1">Description : {{ object.description }}</p></div><br>
-                <div class="d-flex d-inline-flex"><i class="far fa-pause-circle my-3 " ></i><p class="card-text my-auto ml-1">Condition: {{object.condition}}</p></div><br>
-
+            <h3 class="border-bottom text-left p-1">{{object.name}}</h3>
+            <div class="container-fluid ">
+                <ul class="pl-0" style="overflow:hidden;">
+                    <li><div class="d-flex d-inline-flex"><i class="item-icon fas fa-dollar-sign px-1"></i><p class="card-text my-auto ml-1">{{ object.price }}</p></div></li>
+                    <li><div class="d-flex d-inline-flex"><i class="item-icon far fa-clock "></i><p class="card-text mt-0 ml-1">xxx ago Created by {{object.seller}}</p></div></li>
+                    <li><div class="d-flex d-inline-flex"><i class="item-icon far fa-question-circle"></i><p class="card-text my-auto ml-1">{{ object.description }}</p></div></li>
+                    <li><div class="d-flex d-inline-flex"><i class="item-icon far fa-pause-circle" ></i><p class="card-text my-auto ml-1">{{object.condition}}</p></div></li>
+                </ul>
             </div>
-            <div class="col d-flex justify-content-center">
-                <form action="" method="post">{% csrf_token %}
-                    <button type="submit" button class="col btn btn-outline-primary mt-auto" name="back" value="back">Return to list</button>
-                    <button type="submit" button class="col btn btn-outline-primary " name="seller" value="{{ object.seller }}">BUY!</button>
+            <div class="col d-flex justify-content-center d-flex align-items-end">
+                <form class="d-flex mb-0" action="" method="post">{% csrf_token %}
+                    <button type="submit" button class="col btn btn-secondary " name="back" value="back">Return to list</button>
+                    <button type="submit" button class="col btn btn-secondary " name="seller" value="{{ object.seller }}">BUY!</button>
                 </form>
             </div>
         </div>
@@ -61,35 +116,36 @@
 
 {% block script%}
 <script>
-var set_carousell_h=function(){
-	cw = $('.carousel').width();
-    ch = $('.carousel').height();
-	$('.carousel').css({
-	'height': cw,
-    });
-    console.log(ch);
 
-	$('.d_image').each(function(){
-		current =$(this)
-		var ih = current.height();
-		var iw = current.width();
-		if ( ih > iw ){
-			t = (ch-ih)/2;
-			current.css({'height':'auto','width':cw});
-
-		}	
-	});
-
+var set_carousel_height = function(){
+    $('.carousel').css({
+	'height': $('.carousel').width()
+	})
 }
 
+var resize_image = function(){
+	$('.carousel-image').each(function(){
+		current =$(this)
+        
+		if ( current.height() > current.width() ){
+
+			current.css({'height':'auto','width':$('.carousel').width()});
+		}	
+	});
+ }
 
 $(function(){
-    set_carousell_h();
+    set_carousel_height();
+    resize_image();
+
+    $(window).resize(function() {
+        set_carousel_height();
+        resize_image();
+    })
+
 })
 
-$(window).resize(function() {
-    set_carousell_h();
-});
+
 </script>
 
 {% endblock %}
