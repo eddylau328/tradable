@@ -10,14 +10,17 @@
 
     <!-- Material Design for Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
-
+		<link href="https://fonts.googleapis.com/css?family=Gafata" rel="stylesheet">
     <title>messages</title>
 
 	<style>
-    *{
-        font-family: Calibri;
-        font-size: 18px;
+
+
+     *{
+				font-family: 'Gafata', sans-serif;
+				font-size: 18px;
     }
+
 
     *, *:before, *:after {
         box-sizing: border-box;
@@ -29,10 +32,12 @@
 		#receive{
 				border: 2px;
 				border-radius: 10px;
+				background-color: white;
 		}
 		#send{
 				border: 2px;
 				border-radius: 10px;
+				background-color: #DAF7A6;
 		}
 		
 		#backToInbox{
@@ -41,6 +46,22 @@
 
 		li {
 				word-break: break-all;
+				border-style: outset;
+				padding: 5px;
+		}
+
+		#chatinput{
+				border: 2px;
+				border-radius: 10px;
+
+				margin: 10px;
+		}
+
+		#submit{
+				position:absolute;
+				top: 40px;
+				right: 15px;
+				background-color: white ;
 		}
     </style>
   </head>
@@ -55,7 +76,7 @@
 
 	<br>
 	<div class="container pl-4">
-		<h3>{{object.item.name}} {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
+		<h3 class="text-center">{{object.item.name}} {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
 		<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
 
 			{% for chat in object.chatmessage_set.all %}
@@ -70,17 +91,21 @@
 
 	</div>
 
-	<div class=" fixed-bottom border px-3 bg-white">
-			<form class="m-0" id='form' method='POST'> {% csrf_token %}
-				<input type='hidden' id='myUsername' value='{{ user.username }}'>
-				{{form.as_p }}
-				<input type='submit' class='btn btn-secondary '>
-			</form>
-		</div>
+	<div class=" fixed-bottom p-3 bg-white" id="chatinput">
+		<form class="m-0" id='form' method='POST'> {% csrf_token %}
+			<input type='hidden' id='myUsername' value='{{ user.username }}'>
+			{{form.as_p }}
+			<input onclick="" type='submit' class='btn btn-secondary' id="submit">
+		</form>
+	</div>
 
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js'>
 	</script>
 	<script>
+	var scDown = function(){
+			$(document).scrollTop($(document).height());
+	}
+	scDown();
 	// websocket scripts
 	//console.log(window.location)
 	var loc = window.location
