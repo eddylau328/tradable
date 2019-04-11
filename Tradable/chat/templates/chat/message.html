@@ -1,23 +1,45 @@
 {% extends "base.html" %}
 
 {% block style %}
-	<style>
-	</style>
+<style>
+
+br{
+    display: none;    
+}
+
+#inbox{
+    position:absolute;
+    top:45px;
+}
+#belowNav{
+    diaplay: none;
+}
+
+</style>
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid row p-0 m-0 bg-white">
+
+<div class="d-block d-lg-none fixed-top bg-light text-center" id="inbox" >
+    <a href="{% url 'messages:message'%}" id="backToInbox" class="btn btn-secondary justify-content-center my-0 mx-auto w-100">Inbox</a>
+</div>
+
+
+<div class="container-fluid row p-0 m-0 ">
     <div class="col-4 p-0">
-        <iframe id="left" style="height:80vh; width:100%" class="border-right" frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
+        <iframe class="d-none d-lg-block" id="left" style="height:80vh; width:100%" class="border-right" frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
     </div>
 	<div class="col p-0 ">
         {% if seller == None %}
-        <iframe id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}">
+        <iframe class="d-none d-lg-block" id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}">
         </iframe>
         {% else %}
-        <iframe id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="/../messages/{{ seller }}/{{item_id}}/"></iframe>
+        <iframe class="d-none d-lg-block" id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="/../messages/{{ seller }}/{{item_id}}/"></iframe>
         {% endif %}
     </div>
+</div>
+<div class="container-fluid row p-0 m-0 ">
+        <iframe class="d-block d-lg-none mt-4" id="right" iframe name="right" style="height:80vh; width:100%" class="border-right" frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
 </div>
 
 

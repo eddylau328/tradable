@@ -34,7 +34,14 @@
 				border: 2px;
 				border-radius: 10px;
 		}
+		
+		#backToInbox{
+				width:100%;
+		}
 
+		li {
+				word-break: break-all;
+		}
     </style>
   </head>
   <body>
@@ -46,26 +53,28 @@
 	<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
 
 
-	<div class="container">
+	<br>
+	<div class="container pl-4">
 		<h3>{{object.item.name}} {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
 		<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
 
 			{% for chat in object.chatmessage_set.all %}
 			{% if chat.user == user %}
-			<li id='send'class="m-1 list-group-item border col-5">{{ chat.message }} via {{ chat.user }}</li>
+			<li id='send'class="m-1 list-group-item border col-5">{{ chat.message }}</li>
 			{% else %}
-			<li id='receive' class="m-1 list-group-item border col-5 ml-auto">{{ chat.message }} via {{ chat.user }}</li>
+			<li id='receive' class="m-1 list-group-item border col-5 ml-auto">{{ chat.message }}</li>
 			{% endif %}
 
 			{% endfor %}
 		</ul>
 
 	</div>
-	<div class="fixed-bottom border px-3 bg-white">
+
+	<div class=" fixed-bottom border px-3 bg-white">
 			<form class="m-0" id='form' method='POST'> {% csrf_token %}
-				<input type='hidden' id='myUsername' value='{{ user.username }}' />
+				<input type='hidden' id='myUsername' value='{{ user.username }}'>
 				{{form.as_p }}
-				<input type='submit' class='btn btn-primary'/>
+				<input type='submit' class='btn btn-secondary '>
 			</form>
 		</div>
 
@@ -93,10 +102,10 @@
 		console.log("message", e)
 		var chatDataMsg = JSON.parse(e.data)
         if (chatDataMsg.username === me){
-		  chatHolder.append("<li id='send'class='m-1 list-group-item border col-5'>" + chatDataMsg.message + " via " + chatDataMsg.username + "</li>")
+		  chatHolder.append("<li id='send'class='m-1 list-group-item border col-5'>" + chatDataMsg.message + "</li>")
         }
         else{
-            chatHolder.append("<li id='receive' class='m-1 list-group-item border col-5 ml-auto'>" + chatDataMsg.message + " via " + chatDataMsg.username + "</li>")
+            chatHolder.append("<li id='receive' class='m-1 list-group-item border col-5 ml-auto'>" + chatDataMsg.message + "</li>")
         }
 	}
 	socket.onopen= function(e){
