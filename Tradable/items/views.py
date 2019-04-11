@@ -149,7 +149,9 @@ def my_item_view(request):
     if (request.method == 'POST'):
         if (request.POST.get('delete')):
             item_id = request.POST.get('delete')
-            Item.objects.filter(id=item_id).delete()
+            deleteItem = Item.objects.get(id=item_id)
+            deleteItem.delete()
+
             messages.success(request, f'You deleted your item')
             return render(request, "item/myitem.html", context)
 
