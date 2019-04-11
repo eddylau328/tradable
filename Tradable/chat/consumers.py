@@ -21,6 +21,8 @@ class InboxConsumer(AsyncConsumer):
                 'itemname': obj.item.name,
                 'threadid': obj.id,
                 'itemid': obj.item.id,
+                'firstuserpic': obj.first.profile.image.url,
+                'seconduserpic': obj.second.profile.image.url,
             }
             newlist.append(chatroomDict)
 
