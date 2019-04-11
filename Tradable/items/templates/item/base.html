@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class = "container-fluid">
+<div class = "container-fluid p-0">
 
 <div class="row ">
 
@@ -12,7 +12,6 @@
 				sort
 				</button>
 				 <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-					<a class="dropdown-item" href="?hot=True&search={{search_term}}">HOT!</a>
 					<a class="dropdown-item" href="?recent=True&search={{search_term}}">Most recent</a>
 					<a class="dropdown-item" href="?low=True&search={{search_term}}">Price-low to high</a>
 					<a class="dropdown-item" href="?high=True&search={{search_term}}">Price-high to low</a>

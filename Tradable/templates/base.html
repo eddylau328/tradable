@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<!--text-font-->
-	<link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Righteous|Roboto+Mono|Gafata|" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Righteous|Roboto+Mono|Gafata|Open+Sans" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Tradable a place CUer trade</title>
 
@@ -31,7 +31,7 @@
 	}
 
     *{
-		font-family: 'Gafata', sans-serif;
+		font-family: 'Open Sans', sans-serif;
 		font-size: 18px;
     }
 
@@ -77,8 +77,11 @@
 	}
 
 	.nav{
-
 		font-family: 'Roboto Mono', monospace;
+	}
+
+	.navbar-nav{
+		margin-right: 20px;
 	}
 
 	.brand-logo{
@@ -108,7 +111,7 @@
 			<a class="mr-auto navbar-brand mx-2 px-2" style="font-family: Verdana" href="{% url "home" %}">Tradable</a>
 				
 			<div class="navbar-nav" >
-				<ul class="ml-auto d-flex flex-row navbar-nav ml-auto mr-2">
+				<ul class="ml-auto d-flex flex-row navbar-nav">
 					{% if user.is_authenticated %}
 						<li class="nav-item btn btn-secondary btn-small p-0 m-0 d-block d-sm-none"><a class="nav-link " href="{% url "messages:message" %}"><i class="fab fa-facebook-messenger navicon"></i></a></li>
 						<li class="nav-item btn btn-secondary btn-small p-0 m-0 d-block d-sm-none"><a class="nav-link " href="{% url "profile" %}"><i class="far fa-user navicon"></i></a></li>
