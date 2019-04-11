@@ -15,6 +15,22 @@
     <title>messages</title>
 
 	<style>
+	body::-webkit-scrollbar {
+
+		width: 0.5em;
+
+	}
+	
+	body::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3);
+		border-radius: 10px;
+	}
+	
+	body::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background-color: LightGray ;
+		outline: 10px solid LightGray;
+	}
 	*{
 		font-family: 'Gafata', sans-serif;
 		font-size: 18px;
@@ -109,7 +125,7 @@
             }
             if (flag === false){
                 if (chatroomData[i].firstusername === '{{user.username}}'){
-                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+chatroomData[i].secondusername+'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].seconduserpic +'"'+' class="p-0 icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname+'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].secondusername+ '</div>'+'</div>'+'</a>'+'</li>')
+                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+chatroomData[i].secondusername+'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].seconduserpic +'"'+' class="git cle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname+'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].secondusername+ '</div>'+'</div>'+'</a>'+'</li>')
                 }else if (chatroomData[i].secondusername === '{{user.username}}'){
                     chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+ chatroomData[i].firstusername +'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].firstuserpic +'"'+ 'class="p-0 icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname +'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].firstusername+ '</div>'+'</div>'+'</a>'+'</li>')
                 }
