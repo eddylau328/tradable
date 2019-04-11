@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
 <div class = "container-fluid p-0">
 
@@ -8,7 +9,7 @@
 	<div = class = "container-fluid col-xl-10 col-lg-11 col-md-12">
 		<div class="row container-fluid">
 			<div class="dropdown pt-1">
-				<button type="button" class="btn btn-secondary dropdown-toggle mb-0" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,0">
+				<button type="button" class="btn btn-secondary dropdown-toggle ml-2 mb-0" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="0,0">
 				sort
 				</button>
 				 <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
@@ -17,28 +18,35 @@
 					<a class="dropdown-item" href="?high=True&search={{search_term}}">Price-high to low</a>
 				</div>
 			</div>
-			
-			<form class="mr-auto form-inline m-0  d-none d-lg-block d-xl-block">
+			<form class="mr-auto form-inline m-0  d-none d-sm-block ">
 				<div>
 					<span class="bmd-form-group">
 					<label for="search" class="bmd-label-floating">Search</label><input id="search" type="text" class="form-control pt-3" name="search"></span>
 				</div>
 			</form>
 			
+			
 			{% block myitem%}
 			{% endblock%}
-			
-			
-
 			<div class="ml-auto">
 				{% if user.is_authenticated %}
-					<a class="justify-content-end" href="{% url 'myitem' %}"><button class="btn btn-secondary px-2" type= 'button'>My item</button></a>
-					<a class="justify-content-end" href="{% url "createitem" %}"><button class="btn btn-secondary px-2" type= 'button'>Create an item</button></a>
+					<a class="justify-content-end" href="{% url 'myitem' %}"><button class="btn btn-raised btn-secondary px-2" type= 'button'>My item</button></a>
+					<a class="justify-content-end" href="{% url "createitem" %}"><button class="btn btn-raised btn-secondary px-2" type= 'button'>Create an item</button></a>
 				{% else %}
-					<a class="justify-content-end" href="{% url "login" %}"><button class="btn btn-secondary" type= 'button' >login in to create an item</button></a>
+					<a class="justify-content-end" href="{% url "login" %}"><button class="btn btn-raised btn-secondary" type= 'button' >login in to create an item</button></a>
 				{% endif %}
 			</div>
 
+		</div>
+		<div>
+			<form class="row m-0  d-block d-sm-none">
+				<div class="col-11 mx-auto mb-2">
+					<span class="bmd-form-group ">
+						<label for="search" class="bmd-label-floating ">Search</label>
+						<input id="search" type="text" class="form-control pt-4" name="search">
+					</span>
+				</div>
+			</form>
 		</div>
 		{% block item %}
 		<!---->
