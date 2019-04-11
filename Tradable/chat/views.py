@@ -50,7 +50,6 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
         other_username = self.kwargs.get("username")
         itemID = self.kwargs.get("itemID")
         obj, created = Thread.objects.get_or_new(self.request.user, other_username, itemID)
-        print(obj)
         if obj == None:
             raise Http404
         return obj

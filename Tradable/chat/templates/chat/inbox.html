@@ -49,7 +49,7 @@
 	<ul class="list-group m-0 p-0 " id='chatroom-items'>
 	{% for chatroom in object_list %}
 
-	<li class="d-flex list-group-item p-3 m-0 btn btn-secondary">
+	<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id='chatroom'>
 		<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
 		{% if user != chatroom.first %}
 		<a href="/../messages/{{ chatroom.first }}/{{chatroom.item.id}}/" target="right">
@@ -61,9 +61,7 @@
 		{% else %}
 		<a href="/../messages/{{ chatroom.second }}/{{chatroom.item.id}}/" target="right">
 		<div style="max-width:0em">
-			<div class="font-weight-bold text-left pb-1" id="chatboxbarname">{{ chatroom.item.name }}</div>
-			{% block chatroom %}
-			{% endblock %}
+			<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >{{ chatroom.item.name }}</div>
 			<div class="font-weight-light " id="chatboxbartext">{{ chatroom.second }}</div>
 		</div>
 		</a>
@@ -72,21 +70,47 @@
 	{% endfor %}
 
 
-
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js'>
+    </script>
 	<script>
 	// websocket scripts
 	//console.log(window.location)
 	var loc = window.location
-
 	var wsStart = 'ws://'
 	if (loc.protocol == 'https:'){
 		wsStart = 'wss://'
 	}
 	var endpoint = wsStart + loc.host + loc.pathname
-	var socket = new WebSocket(endpoint)
+	var socket = new ReconnectingWebSocket(endpoint)
+    var chatroomHolder = $("#chatroom-items")
+    var list = [{% for x in object_list %}'{{ x.id|escapejs }}',{% endfor %}]
 
 	socket.onmessage = function(e){
 		console.log("message", e)
+        var chatroomData = JSON.parse(e.data)
+        //console.log(chatroomData)
+        //console.log('{{ object_list|length }}')
+        var i,j;
+        var flag;
+        //console.log(list)
+        for (i = 0; i < chatroomData.length; i++){
+            flag = false;
+            for (j = 0 ; j < list.length; j++){
+                //console.log(i,j,Number(list[j]),chatroomData[i].threadid)
+                if (Number(list[j]) === chatroomData[i].threadid){
+                    flag = true
+                    break
+                }
+            }
+            if (flag === false){
+                if (chatroomData[i].firstusername === '{{user.username}}'){
+                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+chatroomData[i].secondusername+'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname+'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].secondusername+ '</div>'+'</div>'+'</a>'+'</li>')
+                }else if (chatroomData[i].secondusername === '{{user.username}}'){
+                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+ chatroomData[i].firstusername +'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname +'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].firstusername+ '</div>'+'</div>'+'</a>'+'</li>')
+                }
+                list.push(chatroomData[i].threadid)
+            }
+        }
 	}
 	socket.onopen= function(e){
 		console.log("open", e)

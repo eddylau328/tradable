@@ -7,9 +7,9 @@
 
 {% block content %}
 <div class="container-fluid row p-0 m-0 bg-white">
-	<div class="col-4 p-0">
-		<iframe id="left" style="height:80vh; width:100%" class="border-right" frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
-	</div>
+    <div class="col-4 p-0">
+        <iframe id="left" style="height:80vh; width:100%" class="border-right" frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
+    </div>
 	<div class="col p-0 ">
         {% if seller == None %}
         <iframe id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}">

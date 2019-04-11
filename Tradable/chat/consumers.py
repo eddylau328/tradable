@@ -3,8 +3,9 @@ import json
 from django.contrib.auth import get_user_model
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
-
+from django.core import serializers
 from .models import Thread, ChatMessage
+from django.contrib.auth.models import User
 
 
 class InboxConsumer(AsyncConsumer):
@@ -12,9 +13,29 @@ class InboxConsumer(AsyncConsumer):
         print("Inbox connected", event)
         me = self.scope['user']
         chatroomList = await self.get_chatroom(me)
-        print(chatroomList)
+        newlist = []
+        for obj in chatroomList:
+            chatroomDict = {
+                'firstusername': obj.first.username,
+                'secondusername': obj.second.username,
+                'itemname': obj.item.name,
+                'threadid': obj.id,
+                'itemid': obj.item.id,
+            }
+            newlist.append(chatroomDict)
+
         await self.send({
             "type": "websocket.accept"
+        })
+
+        await self.send({
+            "type": "websocket.send",
+            "text": json.dumps(newlist)
+        })
+
+        await asyncio.sleep(5)
+        await self.send({
+            "type": "websocket.close"
         })
 
     async def websocket_receive(self, event):
@@ -39,6 +60,7 @@ class ChatConsumer(AsyncConsumer):
         thread_obj = await self.get_thread(me, other_user, itemID)
         print(me, thread_obj.id)
         self.thread_obj = thread_obj
+        print(self.thread_obj)
         chat_room = f"thread_{thread_obj.id}"
         self.chat_room = chat_room
         await self.channel_layer.group_add(
@@ -97,3 +119,11 @@ class ChatConsumer(AsyncConsumer):
     def create_chat_message(self, me, msg):
         thread_obj = self.thread_obj
         return ChatMessage.objects.create(thread=thread_obj, user=me, message=msg)
+
+
+class chatRoomObj:
+    def __init__(self, firstusername, secondusername, threadid, itemid):
+        self.firstusername = firstusername
+        self.secondusername = secondusername
+        self.threadid = threadid
+        self.itemid = itemid
