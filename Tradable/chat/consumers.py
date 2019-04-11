@@ -13,7 +13,14 @@ class InboxConsumer(AsyncConsumer):
         print("Inbox connected", event)
         me = self.scope['user']
         chatroomList = await self.get_chatroom(me)
+        msgList = []
+        for obj in chatroomList:
+            msg = await self.get_msg(obj)
+            msgList.append(msg)
+
         newlist = []
+        # print(msgList)
+        count = 0
         for obj in chatroomList:
             chatroomDict = {
                 'firstusername': obj.first.username,
@@ -23,7 +30,9 @@ class InboxConsumer(AsyncConsumer):
                 'itemid': obj.item.id,
                 'firstuserpic': obj.first.profile.image.url,
                 'seconduserpic': obj.second.profile.image.url,
+                'msg': msgList[count]
             }
+            count = count + 1
             newlist.append(chatroomDict)
 
         await self.send({
@@ -35,7 +44,7 @@ class InboxConsumer(AsyncConsumer):
             "text": json.dumps(newlist)
         })
 
-        await asyncio.sleep(5)
+        await asyncio.sleep(2)
         await self.send({
             "type": "websocket.close"
         })
@@ -49,6 +58,15 @@ class InboxConsumer(AsyncConsumer):
     @database_sync_to_async
     def get_chatroom(self, user):
         return Thread.objects.by_user(user)
+
+    @database_sync_to_async
+    def get_msg(self, thread):
+        try:
+            msg = ChatMessage.objects.filter(thread=thread)
+            latestmsg = msg.latest('id').message
+            return latestmsg
+        except ChatMessage.DoesNotExist:
+            return ""
 
 
 class ChatConsumer(AsyncConsumer):

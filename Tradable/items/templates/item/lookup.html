@@ -73,7 +73,7 @@ ul{
                     <div class="carousel-item active ">
                         <img src="{{ object.displayPhoto.url }}" class="carousel-image d-block w-100 " alt="Image Not Found">
                     </div>
-                    {% for pic in photo.all %} 
+                    {% for pic in photo.all %}
                         <div class="carousel-item">
                             <img src="{{ pic.photo.url }}" class="carousel-image  d-block w-100 " alt="Image Not Found">
                         </div>
@@ -88,7 +88,7 @@ ul{
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-            
+
         </div>
     </div>
     <div class="card bg-light border-secondary col-lg-4 col-md-5 col-10 p-0 mt-md-3 mt-2 mb-3 mx-3">
@@ -97,9 +97,9 @@ ul{
             <div class="container-fluid ">
                 <ul class="pl-0" style="overflow:hidden;">
                     <li><div class="d-flex d-inline-flex"><i class="item-icon fas fa-dollar-sign px-1"></i><p class="card-text my-auto ml-1">{{ object.price }}</p></div></li>
-                    <li><div class="d-flex d-inline-flex"><i class="item-icon far fa-clock "></i><p class="card-text mt-0 ml-1">xxx ago Created by {{object.seller}}</p></div></li>
                     <li><div class="d-flex d-inline-flex"><i class="item-icon far fa-question-circle"></i><p class="card-text my-auto ml-1">{{ object.description }}</p></div></li>
                     <li><div class="d-flex d-inline-flex"><i class="item-icon far fa-pause-circle" ></i><p class="card-text my-auto ml-1">{{object.condition}}</p></div></li>
+                    <li><div class="d-flex d-inline-flex"><i class="item-icon far fa-clock "></i><p class="card-text mt-0 ml-1">{{object.createdDateTime}}</p></div></li>
                 </ul>
             </div>
             <div class="col d-flex justify-content-center d-flex align-items-end">
@@ -131,13 +131,13 @@ var resize_image = function(){
 		current =$(this);
         console.log('true');
 	});
-   
 
-    
+
+
  }
 
 $(function(){
-    
+
     set_carousel_height();
     resize_image();
     console.log($('#parents').height());

@@ -34,7 +34,6 @@ class InboxView(LoginRequiredMixin, ListView):
     template_name = 'chat/inbox.html'
 
     def get_queryset(self):
-        print(Thread.objects.by_user(self.request.user))
         return Thread.objects.by_user(self.request.user)
 
 

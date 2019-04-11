@@ -20,12 +20,12 @@
 		width: 0.5em;
 
 	}
-	
+
 	body::-webkit-scrollbar-track {
 		-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3);
 		border-radius: 10px;
 	}
-	
+
 	body::-webkit-scrollbar-thumb {
 		border-radius: 10px;
 		background-color: LightGray ;
@@ -65,7 +65,6 @@
 	<div class="container-fluid p-0">
 	<ul class="list-group m-0 p-0 " id='chatroom-items'>
 	{% for chatroom in object_list %}
-
 	<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id='chatroom'>
         {% if user != chatroom.first %}
 		<img src="{{chatroom.first.profile.image.url}}" class="p-0 icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
@@ -88,32 +87,51 @@
 		</a>
 		{% endif %}
 	</li>
+    <div class="font-weight-light" id="msgupdate"></div>
 	{% endfor %}
 
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js'>
     </script>
 	<script>
-	// websocket scripts
-	//console.log(window.location)
-	var loc = window.location
-	var wsStart = 'ws://'
-	if (loc.protocol == 'https:'){
-		wsStart = 'wss://'
-	}
-	var endpoint = wsStart + loc.host + loc.pathname
-	var socket = new ReconnectingWebSocket(endpoint)
+    //var count = 0
+
+//    $(window).on('load', function () {
+//        $("[class='desktopframe'][id='fuck']").each(function(){
+//            //var currentTextbox = $(this);
+//            //currentTextbox.replaceWith("bye");
+//            console.log($(this))
+//            //count = count + 1
+//        });
+//    })
+// websocket scripts
+    //console.log(window.location)
+//    $("div#fuck").each(function(){
+//            //var currentTextbox = $(this);
+//            console.log($(this))
+//            //count = count + 1
+//            //currentTextbox.replaceWith(list);
+//    });
+
+    var loc = window.location
+    var wsStart = 'ws://'
+    if (loc.protocol == 'https:'){
+        wsStart = 'wss://'
+    }
+    var endpoint = wsStart + loc.host + loc.pathname
+    var socket = new ReconnectingWebSocket(endpoint)
     var chatroomHolder = $("#chatroom-items")
     var list = [{% for x in object_list %}'{{ x.id|escapejs }}',{% endfor %}]
+    var msgList = [];
 
-	socket.onmessage = function(e){
-		console.log("message", e)
+    socket.onmessage = function(e){
+        console.log("message", e)
         var chatroomData = JSON.parse(e.data)
         //console.log(chatroomData)
         //console.log('{{ object_list|length }}')
         var i,j;
         var flag;
-        //console.log(list)
+         //   console.log(msgList[i])
         for (i = 0; i < chatroomData.length; i++){
             flag = false;
             for (j = 0 ; j < list.length; j++){
@@ -125,23 +143,37 @@
             }
             if (flag === false){
                 if (chatroomData[i].firstusername === '{{user.username}}'){
-                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+chatroomData[i].secondusername+'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].seconduserpic +'"'+' class="git cle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname+'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].secondusername+ '</div>'+'</div>'+'</a>'+'</li>')
+                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+chatroomData[i].secondusername+'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].seconduserpic +'"'+' class="git cle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname+'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].secondusername+ '</div>'+'</div>'+'</a>'+'</li>'+'<div class="font-weight-light" id="msgupdate">'+'</div>')
                 }else if (chatroomData[i].secondusername === '{{user.username}}'){
-                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+ chatroomData[i].firstusername +'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].firstuserpic +'"'+ 'class="p-0 icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname +'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].firstusername+ '</div>'+'</div>'+'</a>'+'</li>')
+                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+ chatroomData[i].firstusername +'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].firstuserpic +'"'+ 'class="p-0 icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname +'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].firstusername+ '</div>'+'</div>'+'</a>'+'</li>'+'<div class="font-weight-light" id="msgupdate">'+'</div>')
                 }
                 list.push(chatroomData[i].threadid)
             }
         }
-	}
-	socket.onopen= function(e){
-		console.log("open", e)
-	}
-	socket.onerror= function(e){
-		console.log("error", e)
-	}
-	socket.onclose= function(e){
-		console.log("close", e)
-	}
+        var count = 0
+        $("div#msgupdate").each(function(){
+            var currentTextbox = $(this);
+            console.log(currentTextbox)
+            console.log(chatroomData[count].msg)
+            currentTextbox.replaceWith('<div class="font-weight-light" id="msgupdate">'+chatroomData[count].msg+'</div>')
+            count = count + 1
+        });
+        //updateMsg(msgList)
+    }
+
+    socket.onopen= function(e){
+        console.log("open", e)
+    }
+    socket.onerror= function(e){
+        console.log("error", e)
+    }
+    socket.onclose= function(e){
+        console.log("close", e)
+    }
+
+    var updateMsg = function(list){
+
+    }
 
 	</script>
 	</body>

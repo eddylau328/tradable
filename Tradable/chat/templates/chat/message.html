@@ -4,7 +4,7 @@
 <style>
 
 br{
-    display: none;    
+    display: none;
 }
 
 #inbox{
@@ -24,7 +24,7 @@ br{
     <a href="{% url 'messages:message'%}" id="backToInbox" class="btn btn-secondary justify-content-center my-0 mx-auto w-100">Inbox</a>
 </div>
 <div class="container-fluid row  p-0 m-0 ">
-    <div class="col-xl-3 col-4 p-0 border-right">
+    <div class="col-xl-3 col-4 p-0 border-right desktopframe" id="desktopframe">
         <iframe class="d-none d-lg-block" id="left" style="height:80vh; width:100%"  frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
     </div>
 	<div class="col p-0 ">
@@ -37,7 +37,8 @@ br{
     </div>
 </div>
 
-<div class="container-fluid row p-0 m-0 ">
+
+<div class="container-fluid row p-0 m-0 " id="mobileframe">
         <iframe class="d-block d-lg-none mt-4" id="right" iframe name="right" style="height:80vh; width:100%" class="border-right" frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
 </div>
 
@@ -52,7 +53,7 @@ $('iframe#right').on('load', function() {
 
     var iframeWin = this.contentWindow;
     var iframeBody = this.contentDocument.body;
-    console.log(iframeWin.loc)
+    //console.log(iframeWin.loc)
     // access global JS vars defined in the iframe:
     //var someIframeVariable = iframeWin.globalIframeVariable;
 
