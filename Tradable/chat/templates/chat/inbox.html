@@ -10,13 +10,14 @@
 
     <!-- Material Design for Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Gafata" rel="stylesheet">
 
     <title>messages</title>
 
 	<style>
-    *{
-        font-family: Calibri;
-        font-size: 18px;
+	*{
+		font-family: 'Gafata', sans-serif;
+		font-size: 18px;
     }
 
     *, *:before, *:after {
@@ -51,9 +52,9 @@
 
 	<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id='chatroom'>
         {% if user != chatroom.first %}
-		<img src="{{chatroom.first.profile.image.url}}" class="icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
+		<img src="{{chatroom.first.profile.image.url}}" class="p-0 icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
         {% else %}
-        <img src="{{chatroom.second.profile.image.url}}" class="icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
+        <img src="{{chatroom.second.profile.image.url}}" class="p-0 icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
         {% endif %}
 		{% if user != chatroom.first %}
 		<a href="/../messages/{{ chatroom.first }}/{{chatroom.item.id}}/" target="right">
@@ -108,9 +109,9 @@
             }
             if (flag === false){
                 if (chatroomData[i].firstusername === '{{user.username}}'){
-                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+chatroomData[i].secondusername+'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].seconduserpic +'"'+' class="icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname+'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].secondusername+ '</div>'+'</div>'+'</a>'+'</li>')
+                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+chatroomData[i].secondusername+'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].seconduserpic +'"'+' class="p-0 icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname+'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].secondusername+ '</div>'+'</div>'+'</a>'+'</li>')
                 }else if (chatroomData[i].secondusername === '{{user.username}}'){
-                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+ chatroomData[i].firstusername +'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].firstuserpic +'"'+ 'class="icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname +'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].firstusername+ '</div>'+'</div>'+'</a>'+'</li>')
+                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+ chatroomData[i].firstusername +'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].firstuserpic +'"'+ 'class="p-0 icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname +'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].firstusername+ '</div>'+'</div>'+'</a>'+'</li>')
                 }
                 list.push(chatroomData[i].threadid)
             }
