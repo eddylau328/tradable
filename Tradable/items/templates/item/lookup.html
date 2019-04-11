@@ -54,7 +54,7 @@ ul{
 {% endblock %}
 
 {% block content %}
-<div class="row container mx-auto justify-content-center">
+<div class="row container mx-auto justify-content-center" id="parents" style="overflow:hidden;">
     <div class="card bg-light border-secondary col-lg-4 col-md-5 col-10 p-0 m-3 mx-3">
         <div class="card-body p-0 m-0 ">
             <div class="container-fluid d-flex d-inline-flex mt-2 mb-3">
@@ -117,7 +117,10 @@ ul{
 {% block script%}
 <script>
 
+
+
 var set_carousel_height = function(){
+
     $('.carousel').css({
 	'height': $('.carousel').width()
 	})
@@ -125,25 +128,27 @@ var set_carousel_height = function(){
 
 var resize_image = function(){
 	$('.carousel-image').each(function(){
-		current =$(this)
-        
-		if ( current.height() > current.width() ){
-
-			current.css({'height':'auto','width':$('.carousel').width()});
-		}	
+		current =$(this);
+        console.log('true');
 	});
+   
+
+    
  }
 
 $(function(){
+    
     set_carousel_height();
     resize_image();
+    console.log($('#parents').height());
 
     $(window).resize(function() {
         set_carousel_height();
         resize_image();
     })
-
 })
+
+
 
 
 </script>
