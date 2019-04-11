@@ -6,6 +6,7 @@ from .models import Item, DescriptionPhoto
 from .forms import ItemCreateForm, ItemEditForm
 from django.forms import modelformset_factory
 from users.models import Profile
+from django.db.models import Q
 
 
 def item_base_view(request, *args, **kwargs):
@@ -46,11 +47,9 @@ def item_list_view(request):
 
     items = Item.objects.all()
     search_term = ''
-
     if 'recent' in request.GET:
         items = items.order_by('createdDateTime')
         items = items.reverse()
-
     if 'low' in request.GET:
         items = items.order_by('price')
 
@@ -60,7 +59,8 @@ def item_list_view(request):
 
     if 'search' in request.GET:
         search_term = request.GET['search']
-        items = items.filter(name__icontains=search_term)
+        qlookup = Q(name__icontains=search_term) | Q(price__icontains=search_term) | Q(seller__username__icontains=search_term)
+        items = items.filter(qlookup)
 
     paginator = Paginator(items, 15)  # show 15 items per page
 
