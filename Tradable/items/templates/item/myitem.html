@@ -14,25 +14,40 @@
     height: 1.2rem;
     overflow: hidden;
 }
+.btn-submit {
+    font-family: 'Righteous', cursive;
+    border: none;
+    color: Gainsboro;
+    font-size: 20px;
+    cursor: pointer;
+    width: 30px;
+    height:30px;
+    position: absolute;
+    top:-5px;
+    right:0px;
+}
 
 </style>
 {% endblock %}
 {% block item %}
 
 <div class="container-fluid">
-    <p class="float-left">Manage Your Items:</p>
+    <p style="position:absolute;">Manage Your Items:</p>
     <div class="row d-flex justify-content-center ">
 
         {% for item in items %}
-            <form action="" method="post">{% csrf_token %}
-                <button type="submit" button class="col btn btn-outline-primary mt-auto" name="delete" value="{{item.id}}">Delete</button>
-            </form>
-            <div id="card" class=" col-md-2 col-5 card border-black p-0  m-1" >
+            
+            
+            <div id="card" class="col-md-2 col-5 card border-black p-0  m-1" >
+                
                 <a class="text-dark " href="/items/edit/{{item.id}}/">
                     <div class="rounded card-body p-0" >
                         <div class="seller m-2 row" style="height:2rem;">
                             <img src="{{ item.seller.profile.image.url }}" class="icon img-thumbnail rounded-circle " style="width:2rem; height:2rem;">
                             <p id="sellername" class="card-text ml-1 pl-1 pt-1 col-xl-8 col-7">{{ item.seller }}</p>
+                            <form action="" method="post">{% csrf_token %}
+                                <button type="submit" button class="col btn btn-submit px-2 py-0 mt-1 " name="delete" value="{{item.id}}">X</button>
+                            </form>
                         </div>
                         <div class="rounded crop_image "style="padding:7px; width:100%; overflow:hidden;" >
                             <img class="card-img-top d_image"src="{{ item.displayPhoto.url }}" alt="Image Not Found" >
@@ -43,7 +58,7 @@
                         </div>
                     </div>
                 </a>
-            </div >
+            </div>
         {% endfor %}
     </div>
 
