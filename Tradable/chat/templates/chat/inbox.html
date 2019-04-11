@@ -51,7 +51,11 @@
 	{% for chatroom in object_list %}
 
 	<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id='chatroom'>
-		<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
+        {% if user != chatroom.first %}
+		<img src="{{chatroom.first.profile.image.url}}" class="p-0 icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
+        {% else %}
+        <img src="{{chatroom.second.profile.image.url}}" class="p-0 icon img-thumbnail rounded-circle " style="width:3rem; height:3rem;">
+        {% endif %}
 		{% if user != chatroom.first %}
 		<a href="/../messages/{{ chatroom.first }}/{{chatroom.item.id}}/" target="right">
 		<div style="max-width:0em">
@@ -105,9 +109,9 @@
             }
             if (flag === false){
                 if (chatroomData[i].firstusername === '{{user.username}}'){
-                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+chatroomData[i].secondusername+'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname+'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].secondusername+ '</div>'+'</div>'+'</a>'+'</li>')
+                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+chatroomData[i].secondusername+'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].seconduserpic +'"'+' class="p-0 icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname+'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].secondusername+ '</div>'+'</div>'+'</a>'+'</li>')
                 }else if (chatroomData[i].secondusername === '{{user.username}}'){
-                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+ chatroomData[i].firstusername +'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="https://www.law.berkeley.edu/wp-content/uploads/2015/04/Blank-profile.png" class="icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname +'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].firstusername+ '</div>'+'</div>'+'</a>'+'</li>')
+                    chatroomHolder.append('<li class="d-flex list-group-item p-3 m-0 btn btn-secondary" id="chatroom">'+'<a target="right" href="/../messages/'+ chatroomData[i].firstusername +'/'+chatroomData[i].itemid+'/'+'"'+ 'target="right">'+'<img src="'+ chatroomData[i].firstuserpic +'"'+ 'class="p-0 icon img-thumbnail rounded-circle float-left" style="width:3rem; height:3rem;">'+'<div style="max-width:0em">'+'<div class="font-weight-bold text-left pb-1" id="chatboxbarname" >'+chatroomData[i].itemname +'</div>'+'<div class="font-weight-light " id="chatboxbartext">'+ chatroomData[i].firstusername+ '</div>'+'</div>'+'</a>'+'</li>')
                 }
                 list.push(chatroomData[i].threadid)
             }
