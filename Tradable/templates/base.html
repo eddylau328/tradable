@@ -42,6 +42,7 @@
     body{
         background: whitesmoke;
 		padding-top: 44.25px;
+
     }
 	textarea {
 		resize: none;
@@ -206,12 +207,14 @@
 	{% block script %}
 	{% endblock %}
 	<script>
+	
 	$(document).ready(function(){
 		//modify crispy form class attribute
 
 		$("label").removeClass("bmd-label-static").addClass('bmd-label-floating');
 
 		$( ":text, input[type*='number'], input[type*='email'] , textarea, input[type*='password']" ).addClass('pt-3');
+		$( "#search").removeClass("pt-3");
 
 	});	
 	window.onscroll = function() {scrollFunction()};
