@@ -44,7 +44,7 @@ class InboxConsumer(AsyncConsumer):
             "text": json.dumps(newlist)
         })
 
-        await asyncio.sleep(2)
+        await asyncio.sleep(10)
         await self.send({
             "type": "websocket.close"
         })
@@ -99,25 +99,29 @@ class ChatConsumer(AsyncConsumer):
         if front_text is not None:
             loaded_dict_data = json.loads(front_text)
             msg = loaded_dict_data.get('message')
-            user = self.scope['user']
-            username = 'default'
-            if user.is_authenticated:
-                username = user.username
-            myResponse = {
-                'message': msg,
-                'username': username
-            }
-
-            await self.create_chat_message(user, msg)
-
-            # broadcasts the message event to be sent
-            await self.channel_layer.group_send(
-                self.chat_room,
-                {
-                    "type": "chat_message",
-                    "text": json.dumps(myResponse)
+            if (msg is not None):
+                user = self.scope['user']
+                username = 'default'
+                if user.is_authenticated:
+                    username = user.username
+                myResponse = {
+                    'message': msg,
+                    'username': username
                 }
-            )
+
+                await self.create_chat_message(user, msg)
+
+                # broadcasts the message event to be sent
+                await self.channel_layer.group_send(
+                    self.chat_room,
+                    {
+                        "type": "chat_message",
+                        "text": json.dumps(myResponse)
+                    }
+                )
+            offer = loaded_dict_data.get('offermessage')
+            if (offer is not None):
+                print(offer)
 
     # custome
     async def chat_message(self, event):
@@ -139,11 +143,3 @@ class ChatConsumer(AsyncConsumer):
     def create_chat_message(self, me, msg):
         thread_obj = self.thread_obj
         return ChatMessage.objects.create(thread=thread_obj, user=me, message=msg)
-
-
-class chatRoomObj:
-    def __init__(self, firstusername, secondusername, threadid, itemid):
-        self.firstusername = firstusername
-        self.secondusername = secondusername
-        self.threadid = threadid
-        self.itemid = itemid

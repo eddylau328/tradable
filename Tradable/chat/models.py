@@ -63,3 +63,11 @@ class ChatMessage(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='sender', on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class OfferMessage(models.Model):
+    thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='sender', on_delete=models.CASCADE)
+    offer = models.DecimalField(decimal_places=2, max_digits=10000, default=None, null=False)
+    offerAccept = models.BooleanField(null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)

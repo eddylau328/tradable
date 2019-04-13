@@ -14,16 +14,16 @@
 		<title>messages</title>
 
 	<style>
-		
+
 		body::-webkit-scrollbar {
 			width: 0.5em;
 		}
-		
+
 		body::-webkit-scrollbar-track {
 			-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3);
 			border-radius: 10px;
 		}
-		
+
 		body::-webkit-scrollbar-thumb {
 			border-radius: 10px;
 			background-color: LightGray ;
@@ -52,7 +52,7 @@
 				border-radius: 10px;
 				background-color: #DAF7A6;
 		}
-		
+
 		#backToInbox{
 				width:100%;
 		}
@@ -96,6 +96,12 @@
 			<div class="col">
 				<h4git  class=" text-right">From: {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h4>
 			</div>
+				<div class='col' id="offerinput">
+					<form class="m-0" id='offerform' method="POST"> {% csrf_token %}
+						<h4git class='text-right'>Make Offer:</h4>
+						<input tpye='number' class='' id="offersubmit">
+					</form>
+				</div>
 		</div>
 		<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
 
@@ -131,9 +137,12 @@
 	var loc = window.location
 	//<form id='form'>
 	var formData = $("#form")
+	var offerformData = $('#offerform')
+	var offerInput = $('#offersubmit')
 	//django name that message with an id=id_message
 	var msgInput = $('#id_message')
 	var chatHolder = $("#chat-items")
+
 	var me = $("#myUsername").val()
 
 	var wsStart = 'ws://'
@@ -147,7 +156,7 @@
 		console.log("message", e)
 		var chatDataMsg = JSON.parse(e.data)
         if (chatDataMsg.username === me){
-		  chatHolder.append("<li id='send'class='m-1 list-group-item border col-5'>" + chatDataMsg.message + "</li>")
+			chatHolder.append("<li id='send'class='m-1 list-group-item border col-5'>" + chatDataMsg.message + "</li>")
         }
         else{
             chatHolder.append("<li id='receive' class='m-1 list-group-item border col-5 ml-auto'>" + chatDataMsg.message + "</li>")
@@ -169,7 +178,19 @@
 			//msgInput.val('')
 			formData[0].reset()
 		})
+
+		offerformData.submit(function(event){
+			event.preventDefault()
+			var offer = offerInput.val()
+			console.log(offer)
+			var offerData = {
+				'offermessage':offer
+			}
+			socket.send(JSON.stringify(offerData))
+			offerInput.val(null)
+		})
 	}
+
 	socket.onerror= function(e){
 		console.log("error", e)
 	}
