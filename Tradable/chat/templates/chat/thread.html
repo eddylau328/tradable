@@ -108,7 +108,7 @@
 
 	<br>
 	<div class="fixed-top">
-		To be placed 
+		To be placed
 	</div>
 	<div class="conatainer-fluid row" style="width:100%">
 		<div class="col container pl-4">
@@ -117,42 +117,26 @@
 					<h4 class="text-left">Item: {{object.item.name}} </h4>
 				</div>
 				<div class="col">
-					<h4git  class=" text-right">From: {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h4>
+					<h4git  class=" text-right">From: {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h4git>
 				</div>
-					<div class='col' id="offerinput">
-						<form class="m-0" id='offerform' method="POST"> {% csrf_token %}
-							<h4git class='text-right'>Make Offer:</h4>
-							<input tpye='number' class='' id="offersubmit">
-						</form>
-					</div>
-			</div>
-<<<<<<< HEAD
-			<div class="col">
-				<h4git  class=" text-right">From:
-				{% if user != object.first %}
-					{{ object.first }}
+				<div class='col'>
+					<h4git class='text-right'>Offer:</h4git>
+					<h4git class='text-right' id='offerPriceHolder'></h4git>
+				</div>
+				<div class='col' id="offerinput">
+				{% if user != object.item.seller %}
+					<h4git class='text-right'>Your Offer:</h4git>
+					<input tpye='number' class='' id="offersubmit">
+					<button type='button' id='sendOfferButton'>Send</button>
+				</div>
+				<div class='col' id="offerinput">
 				{% else %}
-					{{ object.second }}
-				{% endif %}</h4>
+					<h4git class='text-right'>Offer:</h4git><br>
+					<button type='button' id='acceptButton'>Accept</button>
+					<button type='button' id='rejectButton'>Reject</button>
+				{% endif %}
+				</div>
 			</div>
-			<div class='col'>
-				<h4git class='text-right'>Offer:</h4>
-				<h4git class='text-right' id='offerPriceHolder'></h4>
-			</div>
-			{% if user != object.item.seller %}
-			<div class='col' id="offerinput">
-				<h4git class='text-right'>Your Offer:</h4>
-				<input tpye='number' class='' id="offersubmit">
-				<button type='button' id='sendOfferButton'>Send</button>
-			</div>
-			{% else %}
-			<div class='col' id="offerinput">
-				<h4git class='text-right'>Offer:</h4>
-				<button type='button' id='acceptButton'>Accept</button>
-				<button type='button' id='rejectButton'>Reject</button>
-			</div>
-			{% endif %}
-=======
 			<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
 
 				{% for chat in object.chatmessage_set.all %}
@@ -172,7 +156,6 @@
 					<input onclick="" type='submit' class='btn btn-secondary' id="submit">
 				</form>
 			</div>
->>>>>>> f996648900043207348b6a7b2a97ae0d3ffaf70b
 		</div>
 		<div class="col-3">
 			<div class="container-fluid d-flex d-inline-flex mt-2 mb-3" >
@@ -190,7 +173,7 @@
 					</ul>
 			</div>
 
-			
+
 		</div>
 	</div>
 
@@ -207,7 +190,7 @@
 	}
 
 	$(function(){
-		scDown();
+		//scDown();
 		removeMsgLabel();
 	})
 
@@ -238,14 +221,14 @@
 	socket.onmessage = function(e){
 		console.log("message", e)
 		var chatDataMsg = JSON.parse(e.data)
-<<<<<<< HEAD
 		if (chatDataMsg.hasOwnProperty('message')){
 	        if (chatDataMsg.username === me){
-				chatHolder.append("<li id='send'class='m-1 list-group-item border col-5'>" + chatDataMsg.message + "</li>")
-	        }
-	        else{
-	            chatHolder.append("<li id='receive' class='m-1 list-group-item border col-5 ml-auto'>" + chatDataMsg.message + "</li>")
-	        }
+				chatHolder.append("<li id='send'class='m-1 list-group-item border ml-auto'>" + chatDataMsg.message + "</li>")
+        	}
+        	else{
+				chatHolder.append("<li id='receive' class='m-1 list-group-item border mr-auto'>" + chatDataMsg.message + "</li>")
+        	}
+			scDown();
     	}
 
      	if (chatDataMsg.hasOwnProperty('offermessage')){
@@ -253,15 +236,7 @@
      		offerPriceHolder.text(displayPrice)
      		console.log(displayPrice)
      	}
-=======
-        if (chatDataMsg.username === me){
-					chatHolder.append("<li id='send'class='m-1 list-group-item border ml-auto'>" + chatDataMsg.message + "</li>")
-        }
-        else{
-					chatHolder.append("<li id='receive' class='m-1 list-group-item border mr-auto'>" + chatDataMsg.message + "</li>")
-        }
-			scDown();
->>>>>>> f996648900043207348b6a7b2a97ae0d3ffaf70b
+
 	}
 	socket.onopen= function(e){
 		console.log("open", e)
