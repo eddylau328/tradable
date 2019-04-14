@@ -8,6 +8,9 @@
     <!-- Material Design for Bootstrap fonts and icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
 
+		<!-- icon pack -->
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
     <!-- Material Design for Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Righteous|Roboto+Mono|Gafata|Open+Sans" rel="stylesheet">
@@ -40,27 +43,43 @@
     }
 
     body{
-        background: whitesmoke;
+
+			background: whitesmoke;
     }
+
 		#receive{
-				border: 2px;
-				border-radius: 10px;
 				background-color: white;
+				padding: 6px 12px 7px;
 		}
 		#send{
-				border: 2px;
-				border-radius: 10px;
 				background-color: #DAF7A6;
+				padding: 6px 12px 7px;
 		}
 
 		#backToInbox{
 				width:100%;
 		}
 
+		#send > .list-group-item:first-child {
+    	border-top-left-radius: 0em;
+		}
+
+		.list-group-item:first-child {
+			/*overwrite bootstrap default first table element style*/
+    	border-top-left-radius: 1.3em;
+    	border-top-right-radius: 1.3em;
+		}
+
+		.list-group-item:last-child {
+			border-bottom-right-radius: 1.3em;
+			border-bottom-left-radius: 1.3em;
+		}
+
 		li {
 				word-break: break-all;
-				border-style: outset;
-				padding: 5px;
+				font-size:17px;
+				border-radius: 1.3em;
+				max-width:40%;
 		}
 
 		#chatinput{
@@ -88,11 +107,26 @@
 
 
 	<br>
-	<div class="container pl-4">
-		<div class="row">
-			<div class="col">
-				<h4 class="text-left">Item: {{object.item.name}} </h4>
+	<div class="fixed-top">
+		To be placed 
+	</div>
+	<div class="conatainer-fluid row" style="width:100%">
+		<div class="col container pl-4">
+			<div class="row">
+				<div class="col">
+					<h4 class="text-left">Item: {{object.item.name}} </h4>
+				</div>
+				<div class="col">
+					<h4git  class=" text-right">From: {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h4>
+				</div>
+					<div class='col' id="offerinput">
+						<form class="m-0" id='offerform' method="POST"> {% csrf_token %}
+							<h4git class='text-right'>Make Offer:</h4>
+							<input tpye='number' class='' id="offersubmit">
+						</form>
+					</div>
 			</div>
+<<<<<<< HEAD
 			<div class="col">
 				<h4git  class=" text-right">From:
 				{% if user != object.first %}
@@ -118,36 +152,65 @@
 				<button type='button' id='rejectButton'>Reject</button>
 			</div>
 			{% endif %}
+=======
+			<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
+
+				{% for chat in object.chatmessage_set.all %}
+				{% if chat.user == user %}
+				<li id='send'class="m-1 list-group-item border ml-auto">{{ chat.message }}</li>
+				{% else %}
+				<li id='receive' class="m-1 list-group-item border mr-auto ">{{ chat.message }}</li>
+				{% endif %}
+
+				{% endfor %}
+			</ul>
+
+			<div class=" fixed-bottom p-3 bg-white" id="chatinput">
+				<form class="m-0" id='form' method='POST'> {% csrf_token %}
+					<input type='hidden' id='myUsername' value='{{ user.username }}'>
+					{{form.as_p }}
+					<input onclick="" type='submit' class='btn btn-secondary' id="submit">
+				</form>
+			</div>
+>>>>>>> f996648900043207348b6a7b2a97ae0d3ffaf70b
 		</div>
-		<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
+		<div class="col-3">
+			<div class="container-fluid d-flex d-inline-flex mt-2 mb-3" >
+					<img src="{{ object.item.seller.profile.image.url }}" class="icon img-thumbnail rounded-circle p-0 " style="width:3rem; height:3rem;">
+					<p id="sellername" class="card-text ml-1 pl-1 my-auto col-xl-8 col-7" style="font-size: 1.2rem;" >{{ object.item.seller }}</p>
+			</div>
+			<h3 class="border-bottom text-left p-1">{{object.name}}</h3>
+			<img src="{{ object.item.displayPhoto.url }}" class="carousel-image d-block w-100 " alt="Image Not Found">
+			<div class="container-fluid ">
+					<ul class="pl-0" style="overflow:hidden;">
+							<li><div class="d-flex d-inline-flex"><i class="item-icon fas fa-dollar-sign px-1"></i><p class="card-text my-auto ml-1">{{ object.item.price }}</p></div></li>
+							<li><div class="d-flex d-inline-flex"><i class="item-icon far fa-question-circle"></i><p class="card-text my-auto ml-1">{{ object.item.description }}</p></div></li>
+							<li><div class="d-flex d-inline-flex"><i class="item-icon far fa-pause-circle" ></i><p class="card-text my-auto ml-1">{{object.iteem.condition}}</p></div></li>
+							<li><div class="d-flex d-inline-flex"><i class="item-icon far fa-clock "></i><p class="card-text mt-0 ml-1">{{object.item.createdDateTime}}</p></div></li>
+					</ul>
+			</div>
 
-			{% for chat in object.chatmessage_set.all %}
-			{% if chat.user == user %}
-			<li id='send'class="m-1 list-group-item border col-5">{{ chat.message }}</li>
-			{% else %}
-			<li id='receive' class="m-1 list-group-item border col-5 ml-auto">{{ chat.message }}</li>
-			{% endif %}
-
-			{% endfor %}
-		</ul>
-
-	</div>
-
-	<div class=" fixed-bottom p-3 bg-white" id="chatinput">
-		<form class="m-0" id='form' method='POST'> {% csrf_token %}
-			<input type='hidden' id='myUsername' value='{{ user.username }}'>
-			{{form.as_p }}
-			<input onclick="" type='submit' class='btn btn-secondary' id="submit">
-		</form>
+			
+		</div>
 	</div>
 
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js'>
 	</script>
 	<script>
+
+	var removeMsgLabel = function(){
+		$('label').remove();
+	}
+
 	var scDown = function(){
 			$(document).scrollTop($(document).height());
 	}
-	scDown();
+
+	$(function(){
+		scDown();
+		removeMsgLabel();
+	})
+
 	// websocket scripts
 	//console.log(window.location)
 	var loc = window.location
@@ -175,6 +238,7 @@
 	socket.onmessage = function(e){
 		console.log("message", e)
 		var chatDataMsg = JSON.parse(e.data)
+<<<<<<< HEAD
 		if (chatDataMsg.hasOwnProperty('message')){
 	        if (chatDataMsg.username === me){
 				chatHolder.append("<li id='send'class='m-1 list-group-item border col-5'>" + chatDataMsg.message + "</li>")
@@ -189,6 +253,15 @@
      		offerPriceHolder.text(displayPrice)
      		console.log(displayPrice)
      	}
+=======
+        if (chatDataMsg.username === me){
+					chatHolder.append("<li id='send'class='m-1 list-group-item border ml-auto'>" + chatDataMsg.message + "</li>")
+        }
+        else{
+					chatHolder.append("<li id='receive' class='m-1 list-group-item border mr-auto'>" + chatDataMsg.message + "</li>")
+        }
+			scDown();
+>>>>>>> f996648900043207348b6a7b2a97ae0d3ffaf70b
 	}
 	socket.onopen= function(e){
 		console.log("open", e)
