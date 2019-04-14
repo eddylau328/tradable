@@ -94,14 +94,30 @@
 				<h4 class="text-left">Item: {{object.item.name}} </h4>
 			</div>
 			<div class="col">
-				<h4git  class=" text-right">From: {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h4>
+				<h4git  class=" text-right">From:
+				{% if user != object.first %}
+					{{ object.first }}
+				{% else %}
+					{{ object.second }}
+				{% endif %}</h4>
 			</div>
-				<div class='col' id="offerinput">
-					<form class="m-0" id='offerform' method="POST"> {% csrf_token %}
-						<h4git class='text-right'>Make Offer:</h4>
-						<input tpye='number' class='' id="offersubmit">
-					</form>
-				</div>
+			<div class='col'>
+				<h4git class='text-right'>Offer:</h4>
+				<h4git class='text-right' id='offerPriceHolder'></h4>
+			</div>
+			{% if user != object.item.seller %}
+			<div class='col' id="offerinput">
+				<h4git class='text-right'>Your Offer:</h4>
+				<input tpye='number' class='' id="offersubmit">
+				<button type='button' id='sendOfferButton'>Send</button>
+			</div>
+			{% else %}
+			<div class='col' id="offerinput">
+				<h4git class='text-right'>Offer:</h4>
+				<button type='button' id='acceptButton'>Accept</button>
+				<button type='button' id='rejectButton'>Reject</button>
+			</div>
+			{% endif %}
 		</div>
 		<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
 
@@ -137,11 +153,15 @@
 	var loc = window.location
 	//<form id='form'>
 	var formData = $("#form")
-	var offerformData = $('#offerform')
 	var offerInput = $('#offersubmit')
 	//django name that message with an id=id_message
 	var msgInput = $('#id_message')
 	var chatHolder = $("#chat-items")
+	var offerPriceHolder = $('#offerPriceHolder')
+
+	var sendOfferButton = $('#sendOfferButton')
+	var acceptButton = $('#acceptButton')
+	var rejectButton = $('#rejectButton')
 
 	var me = $("#myUsername").val()
 
@@ -155,12 +175,20 @@
 	socket.onmessage = function(e){
 		console.log("message", e)
 		var chatDataMsg = JSON.parse(e.data)
-        if (chatDataMsg.username === me){
-			chatHolder.append("<li id='send'class='m-1 list-group-item border col-5'>" + chatDataMsg.message + "</li>")
-        }
-        else{
-            chatHolder.append("<li id='receive' class='m-1 list-group-item border col-5 ml-auto'>" + chatDataMsg.message + "</li>")
-        }
+		if (chatDataMsg.hasOwnProperty('message')){
+	        if (chatDataMsg.username === me){
+				chatHolder.append("<li id='send'class='m-1 list-group-item border col-5'>" + chatDataMsg.message + "</li>")
+	        }
+	        else{
+	            chatHolder.append("<li id='receive' class='m-1 list-group-item border col-5 ml-auto'>" + chatDataMsg.message + "</li>")
+	        }
+    	}
+
+     	if (chatDataMsg.hasOwnProperty('offermessage')){
+     		var displayPrice = "HK$ " + chatDataMsg.offermessage.toString()
+     		offerPriceHolder.text(displayPrice)
+     		console.log(displayPrice)
+     	}
 	}
 	socket.onopen= function(e){
 		console.log("open", e)
@@ -179,16 +207,17 @@
 			formData[0].reset()
 		})
 
-		offerformData.submit(function(event){
+		sendOfferButton.click(function(event){
 			event.preventDefault()
 			var offer = offerInput.val()
-			console.log(offer)
+			offerWithDecimal = Number.parseFloat(offer).toFixed(2)
 			var offerData = {
-				'offermessage':offer
+				'offermessage':offerWithDecimal
 			}
 			socket.send(JSON.stringify(offerData))
-			offerInput.val(null)
+     		offerInput.val(null)
 		})
+
 	}
 
 	socket.onerror= function(e){

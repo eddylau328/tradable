@@ -3,8 +3,7 @@ import json
 from django.contrib.auth import get_user_model
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
-from django.core import serializers
-from .models import Thread, ChatMessage
+from .models import Thread, ChatMessage, OfferMessage
 from django.contrib.auth.models import User
 
 
@@ -44,7 +43,7 @@ class InboxConsumer(AsyncConsumer):
             "text": json.dumps(newlist)
         })
 
-        await asyncio.sleep(10)
+        await asyncio.sleep(100)
         await self.send({
             "type": "websocket.close"
         })
@@ -87,9 +86,22 @@ class ChatConsumer(AsyncConsumer):
             chat_room,
             self.channel_name
         )
+
         await self.send({
             "type": "websocket.accept"
         })
+
+        last_offer = await self.get_latest_offer(me, thread_obj)
+        if last_offer is not None:
+            print(last_offer)
+            myOfferResponse = {
+                'offermessage': str(last_offer),
+            }
+            await self.send({
+                "type": "websocket.send",
+                "text": json.dumps(myOfferResponse)
+            })
+
         # print(thread_obj)
 
     async def websocket_receive(self, event):
@@ -121,10 +133,33 @@ class ChatConsumer(AsyncConsumer):
                 )
             offer = loaded_dict_data.get('offermessage')
             if (offer is not None):
-                print(offer)
+                user = self.scope['user']
+                username = 'default'
+                if user.is_authenticated:
+                    username = user.username
+                myOfferResponse = {
+                    'offermessage': offer,
+                    'username': username
+                }
 
+                await self.create_offer_message(user, offer)
+                await self.channel_layer.group_send(
+                    self.chat_room,
+                    {
+                        "type": "offer_message",
+                        "text": json.dumps(myOfferResponse)
+                    }
+                )
     # custome
+
     async def chat_message(self, event):
+        # send the actual message
+        await self.send({
+            "type": "websocket.send",
+            "text": event['text']
+        })
+
+    async def offer_message(self, event):
         # send the actual message
         await self.send({
             "type": "websocket.send",
@@ -143,3 +178,24 @@ class ChatConsumer(AsyncConsumer):
     def create_chat_message(self, me, msg):
         thread_obj = self.thread_obj
         return ChatMessage.objects.create(thread=thread_obj, user=me, message=msg)
+
+    @database_sync_to_async
+    def create_offer_message(self, me, offer):
+        thread_obj = self.thread_obj
+        if isinstance(offer, bool):
+            return OfferMessage.objects.create(thread=thread_obj, user=me, offerAccept=offer)
+        else:
+            return OfferMessage.objects.create(thread=thread_obj, user=me, offer=offer)
+
+    @database_sync_to_async
+    def get_latest_offer(self, me, thread):
+
+        offerList = OfferMessage.objects.exclude(user=thread.item.seller)
+        if offerList.exists():
+            latestOfferMessage = offerList.latest('id')
+            if latestOfferMessage.offerDelete is not None:
+                return latestOfferMessage.offerDelete
+            else:
+                return latestOfferMessage.offer
+        else:
+            return None
