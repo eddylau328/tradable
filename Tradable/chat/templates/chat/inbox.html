@@ -150,6 +150,8 @@
             currentTextbox.replaceWith('<div class="font-weight-light" id="msgupdate">'+chatroomData[count].msg+'</div>')
             count = count + 1
         });
+
+        socket.send()
         //updateMsg(msgList)
     }
 

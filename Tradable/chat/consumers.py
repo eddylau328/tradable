@@ -43,13 +43,37 @@ class InboxConsumer(AsyncConsumer):
             "text": json.dumps(newlist)
         })
 
-        await asyncio.sleep(100)
-        await self.send({
-            "type": "websocket.close"
-        })
-
     async def websocket_receive(self, event):
         print("receive", event)
+        me = self.scope['user']
+        chatroomList = await self.get_chatroom(me)
+        msgList = []
+        for obj in chatroomList:
+            msg = await self.get_msg(obj)
+            msgList.append(msg)
+
+        newlist = []
+        # print(msgList)
+        count = 0
+        for obj in chatroomList:
+            chatroomDict = {
+                'firstusername': obj.first.username,
+                'secondusername': obj.second.username,
+                'itemname': obj.item.name,
+                'threadid': obj.id,
+                'itemid': obj.item.id,
+                'firstuserpic': obj.first.profile.image.url,
+                'seconduserpic': obj.second.profile.image.url,
+                'msg': msgList[count]
+            }
+            count = count + 1
+            newlist.append(chatroomDict)
+
+        await asyncio.sleep(2)
+        await self.send({
+            "type": "websocket.send",
+            "text": json.dumps(newlist)
+        })
 
     async def websocket_disconnect(self, event):
         print("disconnected", event)
