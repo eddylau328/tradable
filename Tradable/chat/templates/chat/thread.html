@@ -125,15 +125,16 @@
 					<br>
 					<h4git class='text-right' id='offerAcceptHolder'></h4git>
 				</div>
-				<div class='col' id="offerinput">
+				<div class='col' id="offerinputBox">
 				{% if user != object.item.seller %}
-					<h4git class='text-right'>Your Offer:</h4git>
+					<h4git class='text-right' id='buyerOfferTitle'>Enter Your Offer:</h4git>
+					<br>
 					<input tpye='number' class='' id="offersubmit">
 					<button type='button' id='sendOfferButton'>Send</button>
 				</div>
-				<div class='col' id="offerinput">
+				<div class='col' id="offerinputBox">
 				{% else %}
-					<h4git class='text-right'>Offer:</h4git><br>
+					<h4git class='text-right'>Enter Your Offer:</h4git><br>
 					<button type='button' id='acceptButton'>Accept</button>
 					<button type='button' id='rejectButton'>Reject</button>
 				{% endif %}
@@ -206,13 +207,15 @@
 	var msgInput = $('#id_message')
 	var chatHolder = $("#chat-items")
 	var offerPriceHolder = $('#offerPriceHolder')
-
+	var buyerOfferTitle = $('#buyerOfferTitle')
 	var sendOfferButton = $('#sendOfferButton')
 	var acceptButton = $('#acceptButton')
 	var rejectButton = $('#rejectButton')
 	var offerAcceptHolder = $('#offerAcceptHolder')
-
+	var offerinputBox = $('#offerinputBox')
 	var me = $("#myUsername").val()
+
+	var offerReject = false
 
 	var wsStart = 'ws://'
 	if (loc.protocol == 'https:'){
@@ -237,13 +240,20 @@
      	if (chatDataMsg.hasOwnProperty('offermessage')){
      		var displayPrice = "HK$ " + chatDataMsg.offermessage.toString()
      		offerPriceHolder.text(displayPrice)
+     		buyerOfferTitle.text("Update Your Offer:")
      		console.log(displayPrice)
+     		if (offerReject){
+     			offerAcceptHolder.text("")
+     			offerReject = false
+     		}
      	}
 
      	if (chatDataMsg.hasOwnProperty('offerAccept')){
      		if (chatDataMsg.offerAccept === true){
      			offerAcceptHolder.text("Accepted offer")
+     			offerinputBox.hide()
      		}else if (chatDataMsg.offerAccept === false){
+     			offerReject = true
      			offerAcceptHolder.text("Rejected offer")
      		}
      	}
@@ -275,6 +285,11 @@
 			}
 			socket.send(JSON.stringify(offerData))
      		offerInput.val(null)
+
+     		if (offerReject){
+     			offerAcceptHolder.text("")
+     			offerReject = false
+     		}
 		})
 
 		acceptButton.click(function(event){
