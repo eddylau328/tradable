@@ -145,8 +145,8 @@
         var count = 0
         $("div#msgupdate").each(function(){
             var currentTextbox = $(this);
-            console.log(currentTextbox)
-            console.log(chatroomData[count].msg)
+            //console.log(currentTextbox)
+            //console.log(chatroomData[count].msg)
             currentTextbox.replaceWith('<div class="font-weight-light" id="msgupdate">'+chatroomData[count].msg+'</div>')
             count = count + 1
         });

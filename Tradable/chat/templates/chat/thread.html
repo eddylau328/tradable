@@ -122,6 +122,8 @@
 				<div class='col'>
 					<h4git class='text-right'>Offer:</h4git>
 					<h4git class='text-right' id='offerPriceHolder'></h4git>
+					<br>
+					<h4git class='text-right' id='offerAcceptHolder'></h4git>
 				</div>
 				<div class='col' id="offerinput">
 				{% if user != object.item.seller %}
@@ -208,6 +210,7 @@
 	var sendOfferButton = $('#sendOfferButton')
 	var acceptButton = $('#acceptButton')
 	var rejectButton = $('#rejectButton')
+	var offerAcceptHolder = $('#offerAcceptHolder')
 
 	var me = $("#myUsername").val()
 
@@ -235,6 +238,14 @@
      		var displayPrice = "HK$ " + chatDataMsg.offermessage.toString()
      		offerPriceHolder.text(displayPrice)
      		console.log(displayPrice)
+     	}
+
+     	if (chatDataMsg.hasOwnProperty('offerAccept')){
+     		if (chatDataMsg.offerAccept === true){
+     			offerAcceptHolder.text("Accepted offer")
+     		}else if (chatDataMsg.offerAccept === false){
+     			offerAcceptHolder.text("Rejected offer")
+     		}
      	}
 
 	}
@@ -266,6 +277,23 @@
      		offerInput.val(null)
 		})
 
+		acceptButton.click(function(event){
+			event.preventDefault()
+			var offerData = {
+				'offerAccept':true
+			}
+			//console.log(offerData.offerAccept)
+			socket.send(JSON.stringify(offerData))
+		})
+
+		rejectButton.click(function(event){
+			event.preventDefault()
+			var offerData = {
+				'offerAccept':false
+			}
+			//console.log(offerData.offerAccept)
+			socket.send(JSON.stringify(offerData))
+		})
 	}
 
 	socket.onerror= function(e){

@@ -117,7 +117,6 @@ class ChatConsumer(AsyncConsumer):
 
         last_offer = await self.get_latest_offer(me, thread_obj)
         if last_offer is not None:
-            print(last_offer)
             myOfferResponse = {
                 'offermessage': str(last_offer),
             }
@@ -126,6 +125,15 @@ class ChatConsumer(AsyncConsumer):
                 "text": json.dumps(myOfferResponse)
             })
 
+        last_seller_offer = await self.get_latest_seller_offer(thread_obj.item.seller, thread_obj)
+        if last_seller_offer is not None:
+            myOfferResponse = {
+                'offerAccept': last_seller_offer,
+            }
+            await self.send({
+                "type": "websocket.send",
+                "text": json.dumps(myOfferResponse)
+            })
         # print(thread_obj)
 
     async def websocket_receive(self, event):
@@ -163,10 +171,27 @@ class ChatConsumer(AsyncConsumer):
                     username = user.username
                 myOfferResponse = {
                     'offermessage': offer,
-                    'username': username
                 }
 
                 await self.create_offer_message(user, offer)
+                await self.channel_layer.group_send(
+                    self.chat_room,
+                    {
+                        "type": "offer_message",
+                        "text": json.dumps(myOfferResponse)
+                    }
+                )
+            offerAccept = loaded_dict_data.get('offerAccept')
+            if (offerAccept is not None):
+                user = self.scope['user']
+                username = 'default'
+                if user.is_authenticated:
+                    username = user.username
+                myOfferResponse = {
+                    'offerAccept': offerAccept,
+                }
+
+                await self.create_offer_message(user, offerAccept)
                 await self.channel_layer.group_send(
                     self.chat_room,
                     {
@@ -214,12 +239,21 @@ class ChatConsumer(AsyncConsumer):
     @database_sync_to_async
     def get_latest_offer(self, me, thread):
 
-        offerList = OfferMessage.objects.exclude(user=thread.item.seller)
+        offerList = OfferMessage.objects.filter(thread=thread).exclude(user=thread.item.seller)
         if offerList.exists():
             latestOfferMessage = offerList.latest('id')
             if latestOfferMessage.offerDelete is not None:
                 return latestOfferMessage.offerDelete
             else:
                 return latestOfferMessage.offer
+        else:
+            return None
+
+    @database_sync_to_async
+    def get_latest_seller_offer(self, seller, thread):
+        offerList = OfferMessage.objects.filter(thread=thread, user=seller)
+        if offerList.exists():
+            latestSellerOffer = offerList.latest('id')
+            return latestSellerOffer.offerAccept
         else:
             return None
