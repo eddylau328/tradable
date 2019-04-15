@@ -5,6 +5,7 @@ from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
 from .models import Thread, ChatMessage, OfferMessage
 from django.contrib.auth.models import User
+from items.models import Item
 
 
 class InboxConsumer(AsyncConsumer):

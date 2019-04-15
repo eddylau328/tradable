@@ -16,6 +16,7 @@ class Item(models.Model):
     # if the sellor account is deleted, the item posts will be deleted
     seller = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
     displayPhoto = models.ImageField(upload_to='item_pics', blank=False, null=True)
+    isSoldOut = models.BooleanField(default=False)
 
     # QuerySet will show [<Item: <seller> <name> >]
     def __str__(self):
