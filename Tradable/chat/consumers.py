@@ -101,19 +101,19 @@ class InboxConsumer(AsyncConsumer):
                 'msg': msgList2[count]
             }
             count = count + 1
-            newlist1.append(chatroomDict2)
+            newlist2.append(chatroomDict2)
 
         async_to_sync(channel_layer.group_send)(
             room1,
             {
-                "type": "websocket.send",
+                "type": "inbox_data",
                 "text": json.dumps(newlist1)
             })
 
         async_to_sync(channel_layer.group_send)(
             room2,
             {
-                "type": "websocket.send",
+                "type": "inbox_data",
                 "text": json.dumps(newlist2)
             })
 
@@ -124,6 +124,7 @@ class InboxConsumer(AsyncConsumer):
         room2 = instance.thread.second.username
         user1 = instance.thread.first
         user2 = instance.thread.second
+        print(instance.thread.updated)
         chatroomList1 = Thread.objects.by_user(user1)
         chatroomList2 = Thread.objects.by_user(user2)
         msgList1 = []
@@ -164,21 +165,28 @@ class InboxConsumer(AsyncConsumer):
                 'msg': msgList2[count]
             }
             count = count + 1
-            newlist1.append(chatroomDict2)
+            newlist2.append(chatroomDict2)
 
         async_to_sync(channel_layer.group_send)(
             room1,
             {
-                "type": "websocket.send",
+                "type": "inbox_data",
                 "text": json.dumps(newlist1)
             })
 
         async_to_sync(channel_layer.group_send)(
             room2,
             {
-                "type": "websocket.send",
+                "type": "inbox_data",
                 "text": json.dumps(newlist2)
             })
+
+    async def inbox_data(self, event):
+        # send the actual message
+        await self.send({
+            "type": "websocket.send",
+            "text": event['text']
+        })
 
     async def websocket_receive(self, event):
         print("receive", event)
