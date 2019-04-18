@@ -6,12 +6,23 @@ from channels.db import database_sync_to_async
 from .models import Thread, ChatMessage, OfferMessage
 from django.contrib.auth.models import User
 from items.models import Item
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 class InboxConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
         print("Inbox connected", event)
         me = self.scope['user']
+        inbox_room = me.username
+        self.inbox_room = inbox_room
+        await self.channel_layer.group_add(
+            inbox_room,
+            self.channel_name
+        )
+        print(self.channel_name)
         chatroomList = await self.get_chatroom(me)
         msgList = []
         for obj in chatroomList:
@@ -44,20 +55,24 @@ class InboxConsumer(AsyncConsumer):
             "text": json.dumps(newlist)
         })
 
-    async def websocket_receive(self, event):
-        print("receive", event)
-        me = self.scope['user']
-        chatroomList = await self.get_chatroom(me)
-        msgList = []
-        for obj in chatroomList:
-            msg = await self.get_msg(obj)
-            msgList.append(msg)
-
-        newlist = []
-        # print(msgList)
+    @receiver(post_save, sender=Thread)
+    def update_inbox(sender, instance, **kwargs):
+        channel_layer = get_channel_layer()
+        room1 = instance.first.username
+        room2 = instance.second.username
+        user1 = instance.first
+        user2 = instance.second
+        chatroomList1 = Thread.objects.by_user(user1)
+        chatroomList2 = Thread.objects.by_user(user2)
+        msgList1 = []
+        msgList2 = []
+        for obj in chatroomList1:
+            msg = get_msg_out(obj)
+            msgList1.append(msg)
+        newlist1 = []
         count = 0
-        for obj in chatroomList:
-            chatroomDict = {
+        for obj in chatroomList1:
+            chatroomDict1 = {
                 'firstusername': obj.first.username,
                 'secondusername': obj.second.username,
                 'itemname': obj.item.name,
@@ -65,16 +80,46 @@ class InboxConsumer(AsyncConsumer):
                 'itemid': obj.item.id,
                 'firstuserpic': obj.first.profile.image.url,
                 'seconduserpic': obj.second.profile.image.url,
-                'msg': msgList[count]
+                'msg': msgList1[count]
             }
             count = count + 1
-            newlist.append(chatroomDict)
+            newlist1.append(chatroomDict1)
 
-        await asyncio.sleep(2)
-        await self.send({
-            "type": "websocket.send",
-            "text": json.dumps(newlist)
-        })
+        for obj in chatroomList2:
+            msg = get_msg_out(obj)
+            msgList2.append(msg)
+        newlist2 = []
+        count = 0
+        for obj in chatroomList2:
+            chatroomDict2 = {
+                'firstusername': obj.first.username,
+                'secondusername': obj.second.username,
+                'itemname': obj.item.name,
+                'threadid': obj.id,
+                'itemid': obj.item.id,
+                'firstuserpic': obj.first.profile.image.url,
+                'seconduserpic': obj.second.profile.image.url,
+                'msg': msgList2[count]
+            }
+            count = count + 1
+            newlist1.append(chatroomDict2)
+
+        async_to_sync(channel_layer.group_send)(
+            room1,
+            {
+                "type": "websocket.send",
+                "text": json.dumps(newlist1)
+            })
+
+        async_to_sync(channel_layer.group_send)(
+            room2,
+            {
+                "type": "websocket.send",
+                "text": json.dumps(newlist2)
+            })
+
+    async def websocket_receive(self, event):
+        print("receive", event)
 
     async def websocket_disconnect(self, event):
         print("disconnected", event)
@@ -258,3 +303,12 @@ class ChatConsumer(AsyncConsumer):
             return latestSellerOffer.offerAccept
         else:
             return None
+
+
+def get_msg_out(thread):
+    try:
+        msg = ChatMessage.objects.filter(thread=thread)
+        latestmsg = msg.latest('id').message
+        return latestmsg
+    except ChatMessage.DoesNotExist:
+        return ""

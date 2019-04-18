@@ -45,7 +45,7 @@ def item_dynamic_lookup_view(request, item_id, *args, **kwargs):
 
 def item_list_view(request):
 
-    items = Item.objects.all()
+    items = Item.objects.filter(isSoldOut=False)
     search_term = ''
     if 'recent' in request.GET:
         items = items.order_by('createdDateTime')
@@ -208,8 +208,10 @@ def edit_item_view(request, item_id):
                 return redirect('myitem')
 
         if (item.seller == request.user):
+            photo = DescriptionPhoto.objects.select_related().filter(item=item_id)
             context = {
                 'item': item,
+                'photo': photo,
                 'itemForm': itemForm,
                 'formset': formset,
                 'newformset': newformset

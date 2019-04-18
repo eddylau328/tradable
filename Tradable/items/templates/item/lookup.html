@@ -105,7 +105,11 @@ ul{
             <div class="col d-flex justify-content-center d-flex align-items-end">
                 <form class="d-flex mb-0" action="" method="post">{% csrf_token %}
                     <button type="submit" button class="col btn btn-secondary " name="back" value="back">Return to list</button>
+                    {% if object.isSoldOut != True %}
                     <button type="submit" button class="col btn btn-secondary " name="seller" value="{{ object.seller }}">BUY!</button>
+                    {% else %}
+                    <h4>This item is sold out!!</h4>
+                    {% endif %}
                 </form>
             </div>
         </div>

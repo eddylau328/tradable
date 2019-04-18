@@ -4,6 +4,8 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from items.models import Item
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class ThreadManager(models.Manager):
@@ -72,3 +74,10 @@ class OfferMessage(models.Model):
     offerAccept = models.BooleanField(null=True)
     offerDelete = models.BooleanField(null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+@receiver(post_save, sender=OfferMessage)
+def update_item_isSoldOut(sender, instance, **kwargs):
+    if (instance.offerAccept is True):
+        searchID = instance.thread.item.id
+        Item.objects.filter(id=searchID).update(isSoldOut=True)
