@@ -25,18 +25,20 @@ br{
 </div>
 <div class="container-fluid row  p-0 m-0 ">
     <div class="col-xl-3 col-4 p-0 border-right desktopframe" id="desktopframe">
+    <br class="d-block d-lg-none">
         <iframe class="d-none d-lg-block" id="left" style="height:80vh; width:100%"  frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>
     </div>
 	<div class="col p-0 ">
         {% if seller == None %}
+        <br class="d-block d-lg-none">
         <iframe class="d-none d-lg-block" id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="{% url 'blank'  %}">
         </iframe>
         {% else %}
+        <br class="d-block d-lg-none">
         <iframe class="d-none d-lg-block" id="right" iframe name="right" style="height:80vh; width:100%" frameBorder="0" src="/../messages/{{ seller }}/{{item_id}}/"></iframe>
         {% endif %}
     </div>
 </div>
-
 
 <div class="container-fluid row p-0 m-0 " id="mobileframe">
         <iframe class="d-block d-lg-none mt-4" id="right" iframe name="right" style="height:80vh; width:100%" class="border-right" frameBorder="0" src="{% url 'messages:inbox'  %}"></iframe>

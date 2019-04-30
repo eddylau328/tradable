@@ -1,3 +1,5 @@
+{% load crispy_forms_tags %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -20,18 +22,9 @@
 
 		body::-webkit-scrollbar {
 			width: 0.5em;
+			display:none;
 		}
 
-		body::-webkit-scrollbar-track {
-			-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3);
-			border-radius: 10px;
-		}
-
-		body::-webkit-scrollbar-thumb {
-			border-radius: 10px;
-			background-color: LightGray ;
-			outline: 20px solid LightGray;
-		}
 
 		*{
 				font-family: 'Open Sans', sans-serif;
@@ -91,9 +84,12 @@
 
 		#submit{
 				position:absolute;
-				top: 40px;
-				right: 15px;
+				bottom: 10px;
+				right: 10px;
 				background-color: white ;
+		}
+		p{
+			margin: 5px;
 		}
     </style>
   </head>
@@ -107,40 +103,18 @@
 
 
 	<br>
-	<div class="fixed-top">
-		To be placed
+
+	<div class="fixed-top d-inline-flex align-items-center justify-content-center p-1 border">
+		<img src="{{ object.item.displayPhoto.url }}" class="icon img-thumbnail rounded-circle p-0" style="width:3rem; height:3rem;">
+		<h4 class="text-left py-auto pl-2">{{object.item.name}}</h4>
+		<h4  class="py-auto">&nbsp;from: {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h4>
 	</div>
+	<br>
+	<br>
 	<div class="conatainer-fluid row" style="width:100%">
 		<div class="col container pl-4">
-			<div class="row">
-				<div class="col">
-					<h4 class="text-left">Item: {{object.item.name}} </h4>
-				</div>
-				<div class="col">
-					<h4git  class=" text-right">From: {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h4git>
-				</div>
-				<div class='col'>
-					<h4git class='text-right'>Offer:</h4git>
-					<h4git class='text-right' id='offerPriceHolder'></h4git>
-					<br>
-					<h4git class='text-right' id='offerAcceptHolder'></h4git>
-				</div>
-				<div class='col' id="offerinputBox">
-				{% if user != object.item.seller %}
-					<h4git class='text-right' id='buyerOfferTitle'>Enter Your Offer:</h4git>
-					<br>
-					<input tpye='number' class='' id="offersubmit">
-					<button type='button' id='sendOfferButton'>Send</button>
-				</div>
-				<div class='col' id="offerinputBox">
-				{% else %}
-					<h4git class='text-right'>Enter Your Offer:</h4git><br>
-					<button type='button' id='acceptButton'>Accept</button>
-					<button type='button' id='rejectButton'>Reject</button>
-				{% endif %}
-				</div>
-			</div>
-			<ul class="row list-group p-0" id='chat-items' style="margin-bottom: 150px;">
+
+			<ul class="row list-group p-0" id='chat-items'>
 
 				{% for chat in object.chatmessage_set.all %}
 				{% if chat.user == user %}
@@ -152,31 +126,42 @@
 				{% endfor %}
 			</ul>
 
-			<div class=" fixed-bottom p-3 bg-white" id="chatinput">
-				<form class="m-0" id='form' method='POST'> {% csrf_token %}
-					<input type='hidden' id='myUsername' value='{{ user.username }}'>
-					{{form.as_p }}
-					<input onclick="" type='submit' class='btn btn-secondary' id="submit">
-				</form>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<div class="fixed-bottom bg-light">
+				<div class="d-flex" style="" id="sellandbuy">
+					<div class='col'>
+						<h4 class='' id='offerPriceHolder'></h4>
+						<h4 class='' id='offerAcceptHolder'></h4>
+					</div>
+					<div class='d-inline-flex' id="offerinputBox">
+					{% if user != object.item.seller %}
+						<p class='mb-0 pt-1' id='buyerOfferTitle'>Enter Your Offer:</p>
+						<span class="bmd-form-group pr-1 p-0">
+							<input class="form-control" type="number" class="" id="offersubmit">
+						</span>
+						<button class="btn btn-raised btn-secondary" type='button' id='sendOfferButton'>Send</button>
+					</div>
+					<div class='' id="offerinputBox">
+					{% else %}
+						<button class="btn btn-raised btn-secondary mr-2" type='button' id='acceptButton'>Accept</button>
+						<button class="btn btn-raised btn-secondary" type='button' id='rejectButton'>Reject</button>
+					{% endif %}
+					</div>
+				</div>
+				<div class="pl-3 p-1 m-1 bg-white" id="chatinput">
+					<form class="m-0" id='form' method='POST'> {% csrf_token %}
+						<input type='hidden' id='myUsername' value='{{ user.username }}'>
+						{{form.as_p }}
+						<input onclick="" type='submit' class='btn btn-secondary' id="submit">
+					</form>
+				</div>
 			</div>
-		</div>
-		<div class="col-3">
-			<div class="container-fluid d-flex d-inline-flex mt-2 mb-3" >
-					<img src="{{ object.item.seller.profile.image.url }}" class="icon img-thumbnail rounded-circle p-0 " style="width:3rem; height:3rem;">
-					<p id="sellername" class="card-text ml-1 pl-1 my-auto col-xl-8 col-7" style="font-size: 1.2rem;" >{{ object.item.seller }}</p>
-			</div>
-			<h3 class="border-bottom text-left p-1">{{object.name}}</h3>
-			<img src="{{ object.item.displayPhoto.url }}" class="carousel-image d-block w-100 " alt="Image Not Found">
-			<div class="container-fluid ">
-					<ul class="pl-0" style="overflow:hidden;">
-							<li><div class="d-flex d-inline-flex"><i class="item-icon fas fa-dollar-sign px-1"></i><p class="card-text my-auto ml-1">{{ object.item.price }}</p></div></li>
-							<li><div class="d-flex d-inline-flex"><i class="item-icon far fa-question-circle"></i><p class="card-text my-auto ml-1">{{ object.item.description }}</p></div></li>
-							<li><div class="d-flex d-inline-flex"><i class="item-icon far fa-pause-circle" ></i><p class="card-text my-auto ml-1">{{object.iteem.condition}}</p></div></li>
-							<li><div class="d-flex d-inline-flex"><i class="item-icon far fa-clock "></i><p class="card-text mt-0 ml-1">{{object.item.createdDateTime}}</p></div></li>
-					</ul>
-			</div>
-
-
+			
 		</div>
 	</div>
 
@@ -193,7 +178,7 @@
 	}
 
 	$(function(){
-		//scDown();
+		scDown();
 		removeMsgLabel();
 	})
 
@@ -238,7 +223,7 @@
     	}
 
      	if (chatDataMsg.hasOwnProperty('offermessage')){
-     		var displayPrice = "HK$ " + chatDataMsg.offermessage.toString()
+     		var displayPrice = "Offered price: HK$ " + chatDataMsg.offermessage.toString()
      		offerPriceHolder.text(displayPrice)
      		buyerOfferTitle.text("Update Your Offer:")
      		console.log(displayPrice)
@@ -250,14 +235,14 @@
 
      	if (chatDataMsg.hasOwnProperty('offerAccept')){
      		if (chatDataMsg.offerAccept === true){
-     			offerAcceptHolder.text("Accepted offer")
+     			offerAcceptHolder.text("Accepted")
      			offerinputBox.hide()
      		}else if (chatDataMsg.offerAccept === false){
      			offerReject = true
-     			offerAcceptHolder.text("Rejected offer")
+     			offerAcceptHolder.text("Rejected")
      		}
      	}
-
+		scDown();
 	}
 	socket.onopen= function(e){
 		console.log("open", e)
