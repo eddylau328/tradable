@@ -11,17 +11,23 @@ from django.dispatch import receiver
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
+# InboxConsumer is a websocket for inbox page
+# The target is to update whenever any msg is sent or chatroom is created
+
 
 class InboxConsumer(AsyncConsumer):
+    # things that when the websocket connect
     async def websocket_connect(self, event):
         print("Inbox connected", event)
         me = self.scope['user']
         inbox_room = me.username
         self.inbox_room = inbox_room
+        # create a channel layer at redis server for sending information
         await self.channel_layer.group_add(
             inbox_room,
             self.channel_name
         )
+        # Here is making a list that contains all the chatrooms that one user have
         chatroomList = await self.get_chatroom(me)
         msgList = []
         for obj in chatroomList:
@@ -29,7 +35,6 @@ class InboxConsumer(AsyncConsumer):
             msgList.append(msg)
 
         newlist = []
-        # print(msgList)
         count = 0
         for obj in chatroomList:
             chatroomDict = {
@@ -45,22 +50,27 @@ class InboxConsumer(AsyncConsumer):
             count = count + 1
             newlist.append(chatroomDict)
 
+        # it is needed for the websocket to accept the connection
         await self.send({
             "type": "websocket.accept"
         })
 
+        # When it is first connected update the current inbox to prevent any update when loading the page
         await self.send({
             "type": "websocket.send",
             "text": json.dumps(newlist)
         })
 
+    # receiver function can be called when a Thread object is created
     @receiver(post_save, sender=Thread)
     def update_inbox(sender, instance, **kwargs):
+        # Here is making two list that contains all the chatrooms that one user have
         channel_layer = get_channel_layer()
         room1 = instance.first.username
         room2 = instance.second.username
         user1 = instance.first
         user2 = instance.second
+        # List1 and List2 are prepared to send to the users involved in the chatroom
         chatroomList1 = Thread.objects.by_user(user1)
         chatroomList2 = Thread.objects.by_user(user2)
         msgList1 = []
@@ -70,6 +80,7 @@ class InboxConsumer(AsyncConsumer):
             msgList1.append(msg)
         newlist1 = []
         count = 0
+        # organise the data into a dictionary format
         for obj in chatroomList1:
             chatroomDict1 = {
                 'firstusername': obj.first.username,
@@ -89,6 +100,7 @@ class InboxConsumer(AsyncConsumer):
             msgList2.append(msg)
         newlist2 = []
         count = 0
+        # organise the data into a dictionary format
         for obj in chatroomList2:
             chatroomDict2 = {
                 'firstusername': obj.first.username,
@@ -103,6 +115,7 @@ class InboxConsumer(AsyncConsumer):
             count = count + 1
             newlist2.append(chatroomDict2)
 
+        # send to the first user in the chatroom
         async_to_sync(channel_layer.group_send)(
             room1,
             {
@@ -110,6 +123,7 @@ class InboxConsumer(AsyncConsumer):
                 "text": json.dumps(newlist1)
             })
 
+        # send to the second user in the chatroom
         async_to_sync(channel_layer.group_send)(
             room2,
             {
@@ -117,6 +131,7 @@ class InboxConsumer(AsyncConsumer):
                 "text": json.dumps(newlist2)
             })
 
+    # receiver function can be called when a message object is created
     @receiver(post_save, sender=ChatMessage)
     def update_inbox_msg(sender, instance, **kwargs):
         channel_layer = get_channel_layer()
@@ -124,7 +139,7 @@ class InboxConsumer(AsyncConsumer):
         room2 = instance.thread.second.username
         user1 = instance.thread.first
         user2 = instance.thread.second
-        print(instance.thread.updated)
+        # Here is making two list that contains all the chatrooms that one user have
         chatroomList1 = Thread.objects.by_user(user1)
         chatroomList2 = Thread.objects.by_user(user2)
         msgList1 = []
@@ -134,6 +149,7 @@ class InboxConsumer(AsyncConsumer):
             msgList1.append(msg)
         newlist1 = []
         count = 0
+        # organise the data into a dictionary format
         for obj in chatroomList1:
             chatroomDict1 = {
                 'firstusername': obj.first.username,
@@ -153,6 +169,7 @@ class InboxConsumer(AsyncConsumer):
             msgList2.append(msg)
         newlist2 = []
         count = 0
+        # organise the data into a dictionary format
         for obj in chatroomList2:
             chatroomDict2 = {
                 'firstusername': obj.first.username,
@@ -167,6 +184,7 @@ class InboxConsumer(AsyncConsumer):
             count = count + 1
             newlist2.append(chatroomDict2)
 
+        # send to the first user in the chatroom
         async_to_sync(channel_layer.group_send)(
             room1,
             {
@@ -174,6 +192,7 @@ class InboxConsumer(AsyncConsumer):
                 "text": json.dumps(newlist1)
             })
 
+        # send to the second user in the chatroom
         async_to_sync(channel_layer.group_send)(
             room2,
             {
@@ -181,6 +200,7 @@ class InboxConsumer(AsyncConsumer):
                 "text": json.dumps(newlist2)
             })
 
+    # create a function for sending the chatroom list
     async def inbox_data(self, event):
         # send the actual message
         await self.send({
@@ -188,16 +208,20 @@ class InboxConsumer(AsyncConsumer):
             "text": event['text']
         })
 
+    # websocket receive
     async def websocket_receive(self, event):
         print("receive", event)
 
+    # websocket disconnect
     async def websocket_disconnect(self, event):
         print("disconnected", event)
 
+    # finding the thread object by user object
     @database_sync_to_async
     def get_chatroom(self, user):
         return Thread.objects.by_user(user)
 
+    # finding the message object by thread object and return the string
     @database_sync_to_async
     def get_msg(self, thread):
         try:
@@ -209,56 +233,61 @@ class InboxConsumer(AsyncConsumer):
 
 
 class ChatConsumer(AsyncConsumer):
+    # websocket connect
     async def websocket_connect(self, event):
         print("Chat connected", event)
 
         other_user = self.scope['url_route']['kwargs']['username']
         itemID = self.scope['url_route']['kwargs']['itemID']
         me = self.scope['user']
-        # print(other_user, me)
+        # Get the thread object
         thread_obj = await self.get_thread(me, other_user, itemID)
-        print(me, thread_obj.id)
         self.thread_obj = thread_obj
-        print(self.thread_obj)
         chat_room = f"thread_{thread_obj.id}"
         self.chat_room = chat_room
+        # create a channel in redis server for sending the message
         await self.channel_layer.group_add(
             chat_room,
             self.channel_name
         )
-
+        # it is needed for websocket to accept the connection
         await self.send({
             "type": "websocket.accept"
         })
-
+        # get the latest offer from all the message object in this thread
         last_offer = await self.get_latest_offer(me, thread_obj)
         if last_offer is not None:
             myOfferResponse = {
                 'offermessage': str(last_offer),
             }
+            # send it to the frontend
             await self.send({
                 "type": "websocket.send",
                 "text": json.dumps(myOfferResponse)
             })
 
+        # get the latest offer from all the message object in this thread
         last_seller_offer = await self.get_latest_seller_offer(thread_obj.item.seller, thread_obj)
         if last_seller_offer is not None:
             myOfferResponse = {
                 'offerAccept': last_seller_offer,
             }
+            # send it to the frontend
             await self.send({
                 "type": "websocket.send",
                 "text": json.dumps(myOfferResponse)
             })
-        # print(thread_obj)
 
+    # websocket receive
     async def websocket_receive(self, event):
         # when a message is receiverd from the websocket
         print("receive", event)
+        # get the data sent from the frontend socket
         front_text = event.get('text', None)
         if front_text is not None:
             loaded_dict_data = json.loads(front_text)
             msg = loaded_dict_data.get('message')
+            # if the sent data consists of message
             if (msg is not None):
                 user = self.scope['user']
                 username = 'default'
@@ -268,6 +297,7 @@ class ChatConsumer(AsyncConsumer):
                     'message': msg,
                     'username': username
                 }
+                # create the message
                 await self.create_chat_message(user, msg)
                 # broadcasts the message event to be sent
                 await self.channel_layer.group_send(
@@ -278,6 +308,7 @@ class ChatConsumer(AsyncConsumer):
                     }
                 )
 
+        # if the sent data consists of offer message
         if front_text is not None:
             loaded_dict_data = json.loads(front_text)
             offer = loaded_dict_data.get('offermessage')
@@ -289,8 +320,9 @@ class ChatConsumer(AsyncConsumer):
                 myOfferResponse = {
                     'offermessage': offer,
                 }
-
+                # create a offer message which is assigning the offerPrice
                 await self.create_offer_message(user, offer)
+                # send the offer message to seller
                 await self.channel_layer.group_send(
                     self.chat_room,
                     {
@@ -299,6 +331,7 @@ class ChatConsumer(AsyncConsumer):
                     }
                 )
 
+        # if the sent data consists of offer message from seller (Accept/Reject)
         if front_text is not None:
             loaded_dict_data = json.loads(front_text)
             offerAccept = loaded_dict_data.get('offerAccept')
@@ -315,7 +348,9 @@ class ChatConsumer(AsyncConsumer):
                     myOfferResponse = {
                         'offerAccept': offerAccept,
                     }
+                    # create a offer message which is assigning the offer accept/reject
                     await self.create_offer_message(user, offerAccept)
+                    # send the update message to buyer
                     await self.channel_layer.group_send(
                         self.chat_room,
                         {
@@ -323,8 +358,8 @@ class ChatConsumer(AsyncConsumer):
                             "text": json.dumps(myOfferResponse)
                         }
                     )
-    # custome
 
+    # create a function for sending the message
     async def chat_message(self, event):
         # send the actual message
         await self.send({
@@ -332,6 +367,7 @@ class ChatConsumer(AsyncConsumer):
             "text": event['text']
         })
 
+    # create a function for sending the offer message
     async def offer_message(self, event):
         # send the actual message
         await self.send({
@@ -339,19 +375,24 @@ class ChatConsumer(AsyncConsumer):
             "text": event['text']
         })
 
+    # websocket disconnect
     async def websocket_disconnect(self, event):
         # when the socket connects
         print("disconnected", event)
 
+    # finding the thread object by first username, second username and item ID
+    # as these three fields forms a unique thread object
     @database_sync_to_async
     def get_thread(self, user, other_username, itemID):
         return Thread.objects.get_or_new(user, other_username, itemID)[0]
 
+    # function for create a chat message
     @database_sync_to_async
     def create_chat_message(self, me, msg):
         thread_obj = self.thread_obj
         return ChatMessage.objects.create(thread=thread_obj, user=me, message=msg)
 
+    # function for create a offer message
     @database_sync_to_async
     def create_offer_message(self, me, offer):
         thread_obj = self.thread_obj
@@ -360,6 +401,7 @@ class ChatConsumer(AsyncConsumer):
         else:
             return OfferMessage.objects.create(thread=thread_obj, user=me, offer=offer)
 
+    # finding the latest offer in all the message objects inside the thread object
     @database_sync_to_async
     def get_latest_offer(self, me, thread):
 
@@ -373,6 +415,7 @@ class ChatConsumer(AsyncConsumer):
         else:
             return None
 
+    # finding the latest offer(Accept/Reject) in all the message objects inside the thread object
     @database_sync_to_async
     def get_latest_seller_offer(self, seller, thread):
         offerList = OfferMessage.objects.filter(thread=thread, user=seller)
@@ -382,7 +425,9 @@ class ChatConsumer(AsyncConsumer):
         else:
             return None
 
-
+# Function that can be called within this program
+# Receiver function cannot use async function therefore they cannot call async function
+# finding the message object by thread object and return the string
 def get_msg_out(thread):
     try:
         msg = ChatMessage.objects.filter(thread=thread)
