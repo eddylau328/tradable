@@ -104,7 +104,7 @@
 
 	<br>
 
-	<div class="fixed-top d-inline-flex align-items-center justify-content-center p-1 border">
+	<div class="fixed-top d-inline-flex align-items-center justify-content-center p-1 border bg-light">
 		<img src="{{ object.item.displayPhoto.url }}" class="icon img-thumbnail rounded-circle p-0" style="width:3rem; height:3rem;">
 		<h4 class="text-left py-auto pl-2">{{object.item.name}}</h4>
 		<h4  class="py-auto">&nbsp;from: {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h4>
