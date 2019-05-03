@@ -38,6 +38,7 @@
 		{{ form.price|as_crispy_field  }}
 		{{ form.condition|as_crispy_field  }}
         <div>
+		<!--below are customized upload photo button-->
 		<div id="div_id_displayPhoto" class="form-group">
 				<div class="upload-wrapper">
 					<button class="upload">*Select a display picture</button> 
@@ -103,7 +104,7 @@ function goBack() {
 
 
 $( document ).ready(function() {
-
+	//change the selected file statment 
 	$('input[type="file"]').change(function(e){
 		var fileName = e.target.files[0].name;
 	

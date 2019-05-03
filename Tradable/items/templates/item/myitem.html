@@ -41,6 +41,7 @@
 
                 <a class="text-dark " href="/items/edit/{{item.id}}/">
                     <div class="rounded card-body p-0" >
+
                         <div class="seller m-2 row" style="height:2rem;">
                             <img src="{{ item.seller.profile.image.url }}" class="icon img-thumbnail rounded-circle " style="width:2rem; height:2rem;">
                             <p id="sellername" class="card-text ml-1 pl-1 pt-1 col-xl-8 col-7">{{ item.seller }}</p>
@@ -48,13 +49,16 @@
                                 <button type="submit" button class="col btn btn-submit px-2 py-0 mt-1 " name="delete" value="{{item.id}}">X</button>
                             </form>
                         </div>
+
                         <div class="rounded crop_image "style="padding:7px; width:100%; overflow:hidden;" >
                             <img class="card-img-top d_image"src="{{ item.displayPhoto.url }}" alt="Image Not Found" >
                         </div>
+
                         <div id="textholder row" class="m-1 p-1 justify-text-left col" >
                             <p id="info" class="card-text m-0 col-10 p-0" >{{ item.name }}</p>
                             <p id="info" class="card-text col-10 p-0">HK${{ item.price }}</p>
                         </div>
+
                     </div>
                 </a>
             </div>
@@ -68,42 +72,70 @@
 {% block script %}
 <script>
 
-var crop = function(){
-    ch = $('.crop_image').height();
-    cw = $('.crop_image').width();
-
-    $('.crop_image').css({
-    'height': cw
-    });
-
-    $('.d_image').each(function(){
-        current =$(this)
-        var ih = current.height();
-        var iw = current.width();
-        console.log(ih, iw);
-        console.log(ch, cw);
-        if (iw > ih){
-            r = (iw - cw)/ 2;
-            current.css({'height':ch,'width':'auto', 'position':'relative','right':r});
-
-            //current.css('margin-top', m);
-        }
-        if ( ih > iw ){
-            t = (ch-ih)/2;
-            current.css({'height':'auto','width':cw, 'position':'relative','top':t});
-
-        }
-    });
+var resize = function(){
+	//resize the display block and fit with the screen
+	$('.crop_image').css({
+	'height': $('.crop_image').width()
+	});
+	ch = $('.crop_image').height();
+	cw = $('.crop_image').width();
+	console.log(ch, cw);
 }
 
-$(function(){
-    crop();
-    crop();
-    crop();
+var zoom = function(){
+	//zoom the display photo and fit with the display block
+	$('.d_image').each(function(){
+		current =$(this)
+		var ih = current.height();
+		var iw = current.width();
 
-    $(window).resize(function() {
-        crop();
-    });
+		if (iw > ih){
+			current.css({'height':ch,'width':'auto'});
+
+			//current.css('margin-top', m);
+		}
+		if ( ih > iw ){
+			current.css({'height':'auto','width':cw});
+		}
+	});
+}
+
+var positioning = function(){
+	//center the display photo
+	$('.d_image').each(function(){
+		current =$(this)
+		var ih = current.height();
+		var iw = current.width();
+
+		if (iw > ih){
+			r = (iw - cw)/ 2;
+			current.css({ 'position':'relative','right':r});
+			//current.css('margin-top', m);
+		}
+		if ( ih > iw ){
+			t = (ch-ih)/2;
+			current.css({'position':'relative','top':t});
+		}
+	});
+}
+
+
+$(function(){
+	//do the functions once when page is loaded
+	resize();
+	zoom();
+	positioning();
+
+	console.log(ch, cw);
+
+
+	$(window).resize(function() {
+		//do functions again when window size change is detected 
+		resize();
+		zoom();
+		positioning();
+
+	});
 });
 
 </script>
