@@ -268,9 +268,7 @@ class ChatConsumer(AsyncConsumer):
                     'message': msg,
                     'username': username
                 }
-
                 await self.create_chat_message(user, msg)
-
                 # broadcasts the message event to be sent
                 await self.channel_layer.group_send(
                     self.chat_room,
@@ -279,6 +277,9 @@ class ChatConsumer(AsyncConsumer):
                         "text": json.dumps(myResponse)
                     }
                 )
+
+        if front_text is not None:
+            loaded_dict_data = json.loads(front_text)
             offer = loaded_dict_data.get('offermessage')
             if (offer is not None):
                 user = self.scope['user']
@@ -297,24 +298,31 @@ class ChatConsumer(AsyncConsumer):
                         "text": json.dumps(myOfferResponse)
                     }
                 )
+
+        if front_text is not None:
+            loaded_dict_data = json.loads(front_text)
             offerAccept = loaded_dict_data.get('offerAccept')
             if (offerAccept is not None):
                 user = self.scope['user']
-                username = 'default'
-                if user.is_authenticated:
-                    username = user.username
-                myOfferResponse = {
-                    'offerAccept': offerAccept,
-                }
-
-                await self.create_offer_message(user, offerAccept)
-                await self.channel_layer.group_send(
-                    self.chat_room,
-                    {
-                        "type": "offer_message",
-                        "text": json.dumps(myOfferResponse)
+                itemID = self.scope['url_route']['kwargs']['itemID']
+                other_user = self.scope['url_route']['kwargs']['username']
+                thread_obj = await self.get_thread(user, other_user, itemID)
+                last_offer = await self.get_latest_offer(user, thread_obj)
+                if last_offer is not None:
+                    username = 'default'
+                    if user.is_authenticated:
+                        username = user.username
+                    myOfferResponse = {
+                        'offerAccept': offerAccept,
                     }
-                )
+                    await self.create_offer_message(user, offerAccept)
+                    await self.channel_layer.group_send(
+                        self.chat_room,
+                        {
+                            "type": "offer_message",
+                            "text": json.dumps(myOfferResponse)
+                        }
+                    )
     # custome
 
     async def chat_message(self, event):

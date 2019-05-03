@@ -138,19 +138,19 @@
 						<h4 class='' id='offerPriceHolder'></h4>
 						<h4 class='' id='offerAcceptHolder'></h4>
 					</div>
-					<div class='d-inline-flex' id="offerinputBox">
+					<div id="offerinputBox">
+					<div class='d-inline-flex'>
 					{% if user != object.item.seller %}
 						<p class='mb-0 pt-1' id='buyerOfferTitle'>Enter Your Offer:</p>
 						<span class="bmd-form-group pr-1 p-0">
 							<input class="form-control" type="number" class="" id="offersubmit">
 						</span>
 						<button class="btn btn-raised btn-secondary" type='button' id='sendOfferButton'>Send</button>
-					</div>
-					<div class='' id="offerinputBox">
 					{% else %}
 						<button class="btn btn-raised btn-secondary mr-2" type='button' id='acceptButton'>Accept</button>
 						<button class="btn btn-raised btn-secondary" type='button' id='rejectButton'>Reject</button>
 					{% endif %}
+					</div>
 					</div>
 				</div>
 				<div class="pl-3 p-1 m-1 bg-white" id="chatinput">
@@ -161,7 +161,7 @@
 					</form>
 				</div>
 			</div>
-			
+
 		</div>
 	</div>
 
