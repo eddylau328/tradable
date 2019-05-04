@@ -61,6 +61,8 @@ ul{
                 <img src="{{ object.seller.profile.image.url }}" class="icon img-thumbnail rounded-circle p-0 " style="width:3rem; height:3rem;">
                 <p id="sellername" class="card-text ml-1 pl-1 my-auto col-xl-8 col-7" style="font-size: 1.2rem;" >{{ object.seller }}</p>
             </div>
+
+            <!-- display photo as carousel-->
             <div id="photoslideshow" class="carousel slide w-100 p-0 d-flex align-items-center bg-light my-auto " style="overflow:hidden;" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-target="#photoslideshow" data-slide-to="0" class="active"></li>
@@ -91,6 +93,8 @@ ul{
 
         </div>
     </div>
+
+    <!--item details-->
     <div class="card bg-light border-secondary col-lg-4 col-md-5 col-10 p-0 mt-md-3 mt-2 mb-3 mx-3">
         <div clas="card-body">
             <h3 class="border-bottom text-left p-1">{{object.name}}</h3>
@@ -124,7 +128,7 @@ ul{
 
 
 var set_carousel_height = function(){
-
+    //set carousel shape to a square
     $('.carousel').css({
 	'height': $('.carousel').width()
 	})
