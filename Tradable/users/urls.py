@@ -4,6 +4,16 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
+
+    # Register – Register page
+    # Login – login page. Hyperlink for “forget password” and ”Sign up” are included.
+    # Logout – Extend successful log out statement to “base.html”
+    # Password reset – Forget password page. A password reset link will be sent to user email
+    # Password reset done – Extend email successfully sent statement to “base.html”
+    # Password reset confirmation – Reset pass word page.
+    # Password reset completed - Extend successful change password statement to “base.html”
+    # Profile – Profile management page
+
     path('register/', user_register_view, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='user/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='user/logout.html'), name='logout'),
