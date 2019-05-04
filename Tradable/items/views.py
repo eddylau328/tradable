@@ -45,23 +45,25 @@ def item_dynamic_lookup_view(request, item_id, *args, **kwargs):
 
 def item_list_view(request):
 
-    items = Item.objects.filter(isSoldOut=False)
+    items = Item.objects.filter(isSoldOut=False) #check if item is sold
     search_term = ''
+
+    #sort according to create time and price
     if 'recent' in request.GET:
         items = items.order_by('createdDateTime')
         items = items.reverse()
     if 'low' in request.GET:
         items = items.order_by('price')
-
     if 'high' in request.GET:
         items = items.order_by('price')
         items = items.reverse()
 
+    #use get method to retrieve the user desired string
     if 'search' in request.GET:
         search_term = request.GET['search']
         qlookup = Q(name__icontains=search_term) | Q(price__icontains=search_term) | Q(seller__username__icontains=search_term)
         items = items.filter(qlookup)
-
+        
     paginator = Paginator(items, 15)  # show 15 items per page
 
     page = request.GET.get('page')
@@ -137,8 +139,8 @@ def my_item_view(request):
 
     paginator = Paginator(items, 15)  # show 15 items per page
 
-    page = request.GET.get('page')
-    items = paginator.get_page(page)
+    page = request.GET.get('page')  # GET method to retrieve user selected page
+    items = paginator.get_page(page)  #display the item list of specific page
 
     get_dict_copy = request.GET.copy()
     params = get_dict_copy.pop('page', True) and get_dict_copy.urlencode()
