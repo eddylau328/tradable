@@ -72,7 +72,6 @@ class OfferMessage(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='sender', on_delete=models.CASCADE)
     offer = models.DecimalField(decimal_places=2, max_digits=10000, default=None, null=True)
     offerAccept = models.BooleanField(null=True)
-    offerDelete = models.BooleanField(null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
 

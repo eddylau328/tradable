@@ -408,10 +408,7 @@ class ChatConsumer(AsyncConsumer):
         offerList = OfferMessage.objects.filter(thread=thread).exclude(user=thread.item.seller)
         if offerList.exists():
             latestOfferMessage = offerList.latest('id')
-            if latestOfferMessage.offerDelete is not None:
-                return latestOfferMessage.offerDelete
-            else:
-                return latestOfferMessage.offer
+            return latestOfferMessage.offer
         else:
             return None
 

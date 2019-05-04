@@ -88,17 +88,13 @@ def item_create_view(request):
         if form.is_valid() and formset.is_valid():
             createItem = form.save()
             createItem.seller = request.user
-            # createItem.seller.image.url = request.user.image.url
             createItem.save()
-
             for f in formset:
                 try:
                     descriptionPhoto = DescriptionPhoto(item=createItem, photo=f.cleaned_data['photo'])
                     descriptionPhoto.save()
                 except Exception as e:
                     break
-    #        # render a new form after form.save
-    #        form = ItemCreateForm()
 
             messages.success(request, f'You created a new item')
             return redirect('home')
@@ -188,19 +184,13 @@ def edit_item_view(request, item_id):
                             i = i + 1
                         except Exception as e:
                             break
-
                     for f in newformset:
                         try:
                             newItemPhoto = DescriptionPhoto(item=item, photo=f.cleaned_data['photo'])
                             newItemPhoto.save()
                         except Exception as e:
                             continue
-
-                    print(deleteList)
-                    for i in images:
-                        print(i.photo.url)
                     for i in deleteList:
-                        print(images[i].photo.url)
                         images[i].delete()
                     messages.success(request, f'You have edited your item!')
                     return redirect('myitem')
